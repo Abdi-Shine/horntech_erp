@@ -460,3 +460,26 @@ Route::get('/subscribers/pricing', function () {
 })->name('subscribers_pricing');
 
 require __DIR__ . '/auth.php';
+
+// Temporary Repair Route - Visit ims.thehorntech.com/repair-db to fix database errors
+Route::get('/repair-db', function () {
+    try {
+        echo "=== Manual Repair Started ===<br>";
+        
+        echo "Cleaning up tables...<br>";
+        // Using raw SQL to ensure success even if Schema classes fail
+        \Illuminate\Support\Facades\DB::statement('DROP TABLE IF EXISTS sessions');
+        \Illuminate\Support\Facades\DB::statement('DROP TABLE IF EXISTS password_reset_tokens');
+        \Illuminate\Support\Facades\DB::statement('DROP TABLE IF EXISTS users');
+        
+        echo "Running migrations...<br>";
+        \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
+        
+        echo "Running seeders...<br>";
+        \Illuminate\Support\Facades\Artisan::call('db:seed', ['--force' => true]);
+        
+        return "<br><b>Database repaired successfully!</b><br><a href='/'>Click here to go to Login</a>";
+    } catch (\Exception $e) {
+        return "<br><b style='color:red'>Error:</b> " . $e->getMessage() . "<br><br>Trace:<br>" . nl2br($e->getTraceAsString());
+    }
+});
