@@ -1,0 +1,13 @@
+
+> build
+> vite build
+
+[36mvite v7.3.1 [32mbuilding client environment for production...[36m[39m
+transforming...
+[32m✓[39m 54 modules transformed.
+rendering chunks...
+computing gzip size...
+[2mpublic/build/[22m[32mmanifest.json            [39m[1m[2m  0.33 kB[22m[1m[22m[2m │ gzip:  0.17 kB[22m
+[2mpublic/build/[22m[35massets/app-6Dr9OiZL.css  [39m[1m[2m160.05 kB[22m[1m[22m[2m │ gzip: 22.37 kB[22m
+[2mpublic/build/[22m[36massets/app-CBbTb_k3.js   [39m[1m[2m 83.04 kB[22m[1m[22m[2m │ gzip: 30.88 kB[22m
+[32m✓ built in 4.20s[39m

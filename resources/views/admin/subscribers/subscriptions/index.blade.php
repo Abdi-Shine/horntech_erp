@@ -1,0 +1,163 @@
+@extends('admin.admin_master')
+@section('page_title', 'My Subscription')
+
+@section('admin')
+<div class="px-4 py-8 md:px-8 md:py-10 bg-background min-h-screen font-inter">
+
+    {{-- Header --}}
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+        <div>
+            <h1 class="text-[22px] font-bold text-primary-dark">My Subscription</h1>
+            <p class="text-[13px] text-gray-400 font-medium mt-0.5">Manage your active subscription and billing</p>
+        </div>
+        <a href="{{ route('subscribers.plans.index') }}"
+           class="btn-premium-primary group normal-case">
+            <i class="bi bi-arrow-up-circle"></i>
+            <span>Upgrade Plan</span>
+        </a>
+    </div>
+
+    @if(session('success'))
+    <div class="bg-green-50 border border-green-200 text-green-800 rounded-xl px-4 py-3 mb-6 text-[13px] font-semibold flex items-center gap-2">
+        <i class="bi bi-check-circle-fill text-green-500"></i> {{ session('success') }}
+    </div>
+    @endif
+
+    @forelse($subscriptions as $sub)
+    @php
+        $isActive  = $sub->status === 'active';
+        $isTrial   = $sub->status === 'trial';
+        $isExpired = $sub->status === 'expired';
+        $daysLeft  = $sub->ends_at ? now()->diffInDays($sub->ends_at, false) : null;
+    @endphp
+    <div class="bg-white rounded-[1.2rem] border-2 {{ $isActive || $isTrial ? 'border-accent/40' : 'border-red-200' }} shadow-sm mb-6 overflow-hidden">
+        <div class="px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3
+                    {{ $isActive || $isTrial ? 'bg-accent/5' : 'bg-red-50' }} border-b border-gray-100">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full flex items-center justify-center
+                            {{ $isActive ? 'bg-accent/20 text-primary-dark' : ($isTrial ? 'bg-blue-100 text-blue-700' : 'bg-red-100 text-red-700') }}">
+                    <i class="bi bi-{{ $isActive ? 'check-circle-fill' : ($isTrial ? 'clock-fill' : 'x-circle-fill') }}"></i>
+                </div>
+                <div>
+                    <p class="text-[13px] font-black text-primary-dark">{{ $sub->plan->name ?? 'Unknown Plan' }}</p>
+                    <p class="text-[11px] text-gray-400">
+                        {{ ucfirst($sub->plan->billing_cycle ?? 'monthly') }} billing
+                    </p>
+                </div>
+            </div>
+            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-black uppercase tracking-wider
+                        {{ $isActive ? 'bg-green-100 text-green-700' : ($isTrial ? 'bg-blue-100 text-blue-700' : 'bg-red-100 text-red-700') }}">
+                {{ ucfirst($sub->status) }}
+            </span>
+        </div>
+
+        <div class="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            <div>
+                <p class="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1">Monthly Cost</p>
+                <p class="text-[18px] font-black text-primary-dark">
+                    ${{ number_format($sub->plan->price ?? 0, 2) }}
+                </p>
+            </div>
+            <div>
+                <p class="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1">Started</p>
+                <p class="text-[14px] font-semibold text-gray-700">
+                    {{ $sub->starts_at ? $sub->starts_at->format('d M Y') : '—' }}
+                </p>
+            </div>
+            <div>
+                <p class="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1">Renews / Expires</p>
+                <p class="text-[14px] font-semibold {{ $daysLeft !== null && $daysLeft <= 7 ? 'text-red-600' : 'text-gray-700' }}">
+                    {{ $sub->ends_at ? $sub->ends_at->format('d M Y') : '—' }}
+                    @if($daysLeft !== null && $daysLeft > 0)
+                        <span class="text-[11px] text-gray-400">({{ $daysLeft }}d left)</span>
+                    @endif
+                </p>
+            </div>
+            <div>
+                <p class="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1">Max Users</p>
+                <p class="text-[14px] font-semibold text-gray-700">
+                    {{ $sub->plan->max_users ?? '—' }}
+                </p>
+            </div>
+        </div>
+
+        @if($sub->plan && $sub->plan->features && count($sub->plan->features))
+        <div class="px-6 pb-6">
+            <p class="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-2">Included Features</p>
+            <div class="flex flex-wrap gap-2">
+                @foreach($sub->plan->features as $feature)
+                <span class="inline-flex items-center gap-1 px-3 py-1 bg-accent/10 text-primary-dark rounded-full text-[11px] font-semibold">
+                    <i class="bi bi-check-lg text-accent"></i> {{ $feature }}
+                </span>
+                @endforeach
+            </div>
+        </div>
+        @endif
+    </div>
+    @empty
+    {{-- No subscription --}}
+    <div class="bg-white rounded-[1.2rem] border border-gray-100 shadow-sm p-10 text-center">
+        <i class="bi bi-credit-card text-[3rem] text-gray-200 block mb-4"></i>
+        <h3 class="text-[16px] font-black text-primary-dark mb-2">No Active Subscription</h3>
+        <p class="text-[13px] text-gray-400 mb-6">You are not subscribed to any plan yet. Choose a plan to get started.</p>
+        <a href="{{ route('subscribers.plans.index') }}"
+           class="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white font-bold rounded-[0.6rem] text-[13px] hover:bg-primary-dark transition-all">
+            <i class="bi bi-rocket-takeoff"></i> View Plans
+        </a>
+    </div>
+    @endforelse
+
+    {{-- Available Plans Reference --}}
+    @if($plans->count())
+    <div class="bg-white rounded-[1.2rem] border border-gray-100 shadow-sm overflow-hidden mt-6">
+        <div class="px-6 py-4 border-b border-gray-100 bg-background/50 flex items-center justify-between">
+            <h2 class="text-[12px] font-black text-primary-dark uppercase tracking-wider">Available Plans</h2>
+            <a href="{{ route('subscribers.plans.index') }}" class="text-[12px] font-semibold text-primary hover:underline">
+                View All <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-[12px]">
+                <thead class="bg-gray-50 text-[11px] font-bold text-gray-500 uppercase tracking-wider">
+                    <tr>
+                        <th class="text-left px-5 py-3">Plan</th>
+                        <th class="text-left px-5 py-3">Price</th>
+                        <th class="text-left px-5 py-3">Users</th>
+                        <th class="text-left px-5 py-3">Storage</th>
+                        <th class="text-left px-5 py-3">Billing</th>
+                        <th class="px-5 py-3"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($plans as $plan)
+                    <tr class="border-t border-gray-100 hover:bg-gray-50">
+                        <td class="px-5 py-3 font-semibold text-primary-dark">
+                            {{ $plan->name }}
+                            @if($plan->is_popular)
+                            <span class="ml-2 px-2 py-0.5 bg-accent/20 text-primary-dark rounded-full text-[10px] font-bold">Popular</span>
+                            @endif
+                        </td>
+                        <td class="px-5 py-3 font-bold text-primary-dark">${{ number_format($plan->price, 2) }}</td>
+                        <td class="px-5 py-3 text-gray-600">{{ $plan->max_users }}</td>
+                        <td class="px-5 py-3 text-gray-600">{{ $plan->storage_limit_gb }} GB</td>
+                        <td class="px-5 py-3 text-gray-600">{{ ucfirst($plan->billing_cycle) }}</td>
+                        <td class="px-5 py-3 text-right">
+                            <form method="POST" action="{{ route('subscribers.plans.store') }}" class="inline">
+                                @csrf
+                                <input type="hidden" name="plan_id" value="{{ $plan->id }}">
+                                <button type="submit"
+                                    class="px-4 py-1.5 bg-primary text-white text-[11px] font-bold rounded-lg hover:bg-primary-dark transition-all">
+                                    Select
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+    @endif
+
+</div>
+@endsection

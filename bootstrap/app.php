@@ -1,0 +1,36 @@
+<?php
+
+use Illuminate\Foundation\Application;
+use Illuminate\Foundation\Configuration\Exceptions;
+use Illuminate\Foundation\Configuration\Middleware;
+
+return Application::configure(basePath: dirname(__DIR__))
+    ->withRouting(
+        web: __DIR__.'/../routes/web.php',
+        commands: __DIR__.'/../routes/console.php',
+        health: '/up',
+    )
+    ->withSchedule(function (\Illuminate\Console\Scheduling\Schedule $schedule) {
+        try {
+            $company = \App\Models\Company::withoutGlobalScopes()->first();
+            if ($company && $company->auto_backup_enabled) {
+                $time = $company->backup_time ?? '02:00';
+                $schedule->command('app:system-backup')
+                         ->dailyAt($time)
+                         ->withoutOverlapping();
+            }
+        } catch (\Exception $e) {
+            // Log fallback or skip gracefully if DB not ready
+        }
+    })
+    ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->alias([
+            'permission'   => \App\Http\Middleware\CheckPermission::class,
+            'role'         => \App\Http\Middleware\CheckRole::class,
+            'tenant.owns'  => \App\Http\Middleware\EnsureTenantOwnership::class,
+            'super.admin'  => \App\Http\Middleware\EnsureSuperAdmin::class,
+        ]);
+    })
+    ->withExceptions(function (Exceptions $exceptions): void {
+        //
+    })->create();

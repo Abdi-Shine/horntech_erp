@@ -1,0 +1,26 @@
+
+   INFO  Seeding database.  
+
+  Database\Seeders\CompanyStructureSeeder  RUNNING  
+
+   Illuminate\Database\UniqueConstraintViolationException 
+
+  SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'BR-RYD-001' for key 'branches_code_unique' (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: bilkheyr, SQL: insert into `branches` (`company_id`, `name`, `code`, `level`, `manager_name`, `manager_phone`, `bank_name`, `account_name`, `district`, `region`, `address`, `is_active`, `updated_at`, `created_at`) values (2, Riyadh Region, BR-RYD-001, Headquarters, Ahmed Al-Salem, +966 11 234 5678, Al Rajhi Bank, Bilkheyr HQ Operations, Olaya District, Riyadh, Olaya View Tower, Floor 5, 1, 2026-02-28 07:23:56, 2026-02-28 07:23:56))
+
+  at vendor\laravel\framework\src\Illuminate\Database\Connection.php:838
+    834▕             $exceptionType = $this->isUniqueConstraintError($e)
+    835▕                 ? UniqueConstraintViolationException::class
+    836▕                 : QueryException::class;
+    837▕ 
+  ➜ 838▕             throw new $exceptionType(
+    839▕                 $this->getNameWithReadWriteType(),
+    840▕                 $query,
+    841▕                 $this->prepareBindings($bindings),
+    842▕                 $e,
+
+  1   vendor\laravel\framework\src\Illuminate\Database\MySqlConnection.php:53
+      PDOException::("SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'BR-RYD-001' for key 'branches_code_unique'")
+
+  2   vendor\laravel\framework\src\Illuminate\Database\MySqlConnection.php:53
+      PDOStatement::execute()
+

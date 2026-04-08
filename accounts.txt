@@ -1,0 +1,454 @@
+[
+    {
+        "code": "1000",
+        "name": "Assets"
+    },
+    {
+        "code": "1100",
+        "name": "Current Assets"
+    },
+    {
+        "code": "1110",
+        "name": "Cash & Cash Equivalents"
+    },
+    {
+        "code": "1111",
+        "name": "Petty Cash"
+    },
+    {
+        "code": "1112",
+        "name": "Cash on Hand"
+    },
+    {
+        "code": "1120",
+        "name": "Bank Accounts"
+    },
+    {
+        "code": "1121",
+        "name": "Main Operating Account"
+    },
+    {
+        "code": "1122",
+        "name": "Payroll Account"
+    },
+    {
+        "code": "1130",
+        "name": "Accounts Receivable"
+    },
+    {
+        "code": "1140",
+        "name": "Inventory"
+    },
+    {
+        "code": "1141",
+        "name": "Raw Materials"
+    },
+    {
+        "code": "1142",
+        "name": "Finished Goods"
+    },
+    {
+        "code": "1150",
+        "name": "Prepaid & Other Current Assets"
+    },
+    {
+        "code": "1151",
+        "name": "Prepaid Insurance"
+    },
+    {
+        "code": "1152",
+        "name": "Prepaid Rent"
+    },
+    {
+        "code": "1153",
+        "name": "Advances to Employees"
+    },
+    {
+        "code": "1200",
+        "name": "Non-Current Assets"
+    },
+    {
+        "code": "1210",
+        "name": "Fixed Assets (Property & Equipment)"
+    },
+    {
+        "code": "1211",
+        "name": "Equipment & Machinery"
+    },
+    {
+        "code": "1212",
+        "name": "Furniture & Fixtures"
+    },
+    {
+        "code": "1213",
+        "name": "Vehicles"
+    },
+    {
+        "code": "1214",
+        "name": "Buildings & Improvements"
+    },
+    {
+        "code": "1215",
+        "name": "Computer & IT Equipment"
+    },
+    {
+        "code": "1220",
+        "name": "Accumulated Depreciation"
+    },
+    {
+        "code": "1221",
+        "name": "Accum. Depreciation \u2013 Equipment"
+    },
+    {
+        "code": "1222",
+        "name": "Accum. Depreciation \u2013 Vehicles"
+    },
+    {
+        "code": "1223",
+        "name": "Accum. Depreciation \u2013 Buildings"
+    },
+    {
+        "code": "1230",
+        "name": "Intangible Assets"
+    },
+    {
+        "code": "1231",
+        "name": "Goodwill"
+    },
+    {
+        "code": "1232",
+        "name": "Software & Licenses"
+    },
+    {
+        "code": "2000",
+        "name": "Liabilities"
+    },
+    {
+        "code": "2100",
+        "name": "Current Liabilities"
+    },
+    {
+        "code": "2110",
+        "name": "Accounts Payable"
+    },
+    {
+        "code": "2120",
+        "name": "Taxes Payable"
+    },
+    {
+        "code": "2121",
+        "name": "VAT \/ Sales Tax Payable"
+    },
+    {
+        "code": "2122",
+        "name": "Income Tax Payable"
+    },
+    {
+        "code": "2123",
+        "name": "Withholding Tax Payable"
+    },
+    {
+        "code": "2130",
+        "name": "Accrued Expenses"
+    },
+    {
+        "code": "2140",
+        "name": "Salaries & Wages Payable"
+    },
+    {
+        "code": "2150",
+        "name": "Unearned Revenue"
+    },
+    {
+        "code": "2160",
+        "name": "Short-term Loans"
+    },
+    {
+        "code": "2170",
+        "name": "Credit Card Payable"
+    },
+    {
+        "code": "2200",
+        "name": "Non-Current Liabilities"
+    },
+    {
+        "code": "2210",
+        "name": "Long-term Bank Loans"
+    },
+    {
+        "code": "2220",
+        "name": "Deferred Tax Liability"
+    },
+    {
+        "code": "2230",
+        "name": "Bonds Payable"
+    },
+    {
+        "code": "3000",
+        "name": "Equity"
+    },
+    {
+        "code": "3100",
+        "name": "Paid-in Capital"
+    },
+    {
+        "code": "3200",
+        "name": "Retained Earnings"
+    },
+    {
+        "code": "3300",
+        "name": "Opening Balance Equity"
+    },
+    {
+        "code": "3400",
+        "name": "Drawings \/ Owner Withdrawal"
+    },
+    {
+        "code": "3500",
+        "name": "Share Premium"
+    },
+    {
+        "code": "4000",
+        "name": "Revenue"
+    },
+    {
+        "code": "4100",
+        "name": "Sales Revenue"
+    },
+    {
+        "code": "4110",
+        "name": "Product Sales"
+    },
+    {
+        "code": "4120",
+        "name": "Service Income"
+    },
+    {
+        "code": "4130",
+        "name": "Subscription Income"
+    },
+    {
+        "code": "4200",
+        "name": "Other Income"
+    },
+    {
+        "code": "4210",
+        "name": "Interest Income"
+    },
+    {
+        "code": "4220",
+        "name": "Discount Received"
+    },
+    {
+        "code": "4230",
+        "name": "Rental Income"
+    },
+    {
+        "code": "4240",
+        "name": "Miscellaneous Income"
+    },
+    {
+        "code": "4300",
+        "name": "Sales Contra Accounts"
+    },
+    {
+        "code": "4310",
+        "name": "Sales Returns & Allowances"
+    },
+    {
+        "code": "4320",
+        "name": "Sales Discounts"
+    },
+    {
+        "code": "5000",
+        "name": "Expenses"
+    },
+    {
+        "code": "5100",
+        "name": "Cost of Goods Sold (COGS)"
+    },
+    {
+        "code": "5200",
+        "name": "Operating Expenses"
+    },
+    {
+        "code": "5210",
+        "name": "Salaries & Wages"
+    },
+    {
+        "code": "5211",
+        "name": "Employee Benefits"
+    },
+    {
+        "code": "5212",
+        "name": "Staff Training"
+    },
+    {
+        "code": "5220",
+        "name": "Rent Expense"
+    },
+    {
+        "code": "5230",
+        "name": "Utilities Expense"
+    },
+    {
+        "code": "5240",
+        "name": "Marketing & Advertising"
+    },
+    {
+        "code": "5241",
+        "name": "Digital Marketing"
+    },
+    {
+        "code": "5242",
+        "name": "Print & Media"
+    },
+    {
+        "code": "5250",
+        "name": "Office Supplies & Stationery"
+    },
+    {
+        "code": "5260",
+        "name": "Telephone & Internet"
+    },
+    {
+        "code": "5270",
+        "name": "Insurance Expense"
+    },
+    {
+        "code": "5280",
+        "name": "Transportation & Travel"
+    },
+    {
+        "code": "5290",
+        "name": "Cleaning & Maintenance"
+    },
+    {
+        "code": "5300",
+        "name": "Finance & Banking Expenses"
+    },
+    {
+        "code": "5310",
+        "name": "Bank Charges & Fees"
+    },
+    {
+        "code": "5320",
+        "name": "Interest Expense"
+    },
+    {
+        "code": "5330",
+        "name": "Foreign Exchange Loss"
+    },
+    {
+        "code": "5400",
+        "name": "Depreciation & Amortisation"
+    },
+    {
+        "code": "5410",
+        "name": "Depreciation \u2013 Equipment"
+    },
+    {
+        "code": "5420",
+        "name": "Depreciation \u2013 Vehicles"
+    },
+    {
+        "code": "5430",
+        "name": "Depreciation \u2013 Buildings"
+    },
+    {
+        "code": "5440",
+        "name": "Amortisation \u2013 Intangibles"
+    },
+    {
+        "code": "5500",
+        "name": "Other Expenses"
+    },
+    {
+        "code": "5510",
+        "name": "Miscellaneous Expense"
+    },
+    {
+        "code": "5520",
+        "name": "Bad Debt Expense"
+    },
+    {
+        "code": "5530",
+        "name": "Penalties & Fines"
+    },
+    {
+        "code": "5600",
+        "name": "Tax Expenses"
+    },
+    {
+        "code": "5610",
+        "name": "Corporate Income Tax"
+    },
+    {
+        "code": "5620",
+        "name": "Payroll Tax Expense"
+    },
+    {
+        "code": "1000",
+        "name": "Assets"
+    },
+    {
+        "code": "1010",
+        "name": "Current Assets"
+    },
+    {
+        "code": "1011",
+        "name": "Cash on Hand"
+    },
+    {
+        "code": "1020",
+        "name": "Bank Accounts"
+    },
+    {
+        "code": "1030",
+        "name": "Accounts Receivable"
+    },
+    {
+        "code": "1400",
+        "name": "Inventory Asset"
+    },
+    {
+        "code": "2000",
+        "name": "Liabilities"
+    },
+    {
+        "code": "2010",
+        "name": "Current Liabilities"
+    },
+    {
+        "code": "2011",
+        "name": "Accounts Payable"
+    },
+    {
+        "code": "3000",
+        "name": "Equity"
+    },
+    {
+        "code": "3010",
+        "name": "Opening Balance Equity"
+    },
+    {
+        "code": "4000",
+        "name": "Revenue"
+    },
+    {
+        "code": "4010",
+        "name": "Sales Revenue"
+    },
+    {
+        "code": "5000",
+        "name": "Expenses"
+    },
+    {
+        "code": "5010",
+        "name": "Operating Expenses"
+    },
+    {
+        "code": "5020",
+        "name": "Cost of Goods Sold"
+    }
+]

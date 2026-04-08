@@ -1,0 +1,77 @@
+EMPLOYEES COLUMNS:
+Array
+(
+    [0] => id
+    [1] => user_id
+    [2] => employee_id
+    [3] => national_id
+    [4] => title
+    [5] => full_name
+    [6] => photo
+    [7] => email
+    [8] => dob
+    [9] => gender
+    [10] => marital_status
+    [11] => phone
+    [12] => address
+    [13] => district
+    [14] => city
+    [15] => country
+    [16] => designation
+    [17] => department
+    [18] => branch
+    [19] => store
+    [20] => company
+    [21] => salary
+    [22] => status
+    [23] => created_at
+    [24] => updated_at
+)
+
+USER FIRST:
+Array
+(
+    [id] => 1
+    [name] => Admin User
+    [fullname] => 
+    [username] => admin
+    [email] => admin@bilkheyr.com
+    [phone] => 
+    [company] => 
+    [photo] => 1858577780442159.jpg
+    [role] => admin
+    [email_verified_at] => 
+    [created_at] => 2026-02-28T08:15:08.000000Z
+    [updated_at] => 2026-03-02T18:58:14.000000Z
+)
+
+EMPLOYEE FOR USER:
+Array
+(
+    [id] => 1
+    [user_id] => 1
+    [employee_id] => EMP-0001
+    [national_id] => 1000000001
+    [title] => 
+    [full_name] => Admin User
+    [photo] => 
+    [email] => 
+    [dob] => 1990-01-01
+    [gender] => Male
+    [marital_status] => 
+    [phone] => 
+    [address] => 
+    [district] => 
+    [city] => 
+    [country] => Saudi Arabia
+    [designation] => System Administrator
+    [department] => IT
+    [branch] => 
+    [store] => 
+    [company] => 
+    [salary] => 
+    [status] => active
+    [created_at] => 2026-02-28T08:15:08.000000Z
+    [updated_at] => 2026-02-28T08:15:08.000000Z
+)
+

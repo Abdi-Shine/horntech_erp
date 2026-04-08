@@ -1,0 +1,75 @@
+﻿
+  Dropping all tables  372.05ms DONE
+
+   INFO  Preparing database.  
+
+  Creating migration table  22.28ms DONE
+
+   INFO  Running migrations.  
+
+  0001_01_01_000000_create_users_table  148.89ms DONE
+  0001_01_01_000001_create_cache_table  81.01ms DONE
+  0001_01_01_000002_create_jobs_table  103.11ms DONE
+  2026_02_20_162500_create_companies_table  11.71ms DONE
+  2026_02_20_162501_create_branches_table  101.10ms DONE
+  2026_02_20_162501_create_stores_table  82.94ms DONE
+  2026_02_20_213800_create_employees_table  306.89ms DONE
+  2026_02_21_081204_add_city_to_employees_table  11.60ms DONE
+  2026_02_21_140512_add_company_to_employees_table  11.12ms DONE
+  2026_02_21_145828_make_user_id_nullable_in_employees_table  67.68ms DONE
+  2026_02_21_150114_add_photo_to_employees_table  9.99ms DONE
+  2026_02_21_150220_add_email_to_employees_table  10.03ms DONE
+  2026_02_21_161712_create_roles_table  39.94ms DONE
+  2026_02_21_170857_create_accounts_table  85.23ms DONE
+  2026_02_21_175237_create_journal_entries_table  97.27ms DONE
+  2026_02_21_175414_create_journal_items_table  131.00ms DONE
+  2026_02_21_185000_create_customers_table  49.48ms DONE
+  2026_02_22_083237_create_supplier_table  47.07ms DONE
+  2026_02_22_102613_create_payment_ins_table  76.37ms DONE
+  2026_02_22_102820_add_extra_fields_to_companies_table  27.42ms DONE
+  2026_02_22_160944_create_categories_table  9.59ms DONE
+  2026_02_22_161012_create_units_table  9.64ms DONE
+  2026_02_22_161020_create_brands_table  9.09ms DONE
+  2026_02_22_161030_create_products_table  72.33ms DONE
+  2026_02_22_190613_add_columns_to_categories_table  102.17ms DONE
+  2026_02_22_202837_create_product_stocks_table  250.20ms DONE
+  2026_02_23_012542_make_branch_store_nullable_in_product_stocks  10.90ms DONE
+  2026_02_23_100000_create_sales_orders_table  165.27ms DONE
+  2026_02_23_100001_create_sales_order_items_table  153.12ms DONE
+  2026_02_23_171917_create_purchase_orders_table  99.20ms DONE
+  2026_02_23_172017_create_purchase_order_items_table  153.07ms DONE
+  2026_02_24_120933_create_purchase_bills_table  170.65ms DONE
+  2026_02_24_120939_create_purchase_bill_items_table  195.28ms DONE
+  2026_02_24_163141_add_supplier_invoice_no_to_purchase_bills_table  9.75ms DONE
+  2026_02_24_165413_add_extra_columns_to_purchase_bill_items_table  26.85ms DONE
+  2026_02_24_165929_create_supplier_payments_table  110.19ms DONE
+  2026_02_24_165937_create_supplier_payment_details_table  162.25ms DONE
+  2026_02_25_111851_make_customer_id_nullable_in_sales_orders_table  50.74ms DONE
+  2026_02_25_173940_create_bank_accounts_table  134.75ms DONE
+
+
+   INFO  Seeding database.  
+
+  Database\Seeders\AccountSeeder  RUNNING  
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[42S22]: Column not found: 1054 Unknown column 'status' in 'field list' (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: bilkheyr, SQL: insert into `branches` (`company_id`, `name`, `status`, `updated_at`, `created_at`) values (1, Riyadh Branch, 1, 2026-02-25 19:52:42, 2026-02-25 19:52:42))
+
+  at vendor\laravel\framework\src\Illuminate\Database\Connection.php:838
+    834Γûò             $exceptionType = $this->isUniqueConstraintError($e)
+    835Γûò                 ? UniqueConstraintViolationException::class
+    836Γûò                 : QueryException::class;
+    837Γûò 
+  Γ₧£ 838Γûò             throw new $exceptionType(
+    839Γûò                 $this->getNameWithReadWriteType(),
+    840Γûò                 $query,
+    841Γûò                 $this->prepareBindings($bindings),
+    842Γûò                 $e,
+
+  1   vendor\laravel\framework\src\Illuminate\Database\MySqlConnection.php:47
+      PDOException::("SQLSTATE[42S22]: Column not found: 1054 Unknown column 'status' in 'field list'")
+
+  2   vendor\laravel\framework\src\Illuminate\Database\MySqlConnection.php:47
+      PDO::prepare("insert into `branches` (`company_id`, `name`, `status`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?)")
+

@@ -1,0 +1,567 @@
+[
+    {
+        "name": "Assets",
+        "category": "assets",
+        "type": "parent"
+    },
+    {
+        "name": "Current Assets",
+        "category": "assets",
+        "type": "parent"
+    },
+    {
+        "name": "Cash & Cash Equivalents",
+        "category": "assets",
+        "type": "parent"
+    },
+    {
+        "name": "Petty Cash",
+        "category": "assets",
+        "type": "cash"
+    },
+    {
+        "name": "Cash on Hand",
+        "category": "assets",
+        "type": "cash"
+    },
+    {
+        "name": "Bank Accounts",
+        "category": "assets",
+        "type": "parent"
+    },
+    {
+        "name": "Main Operating Account",
+        "category": "assets",
+        "type": "bank"
+    },
+    {
+        "name": "Payroll Account",
+        "category": "assets",
+        "type": "bank"
+    },
+    {
+        "name": "Accounts Receivable",
+        "category": "assets",
+        "type": "receivable"
+    },
+    {
+        "name": "Inventory",
+        "category": "assets",
+        "type": "inventory"
+    },
+    {
+        "name": "Raw Materials",
+        "category": "assets",
+        "type": "inventory"
+    },
+    {
+        "name": "Finished Goods",
+        "category": "assets",
+        "type": "inventory"
+    },
+    {
+        "name": "Prepaid & Other Current Assets",
+        "category": "assets",
+        "type": "parent"
+    },
+    {
+        "name": "Prepaid Insurance",
+        "category": "assets",
+        "type": "other"
+    },
+    {
+        "name": "Prepaid Rent",
+        "category": "assets",
+        "type": "other"
+    },
+    {
+        "name": "Advances to Employees",
+        "category": "assets",
+        "type": "other"
+    },
+    {
+        "name": "Non-Current Assets",
+        "category": "assets",
+        "type": "parent"
+    },
+    {
+        "name": "Fixed Assets (Property & Equipment)",
+        "category": "assets",
+        "type": "parent"
+    },
+    {
+        "name": "Equipment & Machinery",
+        "category": "assets",
+        "type": "fixed"
+    },
+    {
+        "name": "Furniture & Fixtures",
+        "category": "assets",
+        "type": "fixed"
+    },
+    {
+        "name": "Vehicles",
+        "category": "assets",
+        "type": "fixed"
+    },
+    {
+        "name": "Buildings & Improvements",
+        "category": "assets",
+        "type": "fixed"
+    },
+    {
+        "name": "Computer & IT Equipment",
+        "category": "assets",
+        "type": "fixed"
+    },
+    {
+        "name": "Accumulated Depreciation",
+        "category": "assets",
+        "type": "parent"
+    },
+    {
+        "name": "Accum. Depreciation \u2013 Equipment",
+        "category": "assets",
+        "type": "other"
+    },
+    {
+        "name": "Accum. Depreciation \u2013 Vehicles",
+        "category": "assets",
+        "type": "other"
+    },
+    {
+        "name": "Accum. Depreciation \u2013 Buildings",
+        "category": "assets",
+        "type": "other"
+    },
+    {
+        "name": "Intangible Assets",
+        "category": "assets",
+        "type": "parent"
+    },
+    {
+        "name": "Goodwill",
+        "category": "assets",
+        "type": "other"
+    },
+    {
+        "name": "Software & Licenses",
+        "category": "assets",
+        "type": "other"
+    },
+    {
+        "name": "Liabilities",
+        "category": "liabilities",
+        "type": "parent"
+    },
+    {
+        "name": "Current Liabilities",
+        "category": "liabilities",
+        "type": "parent"
+    },
+    {
+        "name": "Accounts Payable",
+        "category": "liabilities",
+        "type": "payable"
+    },
+    {
+        "name": "Taxes Payable",
+        "category": "liabilities",
+        "type": "parent"
+    },
+    {
+        "name": "VAT \/ Sales Tax Payable",
+        "category": "liabilities",
+        "type": "liability"
+    },
+    {
+        "name": "Income Tax Payable",
+        "category": "liabilities",
+        "type": "liability"
+    },
+    {
+        "name": "Withholding Tax Payable",
+        "category": "liabilities",
+        "type": "liability"
+    },
+    {
+        "name": "Accrued Expenses",
+        "category": "liabilities",
+        "type": "liability"
+    },
+    {
+        "name": "Salaries & Wages Payable",
+        "category": "liabilities",
+        "type": "liability"
+    },
+    {
+        "name": "Unearned Revenue",
+        "category": "liabilities",
+        "type": "liability"
+    },
+    {
+        "name": "Short-term Loans",
+        "category": "liabilities",
+        "type": "liability"
+    },
+    {
+        "name": "Credit Card Payable",
+        "category": "liabilities",
+        "type": "liability"
+    },
+    {
+        "name": "Non-Current Liabilities",
+        "category": "liabilities",
+        "type": "parent"
+    },
+    {
+        "name": "Long-term Bank Loans",
+        "category": "liabilities",
+        "type": "liability"
+    },
+    {
+        "name": "Deferred Tax Liability",
+        "category": "liabilities",
+        "type": "liability"
+    },
+    {
+        "name": "Bonds Payable",
+        "category": "liabilities",
+        "type": "liability"
+    },
+    {
+        "name": "Equity",
+        "category": "equity",
+        "type": "parent"
+    },
+    {
+        "name": "Paid-in Capital",
+        "category": "equity",
+        "type": "equity"
+    },
+    {
+        "name": "Retained Earnings",
+        "category": "equity",
+        "type": "equity"
+    },
+    {
+        "name": "Opening Balance Equity",
+        "category": "equity",
+        "type": "equity"
+    },
+    {
+        "name": "Drawings \/ Owner Withdrawal",
+        "category": "equity",
+        "type": "equity"
+    },
+    {
+        "name": "Share Premium",
+        "category": "equity",
+        "type": "equity"
+    },
+    {
+        "name": "Revenue",
+        "category": "revenue",
+        "type": "parent"
+    },
+    {
+        "name": "Sales Revenue",
+        "category": "revenue",
+        "type": "parent"
+    },
+    {
+        "name": "Product Sales",
+        "category": "revenue",
+        "type": "revenue"
+    },
+    {
+        "name": "Service Income",
+        "category": "revenue",
+        "type": "revenue"
+    },
+    {
+        "name": "Subscription Income",
+        "category": "revenue",
+        "type": "revenue"
+    },
+    {
+        "name": "Other Income",
+        "category": "revenue",
+        "type": "parent"
+    },
+    {
+        "name": "Interest Income",
+        "category": "revenue",
+        "type": "revenue"
+    },
+    {
+        "name": "Discount Received",
+        "category": "revenue",
+        "type": "revenue"
+    },
+    {
+        "name": "Rental Income",
+        "category": "revenue",
+        "type": "revenue"
+    },
+    {
+        "name": "Miscellaneous Income",
+        "category": "revenue",
+        "type": "revenue"
+    },
+    {
+        "name": "Sales Contra Accounts",
+        "category": "revenue",
+        "type": "parent"
+    },
+    {
+        "name": "Sales Returns & Allowances",
+        "category": "revenue",
+        "type": "revenue"
+    },
+    {
+        "name": "Sales Discounts",
+        "category": "revenue",
+        "type": "revenue"
+    },
+    {
+        "name": "Expenses",
+        "category": "expenses",
+        "type": "parent"
+    },
+    {
+        "name": "Cost of Goods Sold (COGS)",
+        "category": "expenses",
+        "type": "cogs"
+    },
+    {
+        "name": "Operating Expenses",
+        "category": "expenses",
+        "type": "parent"
+    },
+    {
+        "name": "Salaries & Wages",
+        "category": "expenses",
+        "type": "operating"
+    },
+    {
+        "name": "Employee Benefits",
+        "category": "expenses",
+        "type": "operating"
+    },
+    {
+        "name": "Staff Training",
+        "category": "expenses",
+        "type": "operating"
+    },
+    {
+        "name": "Rent Expense",
+        "category": "expenses",
+        "type": "operating"
+    },
+    {
+        "name": "Utilities Expense",
+        "category": "expenses",
+        "type": "operating"
+    },
+    {
+        "name": "Marketing & Advertising",
+        "category": "expenses",
+        "type": "operating"
+    },
+    {
+        "name": "Digital Marketing",
+        "category": "expenses",
+        "type": "operating"
+    },
+    {
+        "name": "Print & Media",
+        "category": "expenses",
+        "type": "operating"
+    },
+    {
+        "name": "Office Supplies & Stationery",
+        "category": "expenses",
+        "type": "operating"
+    },
+    {
+        "name": "Telephone & Internet",
+        "category": "expenses",
+        "type": "operating"
+    },
+    {
+        "name": "Insurance Expense",
+        "category": "expenses",
+        "type": "operating"
+    },
+    {
+        "name": "Transportation & Travel",
+        "category": "expenses",
+        "type": "operating"
+    },
+    {
+        "name": "Cleaning & Maintenance",
+        "category": "expenses",
+        "type": "operating"
+    },
+    {
+        "name": "Finance & Banking Expenses",
+        "category": "expenses",
+        "type": "parent"
+    },
+    {
+        "name": "Bank Charges & Fees",
+        "category": "expenses",
+        "type": "expense"
+    },
+    {
+        "name": "Interest Expense",
+        "category": "expenses",
+        "type": "expense"
+    },
+    {
+        "name": "Foreign Exchange Loss",
+        "category": "expenses",
+        "type": "expense"
+    },
+    {
+        "name": "Depreciation & Amortisation",
+        "category": "expenses",
+        "type": "parent"
+    },
+    {
+        "name": "Depreciation \u2013 Equipment",
+        "category": "expenses",
+        "type": "operating"
+    },
+    {
+        "name": "Depreciation \u2013 Vehicles",
+        "category": "expenses",
+        "type": "operating"
+    },
+    {
+        "name": "Depreciation \u2013 Buildings",
+        "category": "expenses",
+        "type": "operating"
+    },
+    {
+        "name": "Amortisation \u2013 Intangibles",
+        "category": "expenses",
+        "type": "operating"
+    },
+    {
+        "name": "Other Expenses",
+        "category": "expenses",
+        "type": "parent"
+    },
+    {
+        "name": "Miscellaneous Expense",
+        "category": "expenses",
+        "type": "expense"
+    },
+    {
+        "name": "Bad Debt Expense",
+        "category": "expenses",
+        "type": "expense"
+    },
+    {
+        "name": "Penalties & Fines",
+        "category": "expenses",
+        "type": "expense"
+    },
+    {
+        "name": "Tax Expenses",
+        "category": "expenses",
+        "type": "parent"
+    },
+    {
+        "name": "Corporate Income Tax",
+        "category": "expenses",
+        "type": "expense"
+    },
+    {
+        "name": "Payroll Tax Expense",
+        "category": "expenses",
+        "type": "expense"
+    },
+    {
+        "name": "Assets",
+        "category": "assets",
+        "type": "parent"
+    },
+    {
+        "name": "Current Assets",
+        "category": "assets",
+        "type": "parent"
+    },
+    {
+        "name": "Cash on Hand",
+        "category": "assets",
+        "type": "cash"
+    },
+    {
+        "name": "Bank Accounts",
+        "category": "assets",
+        "type": "parent"
+    },
+    {
+        "name": "Accounts Receivable",
+        "category": "assets",
+        "type": "receivable"
+    },
+    {
+        "name": "Inventory Asset",
+        "category": "assets",
+        "type": "inventory"
+    },
+    {
+        "name": "Liabilities",
+        "category": "liabilities",
+        "type": "parent"
+    },
+    {
+        "name": "Current Liabilities",
+        "category": "liabilities",
+        "type": "parent"
+    },
+    {
+        "name": "Accounts Payable",
+        "category": "liabilities",
+        "type": "payable"
+    },
+    {
+        "name": "Equity",
+        "category": "equity",
+        "type": "parent"
+    },
+    {
+        "name": "Opening Balance Equity",
+        "category": "equity",
+        "type": "equity"
+    },
+    {
+        "name": "Revenue",
+        "category": "revenue",
+        "type": "parent"
+    },
+    {
+        "name": "Sales Revenue",
+        "category": "revenue",
+        "type": "revenue"
+    },
+    {
+        "name": "Expenses",
+        "category": "expenses",
+        "type": "parent"
+    },
+    {
+        "name": "Operating Expenses",
+        "category": "expenses",
+        "type": "operating"
+    },
+    {
+        "name": "Cost of Goods Sold",
+        "category": "expenses",
+        "type": "operating"
+    }
+]

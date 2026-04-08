@@ -1,0 +1,12 @@
+Opening Balance Equity (id=11) Items:
+  [Entry: ADJ-OB-20260302-3E4E] Debit: 2000.00, Credit: 0.00 (Opening balance adjustment offset)
+  [Entry: ADJ-OB-20260302-AE84] Debit: 0.00, Credit: 2000.00 (Opening balance adjustment offset)
+  [Entry: JE-SALE-20260302-0002] Debit: 400.00, Credit: 0.00 (Inventory value reduction for INV-20260302-0001)
+  [Entry: ADJ-20260302-114851] Debit: 0.00, Credit: 400.00 (Moved to Cash)
+
+Accounts balances overview:
+  1011 | Cash on Hand | assets | Bal: 400.00
+  1020 | Salaam Bank Accounts | assets | Bal: 3500.00
+  1400 | Inventory Asset | assets | Bal: 1600.00
+  3011 | Share Capital | equity | Bal: 5000.00
+  4010 | Sales Revenue | revenue | Bal: 500.00
