@@ -119,15 +119,10 @@
                             <div class="mb-4">
                                 <h6 class="text-primary fw-bold mb-3">Contact Information</h6>
                                 <div class="row g-3">
-                                    <div class="col-md-6">
-                                        <label class="form-label">First Name <span class="required">*</span></label>
-                                        <input type="text" name="first_name" class="form-control @error('first_name') is-invalid @enderror"
-                                               placeholder="John" value="{{ old('first_name') }}" required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label">Last Name <span class="required">*</span></label>
-                                        <input type="text" name="last_name" class="form-control @error('last_name') is-invalid @enderror"
-                                               placeholder="Smith" value="{{ old('last_name') }}" required>
+                                    <div class="col-12">
+                                        <label class="form-label">Full Name <span class="required">*</span></label>
+                                        <input type="text" name="full_name" class="form-control @error('full_name') is-invalid @enderror"
+                                               placeholder="John Smith" value="{{ old('full_name') }}" required>
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label">Email <span class="required">*</span></label>
@@ -174,68 +169,20 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                    <div class="col-12">
+                                    <div class="col-md-6">
                                         <label class="form-label">Country <span class="required">*</span></label>
                                         <select name="country" class="form-select @error('country') is-invalid @enderror" required>
                                             <option value="">Select country</option>
-                                            @foreach(['Saudi Arabia','United Arab Emirates','Kuwait','Bahrain','Qatar','Oman','Other'] as $country)
-                                                <option value="{{ $country }}" {{ old('country', 'Saudi Arabia') === $country ? 'selected' : '' }}>{{ $country }}</option>
+                                            @foreach(['Somalia','Ethiopia','Kenya','Uganda','Tanzania','Rwanda','Burundi','Djibouti','Eritrea','South Sudan','Sudan','Saudi Arabia','United Arab Emirates','Kuwait','Bahrain','Qatar','Oman','Other'] as $country)
+                                                <option value="{{ $country }}" {{ old('country', 'Somalia') === $country ? 'selected' : '' }}>{{ $country }}</option>
                                             @endforeach
                                         </select>
                                     </div>
-                                </div>
-                            </div>
-
-                            <!-- Demo Preferences -->
-                            <div class="mb-4">
-                                <h6 class="text-primary fw-bold mb-3">Demo Preferences</h6>
-
-                                <div class="mb-3">
-                                    <label class="form-label">Preferred Date <span class="required">*</span></label>
-                                    <input type="date" name="preferred_date" class="form-control @error('preferred_date') is-invalid @enderror"
-                                           value="{{ old('preferred_date') }}" required>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label class="form-label">Preferred Time <span class="required">*</span></label>
-                                    <div class="time-slot">
-                                        @foreach(['09:00 AM','10:00 AM','11:00 AM','02:00 PM','03:00 PM','04:00 PM'] as $slot)
-                                            <div class="time-slot-btn {{ old('preferred_time') === $slot ? 'selected' : '' }}"
-                                                 onclick="selectTime(this)">{{ $slot }}</div>
-                                        @endforeach
+                                    <div class="col-md-6">
+                                        <label class="form-label">Preferred Date <span class="required">*</span></label>
+                                        <input type="date" name="preferred_date" class="form-control @error('preferred_date') is-invalid @enderror"
+                                               value="{{ old('preferred_date') }}" required>
                                     </div>
-                                    <input type="hidden" id="selectedTime" name="preferred_time"
-                                           value="{{ old('preferred_time') }}" required>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label class="form-label">Areas of Interest</label>
-                                    <div class="row g-2">
-                                        @foreach([
-                                            'inventory'  => 'Inventory Management',
-                                            'sales'      => 'Sales Management',
-                                            'accounting' => 'Accounting & Finance',
-                                            'purchasing' => 'Purchase Management',
-                                            'crm'        => 'CRM',
-                                            'hrm'        => 'HR Management',
-                                        ] as $key => $label)
-                                        <div class="col-md-6">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox"
-                                                       name="areas_of_interest[]" value="{{ $label }}"
-                                                       id="{{ $key }}"
-                                                       {{ in_array($label, old('areas_of_interest', [])) ? 'checked' : '' }}>
-                                                <label class="form-check-label" for="{{ $key }}">{{ $label }}</label>
-                                            </div>
-                                        </div>
-                                        @endforeach
-                                    </div>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label class="form-label">Additional Notes</label>
-                                    <textarea name="notes" class="form-control"
-                                              placeholder="Tell us about your specific requirements or questions...">{{ old('notes') }}</textarea>
                                 </div>
                             </div>
 
@@ -243,21 +190,7 @@
                                 <i class="bi bi-calendar-check me-2"></i>Schedule Demo
                             </button>
 
-                            <div class="text-center text-muted">
-                                <small>We'll confirm your demo within 24 hours</small>
-                            </div>
                         </form>
-
-                        <div class="info-box">
-                            <h6><i class="bi bi-info-circle"></i>What happens next?</h6>
-                            <p>After submitting this form, our team will review your request and send you a calendar invite with a meeting link within 24 hours.</p>
-                        </div>
-
-                        <div class="back-link">
-                            <a href="{{ route('landing') }}">
-                                <i class="bi bi-arrow-left me-2"></i>Back to Home
-                            </a>
-                        </div>
                     </div>
                 </div>
             </div>

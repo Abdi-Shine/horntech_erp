@@ -1,0 +1,37 @@
+name: Deploy Laravel App
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to Namecheap via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          port: 21098 # Namecheap standard SSH port
+          script: |
+            cd ${{ secrets.DEPLOY_PATH }}
+            git pull origin main
+            
+            # Use specific PHP version if needed (example: /usr/local/bin/php82)
+            php -v
+            
+            composer install --no-dev --optimize-autoloader --no-interaction
+            
+            # Run migrations
+            php artisan migrate --force
+            
+            # Optimization
+            php artisan config:cache
+            php artisan route:cache
+            php artisan view:cache
+            
+            # Build assets if npm is available, otherwise run locally and sync
+            # npm install && npm run build

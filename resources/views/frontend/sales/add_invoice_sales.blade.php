@@ -113,39 +113,9 @@
                                    class="w-full pl-4 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-[13px] font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none transition-all">
                         </div>
 
-                        {{-- Branch --}}
-                        <div class="space-y-1.5">
-                            <label class="text-[11px] font-bold text-gray-700 uppercase tracking-wider">
-                                Branch <span class="text-primary">*</span>
-                            </label>
-                            <div class="relative">
-                                <select name="branch_id" id="branchSelect" required
-                                        class="w-full pl-4 pr-10 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-[13px] font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none transition-all appearance-none cursor-pointer">
-                                    <option value="">— Select Branch —</option>
-                                    @foreach($branches as $b)
-                                        <option value="{{ $b->id }}">{{ $b->name }}{{ $b->city ? ' ('.$b->city.')' : '' }}</option>
-                                    @endforeach
-                                </select>
-                                <i class="bi bi-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-xs"></i>
-                            </div>
-                        </div>
-
-                        {{-- Account --}}
-                        <div id="paymentAccountWrapper" class="space-y-1.5">
-                            <label class="text-[11px] font-bold text-gray-700 uppercase tracking-wider">
-                                Cash/Bank Account <span class="text-primary">*</span>
-                            </label>
-                            <div class="relative">
-                                <select name="payment_account_id" id="paymentAccountSelect" required
-                                        class="w-full pl-4 pr-10 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-[13px] font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none transition-all appearance-none cursor-pointer">
-                                    <option value="">— Select Account —</option>
-                                    @foreach($accounts as $acc)
-                                        <option value="{{ $acc->id }}" data-branch="{{ $acc->branch_id }}">{{ $acc->name }} ({{ $acc->code }})</option>
-                                    @endforeach
-                                </select>
-                                <i class="bi bi-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-xs"></i>
-                            </div>
-                        </div>
+                        {{-- Hidden branch & account (auto from user's assigned branch) --}}
+                        <input type="hidden" name="branch_id" id="branchSelect" value="{{ auth()->user()->getAssignedBranchId() ?? ($branches->first()->id ?? '') }}">
+                        <input type="hidden" name="payment_account_id" id="paymentAccountSelect" value="">
 
                     </div>
                 </div>
@@ -173,39 +143,9 @@
                         </div>
                     </div>
 
-                    {{-- Branch + Account for cash mode --}}
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 mt-4">
-                        <div class="space-y-1.5">
-                            <label class="text-[11px] font-bold text-gray-700 uppercase tracking-wider">
-                                Branch <span class="text-primary">*</span>
-                            </label>
-                            <div class="relative">
-                                <select name="branch_id_cash" onchange="syncCashBranch(this.value)"
-                                        class="w-full pl-4 pr-10 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-[13px] font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none transition-all appearance-none cursor-pointer">
-                                    <option value="">— Select Branch —</option>
-                                    @foreach($branches as $b)
-                                        <option value="{{ $b->id }}">{{ $b->name }}{{ $b->city ? ' ('.$b->city.')' : '' }}</option>
-                                    @endforeach
-                                </select>
-                                <i class="bi bi-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-xs"></i>
-                            </div>
-                        </div>
-                        <div class="space-y-1.5">
-                            <label class="text-[11px] font-bold text-gray-700 uppercase tracking-wider">
-                                Cash/Bank Account <span class="text-primary">*</span>
-                            </label>
-                            <div class="relative">
-                                <select name="payment_account_id_cash" id="paymentAccountSelectCash"
-                                        class="w-full pl-4 pr-10 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-[13px] font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none transition-all appearance-none cursor-pointer">
-                                    <option value="">— Select Account —</option>
-                                    @foreach($accounts as $acc)
-                                        <option value="{{ $acc->id }}" data-branch="{{ $acc->branch_id }}">{{ $acc->name }} ({{ $acc->code }})</option>
-                                    @endforeach
-                                </select>
-                                <i class="bi bi-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-xs"></i>
-                            </div>
-                        </div>
-                    </div>
+                    {{-- Hidden branch & account for cash mode --}}
+                    <input type="hidden" name="branch_id_cash" id="branchIdCash" value="{{ auth()->user()->getAssignedBranchId() ?? ($branches->first()->id ?? '') }}">
+                    <input type="hidden" name="payment_account_id_cash" id="paymentAccountSelectCash" value="">
                 </div>
 
             </div>
@@ -220,11 +160,7 @@
                     <div class="text-[20px] font-black text-primary-dark tracking-tight">{{ $invoiceNo }}</div>
                     <input type="hidden" name="invoice_no" value="{{ $invoiceNo }}">
                 </div>
-                <div class="space-y-1.5 mb-4">
-                    <label class="text-[11px] font-bold text-gray-700 uppercase tracking-wider">Invoice Date</label>
-                    <input type="date" name="invoice_date" value="{{ date('Y-m-d') }}" required
-                           class="w-full pl-4 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-[13px] font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none transition-all">
-                </div>
+                <input type="hidden" name="invoice_date" value="{{ date('Y-m-d') }}">
                 <input type="hidden" name="due_date" id="dueDateInput">
                 <input type="hidden" name="payment_method" id="paymentMethodInput" value="Cash">
             </div>
@@ -557,67 +493,6 @@ $(document).ready(function() {
     const cashNameEl = document.getElementById('cashBillingName');
     if (cashNameEl) cashNameEl.value = 'Walk-in Customer';
 
-    // Branch -> Account filtering & Auto-fill
-    $('#branchSelect').on('change', function() {
-        const branchId   = this.value;
-        const branchText = this.options[this.selectedIndex]?.text?.toLowerCase() || '';
-        const accSelect  = document.getElementById('paymentAccountSelect');
-        const options    = Array.from(accSelect.querySelectorAll('option'));
-
-        accSelect.value = ''; // Default to placeholder
-
-        let bestMatch = null;
-        let visibleCount = 0;
-        let firstVisible = null;
-
-        options.forEach(opt => {
-            if (opt.value === '') {
-                opt.style.display = 'block';
-                return;
-            }
-
-            const accBranchId = opt.getAttribute('data-branch');
-            const accText     = opt.textContent.toLowerCase();
-
-            // STRICTOR FILTERING:
-            // If branch selected, show accounts belonging to that branch OR global accounts (no branch).
-            // If no branch selected, show all.
-            const isVisible = !branchId || !accBranchId || accBranchId === 'null' || (accBranchId === branchId);
-
-            if (isVisible) {
-                opt.style.display = 'block';
-                visibleCount++;
-                if (!firstVisible) firstVisible = opt;
-
-                if (branchId) {
-                    // Special Match: Bakaaro -> Horntech LTD
-                    if (branchText.includes('bakaaro') && accText.includes('horntech')) {
-                        bestMatch = opt;
-                    }
-                    // Priority 1: Exact branch name + cash
-                    else if (accText.includes(branchText.split('(')[0].trim()) && accText.includes('cash')) {
-                        if (!bestMatch) bestMatch = opt;
-                    }
-                    // Priority 2: Just branch name
-                    else if (accText.includes(branchText.split('(')[0].trim())) {
-                        if (!bestMatch) bestMatch = opt;
-                    }
-                }
-            } else {
-                opt.style.display = 'none';
-            }
-        });
-
-        // Precise Auto-selection
-        if (branchId) {
-            if (bestMatch) {
-                accSelect.value = bestMatch.value;
-            } else if (visibleCount === 1) {
-                accSelect.value = firstVisible.value;
-            }
-        }
-    }).trigger('change');
-
     // Initial state
     setSaleType('cash');
 
@@ -630,37 +505,6 @@ $(document).ready(function() {
     document.getElementById('paidAmountInput').addEventListener('input', recalcAll);
 });
 
-function syncCashBranch(branchId) {
-    const accSelect = document.getElementById('paymentAccountSelectCash');
-    const options   = Array.from(accSelect.querySelectorAll('option'));
-    accSelect.value = '';
-    let bestMatch = null;
-    let visibleCount = 0;
-    let firstVisible = null;
-    options.forEach(opt => {
-        if (opt.value === '') { opt.style.display = 'block'; return; }
-        const accBranchId = opt.getAttribute('data-branch');
-        const accText     = opt.textContent.toLowerCase();
-        const isVisible   = !branchId || !accBranchId || accBranchId === 'null' || (accBranchId === branchId);
-        if (isVisible) {
-            opt.style.display = 'block';
-            visibleCount++;
-            if (!firstVisible) firstVisible = opt;
-            if (branchId) {
-                if (accText.includes('cash') && !bestMatch) bestMatch = opt;
-                else if (!bestMatch) bestMatch = opt;
-            }
-        } else {
-            opt.style.display = 'none';
-        }
-    });
-    if (branchId) {
-        if (bestMatch) accSelect.value = bestMatch.value;
-        else if (visibleCount === 1) accSelect.value = firstVisible.value;
-    }
-    // Also sync the hidden branchSelect for collectFormData
-    document.getElementById('branchSelect').value = branchId;
-}
 
 function calculateCurrentSubtotal() {
     let subtotal = 0;
@@ -976,9 +820,8 @@ function collectFormData(isDraft = false) {
     if (!isDraft && isCredit && !customerId) { toastError('Please select a customer for credit sales.'); return null; }
 
     const branchId = document.getElementById('branchSelect').value;
-    if (!isDraft && !branchId) { toastError('Please select a branch.'); return null; }
 
-    const items = [];
+const items = [];
     let valid = true;
     document.querySelectorAll('#itemsTbody .item-row').forEach(row => {
         const itemSel = row.querySelector('.item-select');

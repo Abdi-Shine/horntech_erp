@@ -15,8 +15,7 @@ class DemoRequestController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'first_name'      => 'required|string|max:100',
-            'last_name'       => 'required|string|max:100',
+            'full_name'       => 'required|string|max:200',
             'email'           => 'required|email|max:255',
             'phone'           => 'required|string|max:30',
             'company_name'    => 'required|string|max:255',
@@ -25,9 +24,6 @@ class DemoRequestController extends Controller
             'company_size'    => 'required|string|max:50',
             'country'         => 'required|string|max:100',
             'preferred_date'  => 'required|date|after_or_equal:today',
-            'preferred_time'  => 'required|string|max:20',
-            'areas_of_interest' => 'nullable|array',
-            'notes'           => 'nullable|string|max:2000',
         ]);
 
         DemoRequest::create($validated);

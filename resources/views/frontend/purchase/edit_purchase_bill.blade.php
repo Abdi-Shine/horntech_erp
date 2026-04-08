@@ -82,36 +82,10 @@
                             class="w-full pl-4 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-[13px] font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none transition-all">
                     </div>
 
-                    {{-- Purchase Branch --}}
-                    <div class="space-y-1.5">
-                        <label class="text-[11px] font-bold text-gray-700 uppercase tracking-wider">Purchase Branch</label>
-                        <input type="hidden" id="locationType" value="branch">
-                        <div class="relative">
-                            <select id="locationItem" onchange="handleLocationItemChange()" required
-                                class="w-full pl-4 pr-10 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-[13px] font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none transition-all appearance-none cursor-pointer">
-                                <option value="">Select Branch</option>
-                                @foreach($branches as $b)
-                                    <option value="branch_{{ $b->id }}" data-branch="{{ $b->id }}">{{ $b->name }}</option>
-                                @endforeach
-                            </select>
-                            <i class="bi bi-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-xs"></i>
-                        </div>
-                    </div>
-
-                    {{-- Account Name --}}
-                    <div id="paymentAccountWrapper" class="space-y-1.5">
-                        <label class="text-[11px] font-bold text-gray-700 uppercase tracking-wider">Account Name</label>
-                        <div class="relative">
-                            <select name="payment_account_id" id="paymentAccountSelect" required
-                                class="w-full pl-4 pr-10 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-[13px] font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none transition-all appearance-none cursor-pointer">
-                                <option value="">— Select Account —</option>
-                                @foreach($accounts as $acc)
-                                    <option value="{{ $acc->id }}" data-branch="{{ $acc->branch_id }}">{{ $acc->name }} ({{ $acc->code }})</option>
-                                @endforeach
-                            </select>
-                            <i class="bi bi-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-xs"></i>
-                        </div>
-                    </div>
+                    {{-- Hidden branch & account --}}
+                    <input type="hidden" id="locationType" value="branch">
+                    <input type="hidden" id="locationItem" value="branch_{{ $bill->branch_id }}">
+                    <input type="hidden" name="payment_account_id" id="paymentAccountSelect" value="{{ $bill->payment_account_id }}">
 
                 </div>
                 <input type="hidden" name="purchase_type" id="purchase_type" value="Purchase">
@@ -128,41 +102,9 @@
                     <div class="text-[20px] font-black text-primary-dark tracking-tight">{{ $bill->bill_number }}</div>
                     <input type="hidden" name="purchase_no" value="{{ $bill->bill_number }}">
                 </div>
-                <div class="grid grid-cols-2 gap-3 mb-4">
-                    <div class="space-y-1.5">
-                        <label class="text-[11px] font-bold text-gray-700 uppercase tracking-wider">Bill Date</label>
-                        <input type="date" name="purchase_date" value="{{ \Carbon\Carbon::parse($bill->bill_date)->format('Y-m-d') }}" required
-                               class="w-full pl-4 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-[13px] font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none transition-all">
-                    </div>
-                    <div class="space-y-1.5">
-                        <label class="text-[11px] font-bold text-gray-700 uppercase tracking-wider">Voucher No</label>
-                        <input type="text" name="supplier_invoice_no" value="{{ $bill->supplier_invoice_no }}" readonly
-                               class="w-full pl-4 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-[13px] font-medium text-gray-700 outline-none bg-gray-50/50 cursor-not-allowed">
-                    </div>
-                </div>
-
-                {{-- Target Location (Separated) --}}
-                <div class="pt-4 border-t border-gray-100">
-                    <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest block mb-1.5">
-                        TARGET LOCATION
-                    </label>
-                    <div class="flex items-center border border-gray-200 rounded-lg overflow-hidden bg-white focus-within:border-primary/20 transition-all border-dashed">
-                        <div class="relative flex-1">
-                            <select id="targetLocationItem" onchange="handleTargetLocationItemChange()"
-                                    class="w-full pl-3 pr-10 py-2 bg-transparent text-[13px] font-medium text-gray-700 outline-none appearance-none cursor-pointer">
-                                <option value="">Select Branch</option>
-                                @foreach($branches as $b)
-                                    <option value="branch_{{ $b->id }}" {{ $bill->branch_id == $b->id ? 'selected' : '' }}>{{ $b->name }}</option>
-                                @endforeach
-                            </select>
-                            <i class="bi bi-chevron-down absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none text-[12px]"></i>
-                        </div>
-                    </div>
-                </div>
-
-
-                        
-
+                <input type="hidden" name="purchase_date" value="{{ \Carbon\Carbon::parse($bill->bill_date)->format('Y-m-d') }}">
+                <input type="hidden" name="supplier_invoice_no" value="{{ $bill->supplier_invoice_no }}">
+                <input type="hidden" id="targetLocationItem" value="branch_{{ $bill->branch_id }}">
 
                 {{-- Hidden inputs for backend --}}
                 <input type="hidden" name="branch_id" id="branch_id">
