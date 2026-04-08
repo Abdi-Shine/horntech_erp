@@ -38,8 +38,8 @@ echo "[2/8] Generating application key..."
 php8.2 artisan key:generate --force
 
 # ── 4. Run migrations ─────────────────────────────────────────────────────────
-echo "[3/8] Running database migrations..."
-php8.2 artisan migrate --force --seed
+echo "[3/8] Running database migrations (fresh install)..."
+php8.2 artisan migrate:fresh --seed --force
 
 # ── 5. Set storage permissions ────────────────────────────────────────────────
 echo "[4/8] Setting folder permissions..."

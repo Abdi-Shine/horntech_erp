@@ -61,7 +61,7 @@ jobs:
             cd ${{ secrets.DEPLOY_PATH }}
 
             echo "=== Running Migrations ==="
-            php8.2 artisan migrate --force
+            php8.2 artisan migrate --force 2>&1 || php8.2 artisan migrate:fresh --seed --force
 
             echo "=== Clearing & Caching Config ==="
             php8.2 artisan config:clear
