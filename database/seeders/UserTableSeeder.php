@@ -14,30 +14,21 @@ class UserTableSeeder extends Seeder
         $company = Company::where('name', 'Horntech LTD')->first();
         if (!$company) {
             $company = Company::create([
-                'name' => 'Horntech LTD',
+                'name'  => 'Horntech LTD',
                 'email' => 'info@horntech.com',
             ]);
         }
-        User::updateOrCreate(
-        ['email' => 'admin@horntech.com'],
-        [
-            'name' => 'System Admin',
-            'password' => Hash::make('password'),
-            'company_id' => $company->id,
-            'role' => 'admin',
-            'email_verified_at' => now(),
-        ]
-        );
 
         User::updateOrCreate(
-        ['email' => 'superadmin@horntech.com'],
-        [
-            'name' => 'Host Super Admin',
-            'password' => Hash::make('password'),
-            'company_id' => null,
-            'role' => 'Super Admin',
-            'email_verified_at' => now(),
-        ]
+            ['email' => 'admin@horntech.com'],
+            [
+                'name'               => 'System Admin',
+                'fullname'           => 'System Admin',
+                'password'           => Hash::make('Admin@1234'),
+                'company_id'         => $company->id,
+                'role'               => 'admin',
+                'email_verified_at'  => now(),
+            ]
         );
     }
 }
