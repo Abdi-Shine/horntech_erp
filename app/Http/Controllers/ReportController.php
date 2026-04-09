@@ -28,14 +28,15 @@ class ReportController extends Controller
         $totalSales     = SalesOrder::query()->where('company_id', $cid)->sum('total_amount');
         $totalPurchases = PurchaseBill::query()->where('company_id', $cid)->sum('total_amount');
         
-        // Calculate COGS from ledger (Account 5020 or flexible name matching)
+        // Calculate COGS from ledger
         $totalCogs = DB::table('journal_items')
             ->join('journal_entries', 'journal_items.journal_entry_id', '=', 'journal_entries.id')
             ->where('journal_entries.company_id', auth()->user()->company_id)
             ->whereIn('journal_items.account_id', function($q) {
                 $q->select('id')->from('chart_of_accounts')
-                  ->where('code', '5020')
-                  ->orWhere('name', 'LIKE', '%Cost Of Goods Sold%');
+                  ->whereIn('code', ['5020', '5100', '5110', '5120', '5130'])
+                  ->orWhere('name', 'LIKE', '%Cost%Goods%')
+                  ->orWhere('name', 'LIKE', '%Product Cost%');
             })
             ->sum('journal_items.debit');
 
@@ -753,15 +754,16 @@ class ReportController extends Controller
             ->where('chart_of_accounts.category', 'revenue')
             ->sum('journal_items.credit');
 
-        // Ledger-based COGS (Account 5020)
+        // Ledger-based COGS (codes 5100, 5110, 5120, 5130 = COGS category in seeder)
         $totalCogs = DB::table('journal_items')
             ->join('journal_entries', 'journal_items.journal_entry_id', '=', 'journal_entries.id')
             ->join('chart_of_accounts', 'journal_items.account_id', '=', 'chart_of_accounts.id')
             ->where('journal_entries.company_id', $id)
             ->whereBetween('journal_entries.date', [$fromDate, $toDate])
             ->where(function($q) {
-                $q->where('chart_of_accounts.code', '5020')
-                  ->orWhere('chart_of_accounts.name', 'LIKE', '%Cost Of Goods Sold%');
+                $q->whereIn('chart_of_accounts.code', ['5020', '5100', '5110', '5120', '5130'])
+                  ->orWhere('chart_of_accounts.name', 'LIKE', '%Cost%Goods%')
+                  ->orWhere('chart_of_accounts.name', 'LIKE', '%Product Cost%');
             })
             ->sum('journal_items.debit');
 
@@ -818,8 +820,9 @@ class ReportController extends Controller
             ->where('journal_entries.company_id', $id)
             ->whereBetween('journal_entries.date', [$fromDate, $toDate])
             ->where(function ($q) {
-                $q->where('chart_of_accounts.code', '5020')
-                  ->orWhere('chart_of_accounts.name', 'LIKE', '%Cost Of Goods Sold%');
+                $q->whereIn('chart_of_accounts.code', ['5020', '5100', '5110', '5120', '5130'])
+                  ->orWhere('chart_of_accounts.name', 'LIKE', '%Cost%Goods%')
+                  ->orWhere('chart_of_accounts.name', 'LIKE', '%Product Cost%');
             })
             ->sum('journal_items.debit');
 
