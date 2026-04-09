@@ -11,17 +11,22 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('purchase_order_items', function (Blueprint $table) {
-            // Safely drop foreign key if it exists
-            try {
+        // Drop foreign key in a separate call so exceptions can be caught properly
+        try {
+            Schema::table('purchase_order_items', function (Blueprint $table) {
                 $table->dropForeign(['product_id']);
-            } catch (\Exception $e) {
-                // Ignore if foreign key doesn't exist
-            }
-            
+            });
+        } catch (\Exception $e) {
+            // Foreign key doesn't exist, continue
+        }
+
+        Schema::table('purchase_order_items', function (Blueprint $table) {
             $table->unsignedBigInteger('product_id')->nullable()->change();
             $table->foreign('product_id')->references('id')->on('products')->onDelete('set null');
-            $table->string('product_name')->nullable()->after('product_id');
+
+            if (!Schema::hasColumn('purchase_order_items', 'product_name')) {
+                $table->string('product_name')->nullable()->after('product_id');
+            }
         });
     }
 
