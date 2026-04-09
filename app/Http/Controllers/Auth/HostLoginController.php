@@ -15,9 +15,7 @@ class HostLoginController extends Controller
     public function create(): View|RedirectResponse
     {
         if (Auth::check()) {
-            $user = Auth::user();
-            $isHostOwner = $user->role === 'admin' && $user->company_id == 1;
-            if ($user->role === 'Super Admin' || $isHostOwner) {
+            if (Auth::user()->role === 'Super Admin') {
                 return redirect()->route('host.dashboard');
             }
             return redirect()->route('dashboard');
@@ -40,10 +38,8 @@ class HostLoginController extends Controller
             ])->onlyInput('email');
         }
 
-        // Allow Super Admin role OR the Horntech owner admin (company_id = 1, role = admin)
-        $user = Auth::user();
-        $isHostOwner = $user->role === 'admin' && $user->company_id == 1;
-        if ($user->role !== 'Super Admin' && !$isHostOwner) {
+        // Reject non-super-admins immediately
+        if (Auth::user()->role !== 'Super Admin') {
             Auth::logout();
             $request->session()->invalidate();
             $request->session()->regenerateToken();
