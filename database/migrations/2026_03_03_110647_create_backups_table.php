@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('size')->nullable();
             $table->string('type')->default('manual'); 
             $table->string('status')->default('success');
+            $table->string('restore_status')->nullable();
+            $table->timestamp('restored_at')->nullable();
             $table->timestamps();
         });
     }

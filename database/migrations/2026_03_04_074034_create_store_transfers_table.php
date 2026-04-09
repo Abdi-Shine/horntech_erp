@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('company_id')->nullable()->constrained('companies')->onDelete('cascade');
             $table->string('transfer_no')->unique();
+            $table->string('type')->default('inter-store');
             $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
             $table->foreignId('from_store_id')->constrained('stores')->onDelete('cascade');
             $table->foreignId('to_store_id')->constrained('stores')->onDelete('cascade');

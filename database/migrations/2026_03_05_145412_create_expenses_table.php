@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('expense_name');
             $table->text('description')->nullable();
             $table->string('reference_no')->nullable();
+            $table->string('payment_method')->nullable();
             $table->decimal('amount', 15, 2)->default(0);
             
             $table->date('expense_date')->nullable();
