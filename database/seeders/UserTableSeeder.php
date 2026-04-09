@@ -10,6 +10,9 @@ class UserTableSeeder extends Seeder
 {
     public function run(): void
     {
+        // Remove old company admin if it exists
+        User::withoutGlobalScopes()->where('email', 'admin@horntech.com')->delete();
+
         // Super Admin — no company, uses /host/dashboard
         User::withoutGlobalScopes()->updateOrCreate(
             ['email' => 'superadmin@horntech.com'],
