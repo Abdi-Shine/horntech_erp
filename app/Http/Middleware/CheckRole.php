@@ -14,7 +14,10 @@ class CheckRole
      */
     public function handle(Request $request, Closure $next, string $role): Response
     {
-        if (!Auth::check() || Auth::user()->role !== $role) {
+        $user = Auth::user();
+        $isHostOwner = $user && $user->role === 'admin' && $user->company_id == 1;
+
+        if (!Auth::check() || ($user->role !== $role && !($role === 'Super Admin' && $isHostOwner))) {
             abort(403, 'Unauthorized action.');
         }
 

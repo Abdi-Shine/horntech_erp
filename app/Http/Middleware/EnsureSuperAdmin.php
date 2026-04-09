@@ -10,7 +10,10 @@ class EnsureSuperAdmin
 {
     public function handle(Request $request, Closure $next): Response
     {
-        if (!auth()->check() || auth()->user()->role !== 'Super Admin') {
+        $user = auth()->user();
+        $isHostOwner = $user && $user->role === 'admin' && $user->company_id == 1;
+
+        if (!auth()->check() || ($user->role !== 'Super Admin' && !$isHostOwner)) {
             abort(403, 'Super Admin access required.');
         }
 
