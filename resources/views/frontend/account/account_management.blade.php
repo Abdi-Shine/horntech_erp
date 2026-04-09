@@ -9,6 +9,14 @@
         <div>
             <h1 class="text-[20px] font-bold text-primary-dark">Account Management</h1>
         </div>
+        <div class="flex items-center gap-3">
+            <button onclick="openDepositModal()" class="flex items-center gap-2 px-4 py-2.5 bg-accent text-primary font-bold rounded-lg hover:bg-accent/90 transition-all text-[13px] shadow-sm">
+                <i class="bi bi-arrow-down-short text-lg"></i> Deposit
+            </button>
+            <button onclick="openWithdrawModal()" class="flex items-center gap-2 px-4 py-2.5 bg-primary text-white font-bold rounded-lg hover:bg-primary/90 transition-all text-[13px] shadow-sm">
+                <i class="bi bi-arrow-up-short text-lg"></i> Withdraw
+            </button>
+        </div>
     </div>
 
     <!-- Stats Grid (5 cols) -->
@@ -76,32 +84,6 @@
             <div class="w-11 h-11 bg-primary/10 rounded-[0.6rem] flex items-center justify-center text-primary flex-shrink-0">
                 <i class="bi bi-sliders text-lg"></i>
             </div>
-        </div>
-    </div>
-
-    <!-- Quick Operations -->
-    <div class="mb-8">
-        <div class="flex items-center gap-2 mb-4">
-            <i class="bi bi-lightning-charge-fill text-accent text-sm"></i>
-            <h2 class="text-[11px] font-black text-primary-dark uppercase tracking-[0.2em]">Operational Shortcuts</h2>
-        </div>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <button onclick="openDepositModal()" class="bg-white p-6 rounded-[1rem] border border-gray-100 shadow-sm flex flex-col items-center text-center group hover:border-accent/40 hover:shadow-md transition-all">
-                <div class="w-14 h-14 rounded-full flex items-center justify-center text-primary mb-4 shadow-sm border border-accent/20 group-hover:scale-110 transition-transform bg-accent">
-                    <i class="bi bi-arrow-down-short text-3xl"></i>
-                </div>
-                <h4 class="text-[11px] font-black text-primary-dark uppercase tracking-widest group-hover:text-accent transition-colors">Deposit</h4>
-                <p class="text-[8px] text-gray-400 font-bold mt-1 uppercase tracking-tighter">Inward Fund Registry</p>
-            </button>
-
-            <button onclick="openWithdrawModal()" class="bg-white p-6 rounded-[1rem] border border-gray-100 shadow-sm flex flex-col items-center text-center group hover:border-primary/40 hover:shadow-md transition-all">
-                <div class="w-14 h-14 bg-primary rounded-full flex items-center justify-center text-white mb-4 shadow-sm group-hover:scale-110 transition-transform">
-                    <i class="bi bi-arrow-up-short text-3xl"></i>
-                </div>
-                <h4 class="text-[11px] font-black text-primary-dark uppercase tracking-widest group-hover:text-primary transition-colors">Withdraw</h4>
-                <p class="text-[8px] text-gray-400 font-bold mt-1 uppercase tracking-tighter">Outward Fund Disposal</p>
-            </button>
-
         </div>
     </div>
 
