@@ -38,6 +38,6 @@ class FeatureService
     public function isEnabled(string $key): bool
     {
         $this->load();
-        return $this->flags[$key] ?? true;
+        return $this->flags[$key] ?? false;
     }
 }
