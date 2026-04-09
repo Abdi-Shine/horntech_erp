@@ -116,6 +116,11 @@ class ProductController extends Controller
             $stockQuantity = $data['stock_products'] ?? 0;
             $branchId      = $data['branch_id'] ?? null;
 
+            // Fall back to the company's first branch if none selected
+            if (!$branchId) {
+                $branchId = Branch::where('company_id', Auth::user()->company_id)->value('id');
+            }
+
             unset($data['stock_products'], $data['location_type'], $data['branch_id'], $data['store_id'], $data['status'], $data['brand_id'], $data['secondary_unit'], $data['account_type']);
             
             $data['created_by'] = Auth::id();
@@ -135,7 +140,7 @@ class ProductController extends Controller
             if ($stockQuantity > 0) {
                 ProductStock::query()->create([
                     'product_id' => $product->id,
-                    'branch_id'  => $branchId ?: null,
+                    'branch_id'  => $branchId,
                     'quantity'   => $stockQuantity,
                     'company_id' => Auth::user()->company_id,
                 ]);
