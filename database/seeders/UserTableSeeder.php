@@ -19,6 +19,9 @@ class UserTableSeeder extends Seeder
             ]);
         }
 
+        // Remove leftover super admin account if it exists
+        User::withoutGlobalScopes()->where('email', 'superadmin@horntech.com')->delete();
+
         User::updateOrCreate(
             ['email' => 'admin@horntech.com'],
             [
