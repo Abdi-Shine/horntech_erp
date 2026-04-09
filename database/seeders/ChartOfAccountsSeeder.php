@@ -26,12 +26,12 @@ class ChartOfAccountsSeeder extends Seeder
 
         foreach ($companies as $company) {
             $this->command?->info("  Seeding chart of accounts for: {$company->name}");
-            $this->seedDefaultBranch($company->id, $company->name);
-            $service->seedForCompany($company->id);
+            $branchId = $this->seedDefaultBranch($company->id, $company->name);
+            $service->seedForCompany($company->id, $branchId);
         }
     }
 
-    private function seedDefaultBranch(int $companyId, string $companyName): void
+    private function seedDefaultBranch(int $companyId, string $companyName): int
     {
         DB::table('branches')->updateOrInsert(
             ['company_id' => $companyId, 'code' => 'BR-HQ'],
@@ -43,5 +43,10 @@ class ChartOfAccountsSeeder extends Seeder
                 'created_at' => now(),
             ]
         );
+
+        return DB::table('branches')
+            ->where('company_id', $companyId)
+            ->where('code', 'BR-HQ')
+            ->value('id');
     }
 }

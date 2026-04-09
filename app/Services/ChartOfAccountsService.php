@@ -21,8 +21,13 @@ class ChartOfAccountsService
      * Seed all accounts for a single company.
      * Uses updateOrInsert so it is safe to call more than once.
      */
-    public function seedForCompany(int $companyId): void
+    public function seedForCompany(int $companyId, ?int $branchId = null): void
     {
+        // Fall back to first branch for this company if not provided
+        if ($branchId === null) {
+            $branchId = DB::table('branches')->where('company_id', $companyId)->value('id');
+        }
+
         $accounts = $this->getAccountTree();
 
         // We need to insert parents before children.
@@ -46,6 +51,7 @@ class ChartOfAccountsService
                 DB::table('chart_of_accounts')
                     ->where('id', $existing->id)
                     ->update([
+                        'branch_id'  => $branchId,
                         'name'       => $acc['name'],
                         'category'   => $acc['category'],
                         'type'       => $acc['type'],
@@ -58,6 +64,7 @@ class ChartOfAccountsService
                 // Fresh insert
                 $id = DB::table('chart_of_accounts')->insertGetId([
                     'company_id' => $companyId,
+                    'branch_id'  => $branchId,
                     'code'       => $acc['code'],
                     'name'       => $acc['name'],
                     'category'   => $acc['category'],
