@@ -22,7 +22,7 @@
     </div>
     <button class="btn btn-sm text-white fw-semibold px-4"
             style="background:var(--primary);border-radius:8px;"
-            data-bs-toggle="modal" data-bs-target="#planModal" id="addPlanBtn">
+            id="addPlanBtn">
         <i class="bi bi-plus-lg me-1"></i> Add Plan
     </button>
 </div>
@@ -70,8 +70,9 @@
             @endif
 
             <div class="d-flex gap-2 mt-auto pt-2 border-top">
-                <button class="btn btn-sm btn-outline-primary flex-fill"
-                        onclick="editPlan({{ $plan->id }}, @json($plan))">
+                <button class="btn btn-sm btn-outline-primary flex-fill btn-edit-plan"
+                        data-id="{{ $plan->id }}"
+                        data-plan="{{ htmlspecialchars(json_encode($plan), ENT_QUOTES, 'UTF-8') }}">
                     <i class="bi bi-pencil me-1"></i>Edit
                 </button>
                 <form method="POST" action="{{ route('host.plans.destroy', $plan->id) }}"
@@ -172,27 +173,40 @@
 
 @push('js')
 <script>
-function editPlan(id, plan) {
-    document.getElementById('planModalTitle').textContent = 'Edit Plan';
-    document.getElementById('planForm').action = '{{ url("host/plans") }}/' + id;
-    document.getElementById('methodField').innerHTML = '<input type="hidden" name="_method" value="PUT">';
-    document.getElementById('f_name').value = plan.name;
-    document.getElementById('f_price').value = plan.price;
-    document.getElementById('f_billing_cycle').value = plan.billing_cycle;
-    document.getElementById('f_max_users').value = plan.max_users;
-    document.getElementById('f_storage').value = plan.storage_limit_gb;
-    document.getElementById('f_status').value = plan.status;
-    document.getElementById('f_description').value = plan.description ?? '';
-    document.getElementById('f_features').value = Array.isArray(plan.features) ? plan.features.join(', ') : '';
-    document.getElementById('f_is_popular').checked = !!plan.is_popular;
-    new bootstrap.Modal(document.getElementById('planModal')).show();
-}
+document.addEventListener('DOMContentLoaded', function () {
+    const planModal = bootstrap.Modal.getOrCreateInstance(document.getElementById('planModal'));
 
-document.getElementById('addPlanBtn').addEventListener('click', function () {
-    document.getElementById('planModalTitle').textContent = 'Add Pricing Plan';
-    document.getElementById('planForm').action = '{{ route("host.plans.store") }}';
-    document.getElementById('methodField').innerHTML = '';
-    document.getElementById('planForm').reset();
+    // Edit buttons
+    document.querySelectorAll('.btn-edit-plan').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            const id   = this.dataset.id;
+            const plan = JSON.parse(this.dataset.plan);
+
+            document.getElementById('planModalTitle').textContent = 'Edit Plan';
+            document.getElementById('planForm').action = '{{ url("host/plans") }}/' + id;
+            document.getElementById('methodField').innerHTML = '<input type="hidden" name="_method" value="PUT">';
+            document.getElementById('f_name').value        = plan.name ?? '';
+            document.getElementById('f_price').value       = plan.price ?? '';
+            document.getElementById('f_billing_cycle').value = plan.billing_cycle ?? 'monthly';
+            document.getElementById('f_max_users').value   = plan.max_users ?? '';
+            document.getElementById('f_storage').value     = plan.storage_limit_gb ?? 2;
+            document.getElementById('f_status').value      = plan.status ?? 'active';
+            document.getElementById('f_description').value = plan.description ?? '';
+            document.getElementById('f_features').value    = Array.isArray(plan.features) ? plan.features.join(', ') : '';
+            document.getElementById('f_is_popular').checked = !!plan.is_popular;
+
+            planModal.show();
+        });
+    });
+
+    // Add Plan button
+    document.getElementById('addPlanBtn').addEventListener('click', function () {
+        document.getElementById('planModalTitle').textContent = 'Add Pricing Plan';
+        document.getElementById('planForm').action = '{{ route("host.plans.store") }}';
+        document.getElementById('methodField').innerHTML = '';
+        document.getElementById('planForm').reset();
+        planModal.show();
+    });
 });
 </script>
 @endpush
