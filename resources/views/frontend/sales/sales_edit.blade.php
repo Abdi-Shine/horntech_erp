@@ -76,40 +76,30 @@
                 </div>
             </div>
 
-            {{-- Invoice Details --}}
+            {{-- Invoice Details (hidden — values locked to original) --}}
             <div class="bg-white border border-gray-200 rounded-lg p-5">
                 <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-4 pb-2 border-b border-gray-100">Invoice Details</p>
-                <div class="mb-4">
+                <div class="mb-2">
                     <label class="text-[10px] font-bold text-gray-500 uppercase tracking-wider block mb-1">Invoice Number</label>
                     <div class="text-lg font-black text-primary tracking-tight">{{ $order->invoice_no }}</div>
-                    <input type="hidden" name="invoice_no" value="{{ $order->invoice_no }}">
                 </div>
-                <div class="mb-3">
-                    <label class="text-[10px] font-bold text-gray-500 uppercase tracking-wider block mb-1.5">Invoice Date</label>
-                    <input type="date" name="invoice_date" value="{{ \Carbon\Carbon::parse($order->invoice_date)->format('Y-m-d') }}" required
-                           class="w-full border border-gray-200 rounded px-3 py-1.5 text-[12px] font-medium text-gray-700 focus:outline-none focus:border-primary">
+                <div class="mb-2">
+                    <label class="text-[10px] font-bold text-gray-500 uppercase tracking-wider block mb-1">Invoice Date</label>
+                    <div class="text-[13px] font-semibold text-gray-700">{{ \Carbon\Carbon::parse($order->invoice_date)->format('d M, Y') }}</div>
                 </div>
-                <div class="mb-3">
-                    <label class="text-[10px] font-bold text-gray-500 uppercase tracking-wider block mb-1.5">Branch <span class="text-primary">*</span></label>
-                    <select name="branch_id" id="branchSelect" required
-                            class="w-full border border-gray-200 rounded px-3 py-1.5 text-[12px] font-medium text-gray-700 focus:outline-none focus:border-primary appearance-none bg-white">
-                        <option value="">— Select Branch —</option>
-                        @foreach($branches as $b)
-                            <option value="{{ $b->id }}" {{ $order->branch_id == $b->id ? 'selected' : '' }}>
-                                {{ $b->name }}{{ $b->city ? ' ('.$b->city.')' : '' }}
-                            </option>
-                        @endforeach
-                    </select>
+                <div class="mb-2">
+                    <label class="text-[10px] font-bold text-gray-500 uppercase tracking-wider block mb-1">Branch</label>
+                    <div class="text-[13px] font-semibold text-gray-700">{{ $order->branch->name ?? '—' }}</div>
                 </div>
                 <div>
-                    <label class="text-[10px] font-bold text-gray-500 uppercase tracking-wider block mb-1.5">Payment Method</label>
-                    <select name="payment_method" id="paymentMethodSelect"
-                            class="w-full border border-gray-200 rounded px-3 py-1.5 text-[12px] font-medium text-gray-700 focus:outline-none focus:border-primary appearance-none bg-white">
-                        @foreach(['Cash','Card','Bank Transfer','Cheque'] as $pm)
-                            <option value="{{ $pm }}" {{ $order->payment_method === $pm ? 'selected' : '' }}>{{ $pm }}</option>
-                        @endforeach
-                    </select>
+                    <label class="text-[10px] font-bold text-gray-500 uppercase tracking-wider block mb-1">Payment Method</label>
+                    <div class="text-[13px] font-semibold text-gray-700">{{ $order->payment_method }}</div>
                 </div>
+                {{-- Hidden inputs so form still submits required values --}}
+                <input type="hidden" name="invoice_no"    value="{{ $order->invoice_no }}">
+                <input type="hidden" name="invoice_date"  value="{{ \Carbon\Carbon::parse($order->invoice_date)->format('Y-m-d') }}">
+                <input type="hidden" name="branch_id"     value="{{ $order->branch_id }}">
+                <input type="hidden" name="payment_method" value="{{ $order->payment_method }}">
             </div>
         </div>
 
@@ -122,7 +112,6 @@
                             <th class="px-3 py-3 text-[10px] font-black text-gray-500 uppercase tracking-wider w-8 text-center">#</th>
                             <th class="px-3 py-3 text-[10px] font-black text-gray-500 uppercase tracking-wider min-w-[110px]">Category</th>
                             <th class="px-3 py-3 text-[10px] font-black text-gray-500 uppercase tracking-wider min-w-[140px]">Item</th>
-                            <th class="px-3 py-3 text-[10px] font-black text-gray-500 uppercase tracking-wider w-24">Item Code</th>
                             <th class="px-3 py-3 text-[10px] font-black text-gray-500 uppercase tracking-wider min-w-[120px]">Description</th>
                             <th class="px-3 py-3 text-[10px] font-black text-gray-500 uppercase tracking-wider w-20 text-center">Qty</th>
                             <th class="px-3 py-3 text-[10px] font-black text-gray-500 uppercase tracking-wider w-24">Unit</th>
@@ -137,7 +126,7 @@
                     <tbody id="itemsTbody"></tbody>
                     <tfoot>
                         <tr class="border-t-2 border-gray-200 bg-gray-50">
-                            <td colspan="5" class="px-4 py-3 text-[11px] font-black text-gray-500 uppercase text-right">Total</td>
+                            <td colspan="4" class="px-4 py-3 text-[11px] font-black text-gray-500 uppercase text-right">Total</td>
                             <td class="px-3 py-3 text-center"><span class="text-[13px] font-black text-primary" id="footerQty">0</span></td>
                             <td colspan="3"></td>
                             <td class="px-3 py-3 text-right"><span class="text-[14px] font-black text-accent" id="footerAmount">{{ $sym }} 0.00</span></td>
@@ -395,10 +384,6 @@ function addItemRow(prefill) {
             </select>
         </td>
         <td class="px-2 py-2">
-            <input type="text" class="tbl-input code-input" placeholder="—" readonly
-                   value="${prefill ? prefill.product_code : ''}">
-        </td>
-        <td class="px-2 py-2">
             <input type="text" class="tbl-input desc-input" placeholder="Add description">
         </td>
         <td class="px-2 py-2">
@@ -478,7 +463,6 @@ function onItemChange(sel, rn) {
     if (!opt.val()) return;
     const row = document.querySelector(`tr[data-row="${rn}"]`);
     row.querySelector('.price-input').value = opt.data('price') || 0;
-    row.querySelector('.code-input').value  = opt.data('code')  || '';
     const unitSel = row.querySelector('.unit-input');
     const unit    = opt.data('unit') || '';
     for (let o of unitSel.options) { if (o.value === unit) { o.selected = true; break; } }
@@ -591,7 +575,7 @@ function submitUpdate() {
         items.push({
             product_id:   itemSel.value,
             product_name: opt.text().split('(')[0].trim(),
-            product_code: row.querySelector('.code-input').value,
+            product_code: '',
             unit:         row.querySelector('.unit-input').value || 'Piece',
             quantity:     qty,
             unit_price:   price,
