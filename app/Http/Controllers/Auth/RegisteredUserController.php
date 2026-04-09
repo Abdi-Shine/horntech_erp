@@ -120,47 +120,17 @@ class RegisteredUserController extends Controller
             ]));
         }
 
-        // Seed default chart of accounts for this company
-        $accountDefs = [
-            ['code' => '1000', 'name' => 'Assets',                'category' => 'assets',      'type' => 'parent',     'parent_code' => null],
-            ['code' => '1010', 'name' => 'Current Assets',        'category' => 'assets',      'type' => 'parent',     'parent_code' => '1000'],
-            ['code' => '1011', 'name' => 'Cash on Hand',          'category' => 'assets',      'type' => 'cash',       'parent_code' => '1010'],
-            ['code' => '1020', 'name' => 'Bank Accounts',         'category' => 'assets',      'type' => 'parent',     'parent_code' => '1010'],
-            ['code' => '1030', 'name' => 'Accounts Receivable',   'category' => 'assets',      'type' => 'receivable', 'parent_code' => '1010'],
-            ['code' => '1400', 'name' => 'Inventory Asset',       'category' => 'assets',      'type' => 'inventory',  'parent_code' => '1010'],
-            ['code' => '2000', 'name' => 'Liabilities',           'category' => 'liabilities', 'type' => 'parent',     'parent_code' => null],
-            ['code' => '2010', 'name' => 'Current Liabilities',   'category' => 'liabilities', 'type' => 'parent',     'parent_code' => '2000'],
-            ['code' => '2011', 'name' => 'Accounts Payable',      'category' => 'liabilities', 'type' => 'payable',    'parent_code' => '2010'],
-            ['code' => '3000', 'name' => 'Equity',                'category' => 'equity',      'type' => 'parent',     'parent_code' => null],
-            ['code' => '3010', 'name' => 'Opening Balance Equity','category' => 'equity',      'type' => 'equity',     'parent_code' => '3000'],
-            ['code' => '4000', 'name' => 'Revenue',               'category' => 'revenue',     'type' => 'parent',     'parent_code' => null],
-            ['code' => '4010', 'name' => 'Sales Revenue',         'category' => 'revenue',     'type' => 'revenue',    'parent_code' => '4000'],
-            ['code' => '5000', 'name' => 'Expenses',              'category' => 'expenses',    'type' => 'parent',     'parent_code' => null],
-            ['code' => '5010', 'name' => 'Operating Expenses',    'category' => 'expenses',    'type' => 'operating',  'parent_code' => '5000'],
-        ];
-        $accountIds = [];
-        foreach ($accountDefs as $def) {
-            $parentId = $def['parent_code'] ? ($accountIds[$def['parent_code']] ?? null) : null;
-            $acct = \App\Models\Account::withoutGlobalScopes()->create([
-                'code'       => $def['code'],
-                'name'       => $def['name'],
-                'category'   => $def['category'],
-                'type'       => $def['type'],
-                'parent_id'  => $parentId,
-                'balance'    => 0,
-                'company_id' => $company->id,
-            ]);
-            $accountIds[$def['code']] = $acct->id;
-        }
-
         // Seed a default HQ branch so the company can operate immediately
-        \App\Models\Branch::withoutGlobalScopes()->create([
+        $hqBranch = \App\Models\Branch::withoutGlobalScopes()->create([
             'company_id' => $company->id,
             'name'       => $company->name . ' - HQ',
             'code'       => 'BR-HQ',
             'level'      => 'Headquarters',
             'is_active'  => true,
         ]);
+
+        // Seed full chart of accounts using the same service as the seeder
+        app(\App\Services\ChartOfAccountsService::class)->seedForCompany($company->id, $hqBranch->id);
 
         // Note: We do NOT fire Registered event because the admin email is
         // pre-verified above — firing it would send a verification email
