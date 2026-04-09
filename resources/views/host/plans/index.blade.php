@@ -70,10 +70,6 @@
             @endif
 
             <div class="d-flex gap-2 mt-auto pt-2 border-top">
-                <button class="btn btn-sm btn-outline-primary flex-fill"
-                        onclick="editPlan({{ $plan->id }}, @json($plan))">
-                    <i class="bi bi-pencil me-1"></i>Edit
-                </button>
                 <form method="POST" action="{{ route('host.plans.destroy', $plan->id) }}"
                       onsubmit="return confirm('Delete this plan?')">
                     @csrf
