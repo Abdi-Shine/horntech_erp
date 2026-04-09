@@ -21,17 +21,17 @@ return new class extends Migration
 
             if ($difference > 0) {
                 // Debits exceed credits — add the missing credit to Sales Revenue (4110)
-                $revenueAccount = DB::table('accounts')
+                $revenueAccount = DB::table('chart_of_accounts')
                     ->where('company_id', $entry->company_id)
                     ->where('code', '4110')
                     ->first()
-                    ?? DB::table('accounts')
+                    ?? DB::table('chart_of_accounts')
                         ->where('company_id', $entry->company_id)
                         ->where('name', 'like', '%Revenue%')
                         ->where('type', '!=', 'parent')
                         ->orderBy('code')
                         ->first()
-                    ?? DB::table('accounts')
+                    ?? DB::table('chart_of_accounts')
                         ->where('company_id', $entry->company_id)
                         ->where('category', 'revenue')
                         ->where('type', '!=', 'parent')
@@ -51,7 +51,7 @@ return new class extends Migration
                     ]);
 
                     // Update account balance directly (observer won't fire on DB::table insert)
-                    DB::table('accounts')
+                    DB::table('chart_of_accounts')
                         ->where('id', $revenueAccount->id)
                         ->increment('balance', $difference);
 
@@ -62,11 +62,11 @@ return new class extends Migration
 
             } elseif ($difference < 0) {
                 // Credits exceed debits — add the missing debit to Accounts Receivable (1140)
-                $arAccount = DB::table('accounts')
+                $arAccount = DB::table('chart_of_accounts')
                     ->where('company_id', $entry->company_id)
                     ->where('code', '1140')
                     ->first()
-                    ?? DB::table('accounts')
+                    ?? DB::table('chart_of_accounts')
                         ->where('company_id', $entry->company_id)
                         ->where('name', 'like', '%Receivable%')
                         ->first();
@@ -83,7 +83,7 @@ return new class extends Migration
                         'updated_at'       => now(),
                     ]);
 
-                    DB::table('accounts')
+                    DB::table('chart_of_accounts')
                         ->where('id', $arAccount->id)
                         ->increment('balance', abs($difference));
 

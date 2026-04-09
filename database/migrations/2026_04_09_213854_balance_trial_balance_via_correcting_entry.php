@@ -18,11 +18,11 @@ return new class extends Migration
             $cid = $company->id;
 
             // Find Sales Revenue (4110) — target for orphaned/missing credits
-            $revenueAccount = DB::table('accounts')
+            $revenueAccount = DB::table('chart_of_accounts')
                 ->where('company_id', $cid)
                 ->where('code', '4110')
                 ->first()
-                ?? DB::table('accounts')
+                ?? DB::table('chart_of_accounts')
                     ->where('company_id', $cid)
                     ->where('category', 'revenue')
                     ->where('type', '!=', 'parent')
@@ -30,12 +30,12 @@ return new class extends Migration
                     ->first();
 
             // Find AR account — target for orphaned/missing debits
-            $arAccount = DB::table('accounts')
+            $arAccount = DB::table('chart_of_accounts')
                 ->where('company_id', $cid)
                 ->whereIn('code', ['1030', '1140'])
                 ->orderBy('code')
                 ->first()
-                ?? DB::table('accounts')
+                ?? DB::table('chart_of_accounts')
                     ->where('company_id', $cid)
                     ->where('type', 'receivable')
                     ->first();
@@ -44,7 +44,7 @@ return new class extends Migration
             // These items exist in the DB but their account no longer shows in the trial
             // balance, causing the grand totals to diverge.
             $orphaned = DB::table('journal_items as ji')
-                ->leftJoin('accounts as a', function ($join) use ($cid) {
+                ->leftJoin('chart_of_accounts as a', function ($join) use ($cid) {
                     $join->on('ji.account_id', '=', 'a.id')
                          ->where('a.company_id', '=', $cid);
                 })
@@ -59,7 +59,7 @@ return new class extends Migration
                     DB::table('journal_items')
                         ->where('id', $item->id)
                         ->update(['account_id' => $revenueAccount->id, 'updated_at' => now()]);
-                    DB::table('accounts')
+                    DB::table('chart_of_accounts')
                         ->where('id', $revenueAccount->id)
                         ->increment('balance', (float) $item->credit);
 
@@ -68,7 +68,7 @@ return new class extends Migration
                     DB::table('journal_items')
                         ->where('id', $item->id)
                         ->update(['account_id' => $arAccount->id, 'updated_at' => now()]);
-                    DB::table('accounts')
+                    DB::table('chart_of_accounts')
                         ->where('id', $arAccount->id)
                         ->increment('balance', (float) $item->debit);
                 }
@@ -100,7 +100,7 @@ return new class extends Migration
                         'created_at'       => now(),
                         'updated_at'       => now(),
                     ]);
-                    DB::table('accounts')
+                    DB::table('chart_of_accounts')
                         ->where('id', $revenueAccount->id)
                         ->increment('balance', $diff);
 
@@ -116,7 +116,7 @@ return new class extends Migration
                         'created_at'       => now(),
                         'updated_at'       => now(),
                     ]);
-                    DB::table('accounts')
+                    DB::table('chart_of_accounts')
                         ->where('id', $arAccount->id)
                         ->increment('balance', abs($diff));
                 }
