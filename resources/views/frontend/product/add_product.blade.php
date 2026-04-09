@@ -601,19 +601,6 @@
                                     </div>
                                 </div>
 
-                                <div class="space-y-1.5" x-show="productData.product_type === 'product' && !editMode" x-transition>
-                                    <label class="text-[11px] font-bold text-gray-700 uppercase tracking-wider">Branch</label>
-                                    <div class="relative">
-                                        <select name="branch_id" x-model="productData.branch_id"
-                                            class="w-full pl-4 pr-10 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-[13px] font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none transition-all appearance-none cursor-pointer">
-                                            <option value="">— Select Branch —</option>
-                                            @foreach($branches as $branch)
-                                                <option value="{{ $branch->id }}">{{ $branch->name }}</option>
-                                            @endforeach
-                                        </select>
-                                        <i class="bi bi-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-[10px]"></i>
-                                    </div>
-                                </div>
 
                                 <!-- Row 3 -->
                                 <div class="space-y-1.5 md:col-span-2">
