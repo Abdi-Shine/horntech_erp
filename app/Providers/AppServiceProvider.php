@@ -10,7 +10,8 @@ class AppServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        $this->app->singleton(FeatureService::class, fn() => new FeatureService());
+        // scoped = new instance per request, so flags are always fresh from DB
+        $this->app->scoped(FeatureService::class, fn() => new FeatureService());
     }
 
     public function boot(): void

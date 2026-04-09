@@ -44,10 +44,14 @@ class FeatureSettingController extends Controller
 
         $features = $request->input('features', []);
 
+        $companyId = auth()->user()->company_id;
+
         foreach ($features as $key => $isEnabled) {
-            FeatureSetting::where('feature_key', $key)->update([
-                'is_enabled' => filter_var($isEnabled, FILTER_VALIDATE_BOOLEAN)
-            ]);
+            FeatureSetting::where('company_id', $companyId)
+                ->where('feature_key', $key)
+                ->update([
+                    'is_enabled' => filter_var($isEnabled, FILTER_VALIDATE_BOOLEAN)
+                ]);
         }
 
         return response()->json(['success' => true, 'message' => 'System features updated successfully.']);
@@ -59,7 +63,7 @@ class FeatureSettingController extends Controller
             return response()->json(['success' => false, 'message' => 'Unauthorized. System Admin permission required.'], 403);
         }
 
-        FeatureSetting::query()->update(['is_enabled' => true]);
+        FeatureSetting::where('company_id', auth()->user()->company_id)->update(['is_enabled' => true]);
 
         return response()->json(['success' => true, 'message' => 'All system modules have been enabled.']);
     }
