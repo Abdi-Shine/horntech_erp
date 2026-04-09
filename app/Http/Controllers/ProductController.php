@@ -29,7 +29,7 @@ class ProductController extends Controller
         $query = Product::query()->with(['category', 'stocks' => function($q) use ($userBranchId) {
             /** @var \Illuminate\Database\Eloquent\Relations\HasMany $q */
             if ($userBranchId) $q->where('branch_id', $userBranchId);
-        }]);
+        }, 'stocks.branch']);
 
         if ($userBranchId) {
             $query->whereHas('stocks', function($q) use ($userBranchId) {
