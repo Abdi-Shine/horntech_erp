@@ -74,7 +74,7 @@
             </div>
         @endif
         <!-- 2. Branch & Store Management -->
-        @if(Auth::user()->hasPermission('Branch & Store'))
+        @if(Auth::user()->hasPermission('Branch & Store') && app(\App\Services\FeatureService::class)->isEnabled('multibranch'))
             <div class="space-y-1">
                 <button @click="toggleMenu('branch')"
                     class="flex items-center gap-3 px-4 py-3 text-white/70 hover:bg-white/5 hover:text-white rounded-xl font-semibold text-[14px] transition-all duration-200 w-full"
@@ -92,10 +92,11 @@
                     <a href="{{ route('branches-view') }}"
                         class="flex items-center gap-3 pl-12 pr-4 py-2 text-white/50 hover:text-white text-[13px] font-medium transition-all duration-200 {{ Route::is('branches-view') ? 'text-white bg-white/10' : '' }}"><i
                             class="bi bi-plus text-lg"></i> Branches</a>
+                    @if(app(\App\Services\FeatureService::class)->isEnabled('transfers'))
                     <a href="{{ route('branch-transfer') }}"
                         class="flex items-center gap-3 pl-12 pr-4 py-2 text-white/50 hover:text-white text-[13px] font-medium transition-all duration-200 {{ Route::is('branch-transfer') ? 'text-white bg-white/10' : '' }}"><i
                             class="bi bi-plus text-lg"></i> Branch Transfer</a>
-
+                    @endif
                 </div>
             </div>
         @endif
