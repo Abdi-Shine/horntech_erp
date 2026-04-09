@@ -76,29 +76,17 @@
                 </div>
             </div>
 
-            {{-- Invoice Details (hidden — values locked to original) --}}
+            {{-- Invoice Details --}}
             <div class="bg-white border border-gray-200 rounded-lg p-5">
                 <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-4 pb-2 border-b border-gray-100">Invoice Details</p>
                 <div class="mb-2">
                     <label class="text-[10px] font-bold text-gray-500 uppercase tracking-wider block mb-1">Invoice Number</label>
                     <div class="text-lg font-black text-primary tracking-tight">{{ $order->invoice_no }}</div>
                 </div>
-                <div class="mb-2">
-                    <label class="text-[10px] font-bold text-gray-500 uppercase tracking-wider block mb-1">Invoice Date</label>
-                    <div class="text-[13px] font-semibold text-gray-700">{{ \Carbon\Carbon::parse($order->invoice_date)->format('d M, Y') }}</div>
-                </div>
-                <div class="mb-2">
-                    <label class="text-[10px] font-bold text-gray-500 uppercase tracking-wider block mb-1">Branch</label>
-                    <div class="text-[13px] font-semibold text-gray-700">{{ $order->branch->name ?? '—' }}</div>
-                </div>
-                <div>
-                    <label class="text-[10px] font-bold text-gray-500 uppercase tracking-wider block mb-1">Payment Method</label>
-                    <div class="text-[13px] font-semibold text-gray-700">{{ $order->payment_method }}</div>
-                </div>
-                {{-- Hidden inputs so form still submits required values --}}
-                <input type="hidden" name="invoice_no"    value="{{ $order->invoice_no }}">
-                <input type="hidden" name="invoice_date"  value="{{ \Carbon\Carbon::parse($order->invoice_date)->format('Y-m-d') }}">
-                <input type="hidden" name="branch_id"     value="{{ $order->branch_id }}">
+                {{-- Hidden inputs — not displayed, submitted with form --}}
+                <input type="hidden" name="invoice_no"     value="{{ $order->invoice_no }}">
+                <input type="hidden" name="invoice_date"   value="{{ \Carbon\Carbon::parse($order->invoice_date)->format('Y-m-d') }}">
+                <input type="hidden" name="branch_id"      value="{{ $order->branch_id }}">
                 <input type="hidden" name="payment_method" value="{{ $order->payment_method }}">
             </div>
         </div>
