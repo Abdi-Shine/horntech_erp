@@ -195,7 +195,6 @@
                         <th class="px-5 py-4 text-[12px] font-black text-primary-dark uppercase tracking-wider">Quantity</th>
                         <th class="px-5 py-4 text-[12px] font-black text-primary-dark uppercase tracking-wider text-right">Sales</th>
                         <th class="px-5 py-4 text-[12px] font-black text-primary-dark uppercase tracking-wider">Staffing</th>
-                        <th class="px-5 py-4 text-[12px] font-black text-primary-dark uppercase tracking-wider">Account</th>
                         <th class="px-5 py-4 text-[12px] font-black text-primary-dark uppercase tracking-wider text-center">Status</th>
                         <th class="px-5 py-4 text-[12px] font-black text-primary-dark uppercase tracking-wider text-center">Actions</th>
                     </tr>
@@ -218,9 +217,6 @@
                             </td>
                             <td class="px-5 py-4">
                                 <span class="text-[12px] font-semibold text-primary-dark">{{ $branch->employee_count }} Staff</span>
-                            </td>
-                            <td class="px-5 py-4">
-                                <span class="text-[12px] font-semibold text-primary-dark">{{ $branch->account->name ?? '—' }}</span>
                             </td>
                             <td class="px-5 py-4 text-center">
                                 <span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-black bg-accent/10 text-primary border border-accent/20 uppercase tracking-wider">Active</span>
