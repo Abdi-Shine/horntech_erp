@@ -326,7 +326,7 @@
                         <th class="px-5 py-4 text-[12px] font-black text-primary-dark uppercase tracking-wider w-16 text-center">#</th>
                         <th class="px-5 py-4 text-[12px] font-black text-primary-dark uppercase tracking-wider leading-tight">Product</th>
                         <th class="px-5 py-4 text-[12px] font-black text-primary-dark uppercase tracking-wider">Category</th>
-                        <th class="px-5 py-4 text-[12px] font-black text-primary-dark uppercase tracking-wider">Location</th>
+                        <th class="px-5 py-4 text-[12px] font-black text-primary-dark uppercase tracking-wider">Branch</th>
                         <th class="px-5 py-4 text-[12px] font-black text-primary-dark uppercase tracking-wider text-right">Selling Price</th>
                         <th class="px-5 py-4 text-[12px] font-black text-primary-dark uppercase tracking-wider text-right">Purchase Price</th>
                         <th class="px-5 py-4 text-[12px] font-black text-primary-dark uppercase tracking-wider text-center">Stock</th>
@@ -554,16 +554,7 @@
                                     " />
                                 </label>
                             </div>
-                                <div class="space-y-1.5">
-                                    <label class="text-[11px] font-bold text-gray-700 uppercase tracking-wider">Purchase Price</label>
-                                    <div class="relative group">
-                                        <input type="number" step="0.01" name="purchase_price" x-model="productData.purchase_price" placeholder="0.00"
-                                            class="w-full pl-4 pr-10 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-[13px] font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none transition-all">
-                                        <span class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 font-bold text-[13px]">{{ $symbol }}</span>
-                                    </div>
-                                </div>
-
-                                <!-- Row 2 -->
+                              <!-- Row 2 -->
                                 <div class="space-y-1.5" x-show="productData.product_type === 'product'" x-transition>
                                     <label class="text-[11px] font-bold text-gray-700 uppercase tracking-wider text-[#00A5DF]">BASE UNIT</label>
                                     <div class="relative">
@@ -582,7 +573,14 @@
                                         <i class="bi bi-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"></i>
                                     </div>
                                 </div>
-
+                                <div class="space-y-1.5">
+                                    <label class="text-[11px] font-bold text-gray-700 uppercase tracking-wider">Purchase Price</label>
+                                    <div class="relative group">
+                                        <input type="number" step="0.01" name="purchase_price" x-model="productData.purchase_price" placeholder="0.00"
+                                            class="w-full pl-4 pr-10 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-[13px] font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none transition-all">
+                                        <span class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 font-bold text-[13px]">{{ $symbol }}</span>
+                                    </div>
+                                </div>
                                 <div class="space-y-1.5">
                                     <label class="text-[11px] font-bold text-gray-700 uppercase tracking-wider">Selling Price <span class="text-primary">*</span></label>
                                     <div class="relative group">
