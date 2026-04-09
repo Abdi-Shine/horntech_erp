@@ -280,10 +280,10 @@
         </div>
 
         {{-- ── Bottom: Notes + Summary ───────────────────────────────────────── --}}
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-5">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-5">
 
             {{-- Notes --}}
-            <div class="bg-white border border-gray-100 rounded-xl shadow-sm p-5">
+            <div class="bg-white border border-gray-100 rounded-xl shadow-sm p-5 lg:col-span-2">
                 <div class="flex items-center gap-2 mb-3 pb-2 border-b border-gray-100">
                     <i class="bi bi-chat-left-text text-primary text-sm"></i>
                     <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Notes / Terms &amp; Conditions</span>
@@ -293,7 +293,7 @@
             </div>
 
             {{-- Invoice Summary --}}
-            <div class="bg-white border border-gray-100 rounded-xl shadow-sm p-5">
+            <div class="bg-white border border-gray-100 rounded-xl shadow-sm p-5 lg:col-span-1">
                 <div class="flex items-center gap-2 mb-4 pb-2 border-b border-gray-100">
                     <i class="bi bi-receipt text-primary text-sm"></i>
                     <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Invoice Summary</span>
