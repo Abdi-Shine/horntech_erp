@@ -174,7 +174,7 @@
 <script>
 function editPlan(id, plan) {
     document.getElementById('planModalTitle').textContent = 'Edit Plan';
-    document.getElementById('planForm').action = '/host/plans/' + id;
+    document.getElementById('planForm').action = '{{ url("host/plans") }}/' + id;
     document.getElementById('methodField').innerHTML = '<input type="hidden" name="_method" value="PUT">';
     document.getElementById('f_name').value = plan.name;
     document.getElementById('f_price').value = plan.price;
