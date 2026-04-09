@@ -235,7 +235,7 @@
                 <div style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:2rem;width:100%;max-width:480px;">
                     <div class="row g-3">
                         @foreach([
-                            ['bi-graph-up-arrow','Sales Revenue','{{ $currency }} 142,850','↑ 15.3%','#99CC33'],
+                            ['bi-graph-up-arrow','Sales Revenue',$currency.' 142,850','↑ 15.3%','#99CC33'],
                             ['bi-box-seam','Products In Stock','4,230 items','↑ 8.1%','#60a5fa'],
                             ['bi-people','Active Customers','1,847','↑ 12.4%','#a78bfa'],
                             ['bi-receipt','Pending Orders','38 orders','↓ 3.2%','#fb923c'],
