@@ -32,7 +32,7 @@ class EmployeeController extends Controller
         ];
 
         $employees = $baseQuery->with('user')->paginate(10);
-        $companies = Company::query()->get();
+        $companies = Company::query()->where('id', auth()->user()->company_id)->get();
         $branches  = Branch::query()->when($userBranchId, fn($q) => $q->where('id', $userBranchId))->get();
         return view('frontend.setting.employee', compact('employees', 'stats', 'companies', 'branches'));
     }

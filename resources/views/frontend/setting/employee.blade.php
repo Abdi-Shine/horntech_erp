@@ -437,7 +437,7 @@
                                     <select name="companyName" required class="w-full pl-4 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-[13px] font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none transition-all appearance-none bg-gray-50 border-gray-100">
                                         <option value="">Select Company</option>
                                         @foreach($companies as $company)
-                                            <option value="{{ $company->name }}">{{ $company->name }}</option>
+                                            <option value="{{ $company->name }}" selected>{{ $company->name }}</option>
                                         @endforeach
                                     </select>
                                     <i class="bi bi-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-xs"></i>
