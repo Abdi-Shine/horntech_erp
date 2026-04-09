@@ -134,42 +134,54 @@
         {{-- Notes + Summary --}}
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-5">
 
-            <div class="bg-white border border-gray-200 rounded-lg p-5">
-                <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest block mb-3 pb-2 border-b border-gray-100">Notes / Terms &amp; Conditions</label>
-                <textarea name="notes" rows="5" placeholder="Enter any notes..."
-                          class="w-full border border-gray-200 rounded px-3 py-2.5 text-[12px] text-gray-600 resize-none focus:outline-none focus:border-primary placeholder-gray-300">{{ $order->notes }}</textarea>
+            {{-- Notes --}}
+            <div class="bg-white border border-gray-100 rounded-xl shadow-sm p-5">
+                <div class="flex items-center gap-2 mb-3 pb-2 border-b border-gray-100">
+                    <i class="bi bi-chat-left-text text-primary text-sm"></i>
+                    <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Notes / Terms &amp; Conditions</span>
+                </div>
+                <textarea name="notes" rows="6" placeholder="Enter any notes or terms..."
+                          class="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-[12px] text-gray-600 resize-none focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary placeholder-gray-300 transition-all">{{ $order->notes }}</textarea>
             </div>
 
-            <div class="bg-white border border-gray-200 rounded-lg p-5">
-                <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-4 pb-2 border-b border-gray-100">Invoice Summary</p>
+            {{-- Invoice Summary --}}
+            <div class="bg-white border border-gray-100 rounded-xl shadow-sm p-5">
+                <div class="flex items-center gap-2 mb-4 pb-2 border-b border-gray-100">
+                    <i class="bi bi-receipt text-primary text-sm"></i>
+                    <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Invoice Summary</span>
+                </div>
+
+                {{-- Subtotal row --}}
+                <div class="flex justify-between items-center py-2 border-b border-gray-100">
+                    <span class="text-[12px] text-gray-500 font-medium">Subtotal</span>
+                    <span class="text-[13px] font-bold text-gray-700" id="subtotalDisplay">{{ $curr }} {{ number_format($order->subtotal, 2) }}</span>
+                </div>
 
                 {{-- Discount --}}
-                <div class="flex items-center gap-3 mb-3">
-                    <label class="text-[11px] font-bold text-gray-600 w-28 shrink-0">Discount</label>
-                    <div class="flex items-center gap-2 flex-1">
-                        <div class="relative flex-1">
+                <div class="flex items-center justify-between py-2 border-b border-gray-100 gap-3">
+                    <span class="text-[12px] text-gray-500 font-medium shrink-0">Discount</span>
+                    <div class="flex items-center gap-2">
+                        <div class="relative w-24">
                             <input type="number" id="discountPercent" value="{{ $order->subtotal > 0 ? round(($order->discount / $order->subtotal) * 100) : 0 }}" min="0" step="1" placeholder="0"
-                                   class="w-full pl-3 pr-8 py-1.5 border border-gray-200 rounded text-[12px] font-bold text-right text-gray-700 focus:outline-none focus:border-primary">
-                            <span class="absolute right-2.5 top-1/2 -translate-y-1/2 text-[10px] font-bold text-gray-400">(%)</span>
+                                   class="w-full pl-2 pr-7 py-1 border border-gray-200 rounded-lg text-[12px] font-bold text-right text-gray-700 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20">
+                            <span class="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] font-bold text-gray-400">%</span>
                         </div>
-                        <span class="text-gray-400 font-bold">-</span>
-                        <div class="relative flex-1">
+                        <span class="text-gray-300 font-bold">|</span>
+                        <div class="relative w-28">
                             <input type="number" id="discountInput" name="discount" value="{{ round($order->discount ?? 0) }}" min="0" step="1" placeholder="0"
-                                   class="w-full pl-3 pr-8 py-1.5 border border-gray-200 rounded text-[12px] font-bold text-right text-gray-700 focus:outline-none focus:border-primary">
-                            <span class="absolute right-2.5 top-1/2 -translate-y-1/2 text-[10px] font-bold text-gray-400">($)</span>
+                                   class="w-full pl-2 pr-7 py-1 border border-gray-200 rounded-lg text-[12px] font-bold text-right text-gray-700 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20">
+                            <span class="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] font-bold text-gray-400">$</span>
                         </div>
                     </div>
                 </div>
 
-
-
-                {{-- Paid Amount --}}
-                <div class="flex items-center gap-3 mb-4">
-                    <label class="text-[11px] font-bold text-gray-600 w-28 shrink-0">Amount Paid</label>
-                    <div class="relative flex-1">
-                        <span class="absolute left-2.5 top-1/2 -translate-y-1/2 text-[10px] font-bold text-gray-400">{{ $curr }}</span>
+                {{-- Amount Paid --}}
+                <div class="flex items-center justify-between py-2 border-b border-gray-100 gap-3">
+                    <span class="text-[12px] text-gray-500 font-medium shrink-0">Amount Paid</span>
+                    <div class="relative w-36">
+                        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-[11px] font-bold text-gray-400">{{ $curr }}</span>
                         <input type="number" name="paid_amount" id="paidAmountInput" value="{{ $order->paid_amount ?? 0 }}" min="0" step="0.01"
-                               class="w-full pl-10 pr-3 py-1.5 border border-gray-200 rounded text-[12px] font-bold text-right text-gray-700 focus:outline-none focus:border-primary">
+                               class="w-full pl-8 pr-3 py-1 border border-gray-200 rounded-lg text-[12px] font-bold text-right text-gray-700 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20">
                     </div>
                 </div>
 
@@ -177,23 +189,19 @@
                 <input type="hidden" name="total_amount" id="grandTotalVal" value="{{ $order->total_amount }}">
 
                 {{-- Grand Total --}}
-                <div class="bg-primary rounded-lg px-5 py-4 flex items-center justify-between mt-4">
-                    <span class="text-[13px] font-black text-white uppercase tracking-wider">Total</span>
-                    <span class="text-[18px] font-black text-accent" id="grandTotalDisplay">{{ $curr }} {{ number_format($order->total_amount, 2) }}</span>
+                <div class="bg-primary rounded-xl px-5 py-4 flex items-center justify-between mt-4">
+                    <span class="text-[13px] font-black text-white uppercase tracking-wider">Grand Total</span>
+                    <span class="text-[20px] font-black text-accent" id="grandTotalDisplay">{{ $curr }} {{ number_format($order->total_amount, 2) }}</span>
                 </div>
 
-                {{-- Sub-breakdown --}}
-                <div class="mt-3 space-y-1.5 px-1">
-                    <div class="flex justify-between text-[11px]">
-                        <span class="text-gray-500">Subtotal</span>
-                        <span class="font-bold text-gray-700" id="subtotalDisplay">{{ $curr }} {{ number_format($order->subtotal, 2) }}</span>
-                    </div>
-                    <div class="flex justify-between text-[11px] border-t border-dashed border-gray-200 pt-1.5">
-                        <span class="text-gray-500">Balance Due (this invoice)</span>
+                {{-- Balance rows --}}
+                <div class="mt-3 space-y-1 px-1">
+                    <div class="flex justify-between text-[11px] pt-1">
+                        <span class="text-gray-400">Balance Due (this invoice)</span>
                         <span class="font-bold text-primary" id="balanceDueDisplay">{{ $curr }} {{ number_format($order->due_amount, 2) }}</span>
                     </div>
-                    <div class="flex justify-between text-[11px] bg-primary/10 rounded-lg px-2 py-1.5 mt-1">
-                        <span class="font-black text-primary">Total Customer Balance</span>
+                    <div class="flex justify-between text-[11px] bg-primary/8 rounded-lg px-3 py-2 mt-1">
+                        <span class="font-black text-primary-dark">Total Customer Balance</span>
                         <span class="font-black text-primary" id="totalCustomerBalDisplay">{{ $curr }} 0.00</span>
                     </div>
                 </div>
@@ -201,18 +209,15 @@
         </div>
 
         {{-- Action Buttons --}}
-        <div class="bg-white border border-gray-200 rounded-lg px-5 py-4 flex flex-wrap items-center gap-3 justify-between">
-            <div class="flex gap-2 flex-wrap">
-                <a href="{{ route('sales.invoice.view') }}" class="btn-action border-gray-300 text-gray-600 hover:bg-gray-50">
-                    <i class="bi bi-x-circle text-sm"></i> Cancel
-                </a>
-            </div>
-            <div class="flex gap-2 flex-wrap">
-                <button type="button" onclick="submitUpdate()"
-                        class="btn-action bg-accent text-primary-dark hover:bg-accent/90 border-accent font-black">
-                    <i class="bi bi-check2-all text-sm"></i> Update Invoice
-                </button>
-            </div>
+        <div class="bg-white border border-gray-100 rounded-xl shadow-sm px-6 py-4 flex flex-wrap items-center gap-3 justify-between">
+            <a href="{{ route('sales.invoice.view') }}"
+               class="inline-flex items-center gap-2 px-5 py-2 rounded-lg border border-gray-300 text-[13px] font-bold text-gray-600 hover:bg-gray-50 transition-all">
+                <i class="bi bi-x-circle"></i> Cancel
+            </a>
+            <button type="button" onclick="submitUpdate()"
+                    class="inline-flex items-center gap-2 px-6 py-2 rounded-lg bg-accent text-primary-dark text-[13px] font-black hover:bg-accent/90 shadow-sm transition-all">
+                <i class="bi bi-check2-all"></i> Update Invoice
+            </button>
         </div>
 
     </form>
