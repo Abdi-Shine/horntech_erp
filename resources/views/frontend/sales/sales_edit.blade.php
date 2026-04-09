@@ -414,9 +414,9 @@ function addItemRow(prefill) {
             </select>
         </td>
         <td class="px-2 py-2">
-            <input type="number" class="tbl-input price-input text-right"
+            <input type="number" class="tbl-input price-input text-right tbl-price-w"
                    value="${prefill ? prefill.unit_price : 0}" min="0" step="0.01"
-                   class="tbl-price-w" oninput="calcRow(${n})">
+                   oninput="calcRow(${n})">
         </td>
         <td class="px-2 py-2">
             <div class="flex items-center gap-1">
