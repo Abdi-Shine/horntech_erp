@@ -213,19 +213,10 @@
         @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest shadow-sm transition-all;
     }
     .status-completed { @apply text-accent bg-accent/10 border border-accent/20; }
-    .status-completed::before { content: ""; @apply inline-block w-1.5 h-1.5 rounded-full bg-accent mr-0.5; }
-
-    .status-rejected { @apply text-primary bg-primary/10 border border-primary/20; }
-    .status-rejected::before { content: ""; @apply inline-block w-1.5 h-1.5 rounded-full bg-primary/40 mr-0.5; }
-
-    .status-pending { @apply text-primary opacity-70 bg-primary/5 border border-primary/10; }
-    .status-pending::before { content: ""; @apply inline-block w-1.5 h-1.5 rounded-full bg-primary/30 mr-0.5; }
-
-    .status-warning { @apply text-amber-600 bg-amber-50 border border-amber-200; }
-    .status-warning::before { content: ""; @apply inline-block w-1.5 h-1.5 rounded-full bg-amber-400 mr-0.5; }
-
-    .status-danger { @apply text-red-600 bg-red-50 border border-red-200; }
-    .status-danger::before { content: ""; @apply inline-block w-1.5 h-1.5 rounded-full bg-red-400 mr-0.5; }
+    .status-rejected  { @apply text-primary bg-primary/10 border border-primary/20; }
+    .status-pending   { @apply text-primary opacity-70 bg-primary/5 border border-primary/10; }
+    .status-warning   { @apply text-amber-600 bg-amber-50 border border-amber-200; }
+    .status-danger    { @apply text-red-600 bg-red-50 border border-red-200; }
 
     .premium-badge-rose       { @apply bg-primary/50 text-white; }
     .premium-badge-accent     { @apply bg-accent text-primary; }
