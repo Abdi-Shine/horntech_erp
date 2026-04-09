@@ -280,40 +280,48 @@
         </div>
 
         {{-- ── Bottom: Notes + Summary ───────────────────────────────────────── --}}
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-5">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-5">
 
             {{-- Notes --}}
-            <div class="bg-white rounded-[1rem] border border-gray-100 shadow-sm p-6 lg:col-span-2">
-                <label class="block text-[11px] font-bold text-primary-dark uppercase tracking-wider mb-3 pb-2 border-b border-gray-100">
-                    Notes / Terms &amp; Conditions
-                </label>
-                <textarea name="notes" rows="5" placeholder="Enter any additional notes, terms, or conditions for this invoice..."
-                          class="w-full pl-4 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-[13px] font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none transition-all resize-none"></textarea>
+            <div class="bg-white border border-gray-100 rounded-xl shadow-sm p-5">
+                <div class="flex items-center gap-2 mb-3 pb-2 border-b border-gray-100">
+                    <i class="bi bi-chat-left-text text-primary text-sm"></i>
+                    <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Notes / Terms &amp; Conditions</span>
+                </div>
+                <textarea name="notes" rows="6" placeholder="Enter any notes or terms..."
+                          class="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-[12px] text-gray-600 resize-none focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary placeholder-gray-300 transition-all"></textarea>
             </div>
 
-            {{-- Summary --}}
-            <div class="bg-white rounded-[1rem] border border-gray-100 shadow-sm p-5 lg:col-span-1">
-                <p class="text-[10px] font-black text-primary-dark uppercase tracking-wider mb-4 pb-2 border-b border-gray-100">
-                    Invoice Summary
-                </p>
+            {{-- Invoice Summary --}}
+            <div class="bg-white border border-gray-100 rounded-xl shadow-sm p-5">
+                <div class="flex items-center gap-2 mb-4 pb-2 border-b border-gray-100">
+                    <i class="bi bi-receipt text-primary text-sm"></i>
+                    <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Invoice Summary</span>
+                </div>
+
+                {{-- Subtotal row --}}
+                <div class="flex justify-between items-center py-2 border-b border-gray-100">
+                    <span class="text-[12px] text-gray-500 font-medium">Subtotal</span>
+                    <span class="text-[13px] font-bold text-gray-700" id="subtotalDisplay">{{ $curr }} 0.00</span>
+                </div>
 
                 {{-- Discount --}}
-                <div class="mb-3">
-                    <label class="block text-[10px] font-black text-primary-dark uppercase tracking-wider mb-1">Amount Discount</label>
-                    <div class="relative">
+                <div class="flex items-center justify-between py-2 border-b border-gray-100 gap-3">
+                    <span class="text-[12px] text-gray-500 font-medium shrink-0">Discount</span>
+                    <div class="relative w-36">
                         <span class="absolute left-3 top-1/2 -translate-y-1/2 text-[11px] font-bold text-gray-400">{{ $curr }}</span>
                         <input type="number" id="discountInput" name="discount" value="0" min="0" step="0.01"
-                               class="w-full pl-7 pr-3 py-2 bg-white border border-gray-200 rounded-lg text-[12px] font-semibold text-primary-dark focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none transition-all text-right">
+                               class="w-full pl-8 pr-3 py-1 border border-gray-200 rounded-lg text-[12px] font-bold text-right text-primary-dark focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all">
                     </div>
                 </div>
 
-                {{-- Paid Amount --}}
-                <div class="mb-3" id="paidAmountWrapper">
-                    <label class="block text-[10px] font-black text-primary-dark uppercase tracking-wider mb-1">Amount Paid</label>
-                    <div class="relative">
+                {{-- Amount Paid --}}
+                <div class="flex items-center justify-between py-2 border-b border-gray-100 gap-3" id="paidAmountWrapper">
+                    <span class="text-[12px] text-gray-500 font-medium shrink-0">Amount Paid</span>
+                    <div class="relative w-36">
                         <span class="absolute left-3 top-1/2 -translate-y-1/2 text-[11px] font-bold text-gray-400">{{ $curr }}</span>
                         <input type="number" name="paid_amount" id="paidAmountInput" value="0" min="0" step="0.01"
-                               class="w-full pl-7 pr-3 py-2 bg-white border border-gray-200 rounded-lg text-[12px] font-semibold text-primary-dark focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none transition-all text-right">
+                               class="w-full pl-8 pr-3 py-1 border border-gray-200 rounded-lg text-[12px] font-bold text-right text-primary-dark focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all">
                     </div>
                 </div>
 
@@ -322,39 +330,35 @@
                 <input type="hidden" name="total_amount" id="grandTotalVal" value="0">
 
                 {{-- Grand Total Box --}}
-                <div class="bg-primary rounded-xl px-4 py-3 flex items-center justify-between mt-3">
-                    <span class="text-[11px] font-black text-white uppercase tracking-wider">Total Amount</span>
-                    <span class="text-[15px] font-black text-accent" id="grandTotalDisplay">{{ $curr }} 0.00</span>
+                <div class="bg-primary rounded-xl px-5 py-4 flex items-center justify-between mt-4">
+                    <span class="text-[13px] font-black text-white uppercase tracking-wider">Grand Total</span>
+                    <span class="text-[20px] font-black text-accent" id="grandTotalDisplay">{{ $curr }} 0.00</span>
                 </div>
 
-                {{-- Total Balance --}}
-                <div class="flex justify-between items-center px-1 py-2 mt-2 border-t border-gray-100" id="totalBalanceWrapper">
-                    <span class="text-[10px] font-black text-gray-400 uppercase tracking-wider">Total Customer Balance</span>
-                    <span class="font-black text-primary-dark text-[12px]" id="totalCustomerBalDisplay">{{ $curr }} 0.00</span>
-                </div>
-
-                {{-- Hidden displays --}}
-                <div class="hidden">
-                    <span id="subtotalDisplay">0</span>
-                    <span id="balanceDueDisplay">0</span>
+                {{-- Balance rows --}}
+                <div class="mt-3 space-y-1 px-1" id="totalBalanceWrapper">
+                    <div class="flex justify-between text-[11px] pt-1">
+                        <span class="text-gray-400">Balance Due (this invoice)</span>
+                        <span class="font-bold text-primary" id="balanceDueDisplay">{{ $curr }} 0.00</span>
+                    </div>
+                    <div class="flex justify-between text-[11px] bg-primary/8 rounded-lg px-3 py-2 mt-1">
+                        <span class="font-black text-primary-dark">Total Customer Balance</span>
+                        <span class="font-black text-primary" id="totalCustomerBalDisplay">{{ $curr }} 0.00</span>
+                    </div>
                 </div>
             </div>
         </div>
 
         {{-- ── Action Buttons ───────────────────────────────────────────────────── --}}
-        <div class="bg-white rounded-[1rem] border border-gray-100 shadow-sm px-6 py-5 flex flex-wrap items-center justify-between">
-            <div class="flex gap-2 flex-wrap">
-                <a href="{{ route('sales.invoice.view') }}" class="btn-premium-accent">
-                    <i class="bi bi-x-circle"></i>
-                    <span>Cancel</span>
-                </a>
-            </div>
-            <div class="flex gap-2 flex-wrap">
-                <button type="button" onclick="submitForm('send')" class="btn-premium-primary btn-action">
-                    <i class="bi bi-check2-circle"></i>
-                    <span>Save Invoice</span>
-                </button>
-            </div>
+        <div class="bg-white border border-gray-100 rounded-xl shadow-sm px-6 py-4 flex flex-wrap items-center gap-3 justify-between">
+            <a href="{{ route('sales.invoice.view') }}"
+               class="inline-flex items-center gap-2 px-5 py-2 rounded-lg border border-gray-300 text-[13px] font-bold text-gray-600 hover:bg-gray-50 transition-all">
+                <i class="bi bi-x-circle"></i> Cancel
+            </a>
+            <button type="button" onclick="submitForm('send')"
+                    class="inline-flex items-center gap-2 px-6 py-2 rounded-lg bg-accent text-primary-dark text-[13px] font-black hover:bg-accent/90 shadow-sm transition-all">
+                <i class="bi bi-check2-all"></i> Save Invoice
+            </button>
         </div>
 
     </form>
