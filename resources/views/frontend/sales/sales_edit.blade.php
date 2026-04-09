@@ -135,23 +135,23 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-5">
 
             {{-- Notes --}}
-            <div class="bg-white border border-gray-100 rounded-xl shadow-sm p-5">
+            <div class="bg-white rounded-[1rem] border border-gray-100 shadow-sm p-6">
                 <div class="flex items-center gap-2 mb-3 pb-2 border-b border-gray-100">
                     <i class="bi bi-chat-left-text text-primary text-sm"></i>
-                    <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Notes / Terms &amp; Conditions</span>
+                    <span class="text-[11px] font-bold text-primary-dark uppercase tracking-wider">Notes / Terms &amp; Conditions</span>
                 </div>
-                <textarea name="notes" rows="6" placeholder="Enter any notes or terms..."
-                          class="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-[12px] text-gray-600 resize-none focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary placeholder-gray-300 transition-all">{{ $order->notes }}</textarea>
+                <textarea name="notes" rows="6" placeholder="Enter any additional notes, terms, or conditions..."
+                          class="w-full pl-4 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-[13px] font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none transition-all resize-none">{{ $order->notes }}</textarea>
             </div>
 
             {{-- Invoice Summary --}}
-            <div class="bg-white border border-gray-100 rounded-xl shadow-sm p-5">
+            <div class="bg-white rounded-[1rem] border border-gray-100 shadow-sm p-5">
                 <div class="flex items-center gap-2 mb-4 pb-2 border-b border-gray-100">
                     <i class="bi bi-receipt text-primary text-sm"></i>
-                    <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Invoice Summary</span>
+                    <span class="text-[11px] font-bold text-primary-dark uppercase tracking-wider">Invoice Summary</span>
                 </div>
 
-                {{-- Subtotal row --}}
+                {{-- Subtotal --}}
                 <div class="flex justify-between items-center py-2 border-b border-gray-100">
                     <span class="text-[12px] text-gray-500 font-medium">Subtotal</span>
                     <span class="text-[13px] font-bold text-gray-700" id="subtotalDisplay">{{ $curr }} {{ number_format($order->subtotal, 2) }}</span>
@@ -160,28 +160,20 @@
                 {{-- Discount --}}
                 <div class="flex items-center justify-between py-2 border-b border-gray-100 gap-3">
                     <span class="text-[12px] text-gray-500 font-medium shrink-0">Discount</span>
-                    <div class="flex items-center gap-2">
-                        <div class="relative w-24">
-                            <input type="number" id="discountPercent" value="{{ $order->subtotal > 0 ? round(($order->discount / $order->subtotal) * 100) : 0 }}" min="0" step="1" placeholder="0"
-                                   class="w-full pl-2 pr-7 py-1 border border-gray-200 rounded-lg text-[12px] font-bold text-right text-gray-700 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20">
-                            <span class="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] font-bold text-gray-400">%</span>
-                        </div>
-                        <span class="text-gray-300 font-bold">|</span>
-                        <div class="relative w-28">
-                            <input type="number" id="discountInput" name="discount" value="{{ round($order->discount ?? 0) }}" min="0" step="1" placeholder="0"
-                                   class="w-full pl-2 pr-7 py-1 border border-gray-200 rounded-lg text-[12px] font-bold text-right text-gray-700 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20">
-                            <span class="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] font-bold text-gray-400">$</span>
-                        </div>
+                    <div class="relative w-40">
+                        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-[11px] font-bold text-gray-400">{{ $curr }}</span>
+                        <input type="number" id="discountInput" name="discount" value="{{ round($order->discount ?? 0) }}" min="0" step="0.01"
+                               class="w-full pl-7 pr-3 py-2 bg-white border border-gray-200 rounded-lg text-[12px] font-semibold text-primary-dark focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none transition-all text-right">
                     </div>
                 </div>
 
                 {{-- Amount Paid --}}
                 <div class="flex items-center justify-between py-2 border-b border-gray-100 gap-3">
                     <span class="text-[12px] text-gray-500 font-medium shrink-0">Amount Paid</span>
-                    <div class="relative w-36">
+                    <div class="relative w-40">
                         <span class="absolute left-3 top-1/2 -translate-y-1/2 text-[11px] font-bold text-gray-400">{{ $curr }}</span>
                         <input type="number" name="paid_amount" id="paidAmountInput" value="{{ $order->paid_amount ?? 0 }}" min="0" step="0.01"
-                               class="w-full pl-8 pr-3 py-1 border border-gray-200 rounded-lg text-[12px] font-bold text-right text-gray-700 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20">
+                               class="w-full pl-7 pr-3 py-2 bg-white border border-gray-200 rounded-lg text-[12px] font-semibold text-primary-dark focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none transition-all text-right">
                     </div>
                 </div>
 
@@ -189,33 +181,31 @@
                 <input type="hidden" name="total_amount" id="grandTotalVal" value="{{ $order->total_amount }}">
 
                 {{-- Grand Total --}}
-                <div class="bg-primary rounded-xl px-5 py-4 flex items-center justify-between mt-4">
-                    <span class="text-[13px] font-black text-white uppercase tracking-wider">Grand Total</span>
-                    <span class="text-[20px] font-black text-accent" id="grandTotalDisplay">{{ $curr }} {{ number_format($order->total_amount, 2) }}</span>
+                <div class="bg-primary rounded-xl px-4 py-3 flex items-center justify-between mt-3">
+                    <span class="text-[11px] font-black text-white uppercase tracking-wider">Grand Total</span>
+                    <span class="text-[15px] font-black text-accent" id="grandTotalDisplay">{{ $curr }} {{ number_format($order->total_amount, 2) }}</span>
                 </div>
 
                 {{-- Balance rows --}}
-                <div class="mt-3 space-y-1 px-1">
-                    <div class="flex justify-between text-[11px] pt-1">
-                        <span class="text-gray-400">Balance Due (this invoice)</span>
-                        <span class="font-bold text-primary" id="balanceDueDisplay">{{ $curr }} {{ number_format($order->due_amount, 2) }}</span>
-                    </div>
-                    <div class="flex justify-between text-[11px] bg-primary/8 rounded-lg px-3 py-2 mt-1">
-                        <span class="font-black text-primary-dark">Total Customer Balance</span>
-                        <span class="font-black text-primary" id="totalCustomerBalDisplay">{{ $curr }} 0.00</span>
-                    </div>
+                <div class="flex justify-between items-center px-1 py-2 mt-2 border-t border-gray-100">
+                    <span class="text-[10px] text-gray-400 font-medium">Balance Due (this invoice)</span>
+                    <span class="font-bold text-primary text-[12px]" id="balanceDueDisplay">{{ $curr }} {{ number_format($order->due_amount, 2) }}</span>
+                </div>
+                <div class="flex justify-between items-center px-1 py-2 border-t border-gray-100">
+                    <span class="text-[10px] font-black text-gray-400 uppercase tracking-wider">Total Customer Balance</span>
+                    <span class="font-black text-primary-dark text-[12px]" id="totalCustomerBalDisplay">{{ $curr }} 0.00</span>
                 </div>
             </div>
         </div>
 
         {{-- Action Buttons --}}
-        <div class="bg-white border border-gray-100 rounded-xl shadow-sm px-6 py-4 flex flex-wrap items-center gap-3 justify-between">
+        <div class="bg-white rounded-[1rem] border border-gray-100 shadow-sm px-6 py-5 flex flex-wrap items-center justify-between">
             <a href="{{ route('sales.invoice.view') }}"
-               class="inline-flex items-center gap-2 px-5 py-2 rounded-lg border border-gray-300 text-[13px] font-bold text-gray-600 hover:bg-gray-50 transition-all">
+               class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-gray-300 text-[13px] font-bold text-gray-600 hover:bg-gray-50 transition-all">
                 <i class="bi bi-x-circle"></i> Cancel
             </a>
             <button type="button" onclick="submitUpdate()"
-                    class="inline-flex items-center gap-2 px-6 py-2 rounded-lg bg-accent text-primary-dark text-[13px] font-black hover:bg-accent/90 shadow-sm transition-all">
+                    class="inline-flex items-center gap-2 px-6 py-2.5 rounded-lg bg-accent text-primary-dark text-[13px] font-black hover:bg-accent/90 shadow-sm transition-all">
                 <i class="bi bi-check2-all"></i> Update Invoice
             </button>
         </div>
