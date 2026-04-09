@@ -34,7 +34,7 @@ class RegisteredUserController extends Controller
             'name'         => ['required', 'string', 'max:200'],
             'email'        => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password'     => ['required', 'confirmed', Rules\Password::defaults()],
-            'company_name' => ['required', 'string', 'max:255'],
+            'company_name' => ['required', 'string', 'max:255', 'unique:companies,name'],
         ]);
 
         // Create a new company (tenant) for this registrant
