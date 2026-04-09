@@ -181,7 +181,7 @@
                             </td>
                             <td class="px-5 py-4">
                                 <div class="flex flex-col">
-                                    <span class="text-[12px] font-semibold text-primary-dark">{{ $order->customer->name ?? 'N/A' }}</span>
+                                    <span class="text-[12px] font-semibold text-primary-dark">{{ $order->customer->name ?? 'Walk-in Customer' }}</span>
                                     <span class="text-[10px] text-gray-400 font-medium">{{ $order->customer->phone ?? '' }}</span>
                                 </div>
                             </td>
@@ -219,7 +219,7 @@
                                     <a href="{{ route('sales.invoice.show', $order->id) }}" class="btn-action-view" title="View Detail">
                                         <i class="bi bi-eye"></i>
                                     </a>
-                                    <button onclick="sendWhatsAppInvoice('{{ $order->invoice_no }}', '{{ addslashes($order->customer->name ?? 'N/A') }}', '{{ $order->customer->phone ?? '' }}', '{{ $symbol }} {{ number_format($order->total_amount, 2) }}', '{{ route('sales.invoice.pdf', $order->id) }}')" 
+                                    <button onclick="sendWhatsAppInvoice('{{ $order->invoice_no }}', '{{ addslashes($order->customer->name ?? 'Walk-in Customer') }}', '{{ $order->customer->phone ?? '' }}', '{{ $symbol }} {{ number_format($order->total_amount, 2) }}', '{{ route('sales.invoice.pdf', $order->id) }}')" 
                                             class="w-8 h-8 rounded-lg bg-accent/10 text-accent hover:bg-accent hover:text-white transition-all duration-200 flex items-center justify-center text-sm shadow-sm" title="Send WhatsApp">
                                         <i class="bi bi-whatsapp"></i>
                                     </button>
