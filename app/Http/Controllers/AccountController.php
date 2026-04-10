@@ -304,6 +304,16 @@ class AccountController extends Controller
         return redirect()->back()->with('success', 'Account deleted successfully');
     }
 
+    public function toggleStatus($id)
+    {
+        $account = Account::query()->findOrFail($id);
+        $account->is_active = !$account->is_active;
+        $account->save();
+
+        $status = $account->is_active ? 'unlocked' : 'locked';
+        return redirect()->back()->with('success', "Account \"{$account->name}\" has been {$status}.");
+    }
+
     public function ledger(Request $request)
     {
         $cid       = auth()->user()->company_id;

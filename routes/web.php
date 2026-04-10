@@ -182,6 +182,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/accounts', [App\Http\Controllers\AccountController::class, 'store'])->name('account.store');
         Route::put('/accounts/{id}', [App\Http\Controllers\AccountController::class, 'update'])->name('account.update')->middleware('tenant.owns:accounts');
         Route::delete('/accounts/{id}', [App\Http\Controllers\AccountController::class, 'destroy'])->name('account.destroy')->middleware('tenant.owns:accounts');
+        Route::patch('/accounts/{id}/toggle-status', [App\Http\Controllers\AccountController::class, 'toggleStatus'])->name('account.toggle-status')->middleware('tenant.owns:accounts');
 
         // Journal Entry Routes
         Route::get('/journal-entries', [App\Http\Controllers\JournalEntryController::class, 'index'])->name('journal.index');

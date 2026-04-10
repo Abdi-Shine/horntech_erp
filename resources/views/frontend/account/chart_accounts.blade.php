@@ -193,50 +193,82 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100">
-                        @foreach($allAccounts as $account)
-                        <tr class="hover:bg-gray-50/60 transition-colors bg-white group" 
-                            x-show="shouldShowRow(@js($account->id), @js(strtolower($account->name)), @js(strtolower($account->code)), @js($account->is_active ? '1' : '0'))">
-                            <td class="px-5 py-4">
-                                <span class="text-xs font-bold text-primary border-b border-primary/20 tracking-tighter">{{ $account->code }}</span>
-                            </td>
-                            <td class="px-5 py-4">
-                                <span class="text-xs font-bold text-primary-dark uppercase leading-tight">{{ $account->name }}</span>
-                            </td>
-                            <td class="px-5 py-4 text-xs font-bold text-primary-dark uppercase">
-                                {{ $account->category }}
-                            </td>
-                            <td class="px-5 py-4">
-                                <span class="text-xs font-bold text-primary-dark capitalize leading-tight">
-                                    {{ $account->type }}
-                                </span>
-                            </td>
-                            <td class="px-5 py-4 text-xs font-bold text-primary-dark tracking-tight">
-                                {{ $account->currency ?? ($company->currency ?? 'USD') }} {{ number_format($account->balance, 2) }}
-                            </td>
-                            <td class="px-5 py-4">
-                                @if($account->is_active)
-                                <span class="text-xs font-bold text-primary-dark capitalize leading-tight">Active</span>
-                                @else
-                                <span class="text-xs font-bold text-gray-400 capitalize leading-tight">Inactive</span>
-                                @endif
-                            </td>
-                            <td class="px-5 py-4 text-right">
-                                <div class="flex items-center justify-end gap-1.5">
-                                    <a href="{{ route('account.ledger', ['account_id' => $account->id]) }}" class="w-7 h-7 rounded-md bg-gray-50 border border-gray-200 text-gray-400 hover:text-primary hover:border-primary hover:bg-white transition-all flex items-center justify-center text-xs shadow-sm" title="View Ledger">
-                                        <i class="bi bi-journal-text"></i>
-                                    </a>
-                                     <button @click="openEditModal('{{ $account->id }}')" class="w-7 h-7 rounded-md bg-gray-50 border border-gray-200 text-gray-400 hover:text-primary hover:border-primary/20 hover:bg-white transition-all flex items-center justify-center text-xs shadow-sm">
-                                         <i class="bi bi-pencil"></i>
-                                     </button>
-                                     <button @click="confirmDelete('{{ $account->id }}', @js($account->name))" class="w-7 h-7 rounded-md bg-gray-50 border border-gray-200 text-gray-400 hover:text-primary hover:border-primary/20 hover:bg-white transition-all flex items-center justify-center text-xs shadow-sm">
-                                        <i class="bi bi-trash3"></i>
-                                    </button>
-                                    <form id="delete-form-{{ $account->id }}" action="{{ route('account.destroy', $account->id) }}" method="POST" class="hidden">
-                                        @csrf @method('DELETE')
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
+                        @php
+                            $groups = [
+                                'assets'      => ['label' => 'Assets',      'icon' => 'bi-bank2',               'color' => 'text-blue-600',   'bg' => 'bg-blue-50'],
+                                'liabilities' => ['label' => 'Liabilities', 'icon' => 'bi-credit-card-2-front', 'color' => 'text-red-600',    'bg' => 'bg-red-50'],
+                                'equity'      => ['label' => 'Equity',      'icon' => 'bi-pie-chart',           'color' => 'text-purple-600', 'bg' => 'bg-purple-50'],
+                                'revenue'     => ['label' => 'Revenue',     'icon' => 'bi-cash-stack',          'color' => 'text-green-600',  'bg' => 'bg-green-50'],
+                                'expenses'    => ['label' => 'Expenses',    'icon' => 'bi-receipt',             'color' => 'text-orange-600', 'bg' => 'bg-orange-50'],
+                            ];
+                            $grouped = $allAccounts->groupBy('category');
+                        @endphp
+
+                        @foreach($groups as $catKey => $catMeta)
+                            @if($grouped->has($catKey))
+                                {{-- Group Header Row --}}
+                                <tr class="border-t-2 border-gray-200">
+                                    <td colspan="7" class="px-5 py-2.5 {{ $catMeta['bg'] }}">
+                                        <div class="flex items-center gap-2">
+                                            <i class="bi {{ $catMeta['icon'] }} {{ $catMeta['color'] }} text-sm"></i>
+                                            <span class="text-[11px] font-black {{ $catMeta['color'] }} uppercase tracking-widest">{{ $catMeta['label'] }}</span>
+                                            <span class="text-[10px] font-bold text-gray-400">({{ $grouped[$catKey]->count() }} accounts)</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {{-- Account Rows --}}
+                                @foreach($grouped[$catKey] as $account)
+                                <tr class="hover:bg-gray-50/60 transition-colors bg-white group"
+                                    x-show="shouldShowRow(@js($account->id), @js(strtolower($account->name)), @js(strtolower($account->code)), @js($account->is_active ? '1' : '0'))">
+                                    <td class="px-5 py-3.5 pl-8">
+                                        <span class="text-xs font-bold text-primary border-b border-primary/20 tracking-tighter">{{ $account->code }}</span>
+                                    </td>
+                                    <td class="px-5 py-3.5">
+                                        <span class="text-xs font-bold text-primary-dark uppercase leading-tight">{{ $account->name }}</span>
+                                    </td>
+                                    <td class="px-5 py-3.5">
+                                        <span class="text-[10px] font-black {{ $catMeta['color'] }} uppercase tracking-wider">{{ $account->category }}</span>
+                                    </td>
+                                    <td class="px-5 py-3.5">
+                                        <span class="text-xs font-bold text-primary-dark capitalize leading-tight">{{ $account->type }}</span>
+                                    </td>
+                                    <td class="px-5 py-3.5 text-xs font-bold text-primary-dark tracking-tight">
+                                        {{ $account->currency ?? ($company->currency ?? 'USD') }} {{ number_format($account->balance, 2) }}
+                                    </td>
+                                    <td class="px-5 py-3.5">
+                                        @if($account->is_active)
+                                        <span class="text-xs font-bold text-green-600">Active</span>
+                                        @else
+                                        <span class="text-xs font-bold text-gray-400">Inactive</span>
+                                        @endif
+                                    </td>
+                                    <td class="px-5 py-3.5 text-right">
+                                        <div class="flex items-center justify-end gap-1.5">
+                                            <a href="{{ route('account.ledger', ['account_id' => $account->id]) }}"
+                                               class="w-7 h-7 rounded-md bg-gray-50 border border-gray-200 text-gray-400 hover:text-primary hover:border-primary hover:bg-white transition-all flex items-center justify-center text-xs shadow-sm"
+                                               title="View Ledger">
+                                                <i class="bi bi-journal-text"></i>
+                                            </a>
+                                            <button @click="openEditModal('{{ $account->id }}')"
+                                                    class="w-7 h-7 rounded-md bg-gray-50 border border-gray-200 text-gray-400 hover:text-primary hover:border-primary/20 hover:bg-white transition-all flex items-center justify-center text-xs shadow-sm"
+                                                    title="Edit Account">
+                                                <i class="bi bi-pencil"></i>
+                                            </button>
+                                            {{-- Lock / Unlock toggle instead of Delete --}}
+                                            <form action="{{ route('account.toggle-status', $account->id) }}" method="POST" class="inline">
+                                                @csrf @method('PATCH')
+                                                <button type="submit"
+                                                        class="w-7 h-7 rounded-md bg-gray-50 border border-gray-200 transition-all flex items-center justify-center text-xs shadow-sm
+                                                               {{ $account->is_active ? 'text-gray-400 hover:text-amber-500 hover:border-amber-300 hover:bg-amber-50' : 'text-amber-500 border-amber-300 bg-amber-50 hover:text-green-600 hover:border-green-300 hover:bg-green-50' }}"
+                                                        title="{{ $account->is_active ? 'Lock Account' : 'Unlock Account' }}">
+                                                    <i class="bi {{ $account->is_active ? 'bi-unlock' : 'bi-lock-fill' }}"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            @endif
                         @endforeach
                     </tbody>
                 </table>
