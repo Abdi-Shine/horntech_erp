@@ -317,8 +317,73 @@
     </div>
 </div>
 
-<!-- Withdraw Modal (placeholder) -->
-<div id="withdrawModal" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md">
+<!-- Withdraw Modal -->
+<div id="withdrawModal" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md animate-in fade-in duration-300">
+    <div class="bg-white rounded-[1.5rem] w-full max-w-2xl shadow-2xl overflow-hidden relative animate-in zoom-in duration-300">
+        <div class="px-6 py-6 bg-primary relative overflow-hidden shrink-0">
+            <div class="flex items-center justify-between relative z-10">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-white/10 border border-white/10 rounded-lg flex items-center justify-center text-white text-lg shadow-inner backdrop-blur-md">
+                        <i class="bi bi-box-arrow-up"></i>
+                    </div>
+                    <div class="flex flex-col">
+                        <h2 class="text-base font-bold text-white tracking-tight uppercase">Record Withdrawal</h2>
+                        <p class="text-white/60 text-[10px] font-bold uppercase tracking-widest">Outward Fund Registry</p>
+                    </div>
+                </div>
+                <button onclick="closeWithdrawModal()" class="w-7 h-7 bg-white/10 border border-white/10 text-white rounded-md hover:bg-white/20 transition-all flex items-center justify-center shadow-sm">
+                    <i class="bi bi-x-lg text-[10px]"></i>
+                </button>
+            </div>
+        </div>
+        <form action="{{ route('bank.transaction.withdraw') }}" method="POST" class="p-8">
+            @csrf
+            <div class="space-y-6">
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="space-y-1.5">
+                        <label class="text-[11px] font-bold text-gray-700 uppercase tracking-wider">Source Bank Account</label>
+                        <select name="bank_account_id" required class="w-full pl-4 pr-10 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-[13px] font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none transition-all appearance-none cursor-pointer">
+                            @foreach($bankAccounts as $acc)
+                                <option value="{{ $acc->id }}" data-balance="{{ number_format($acc->balance, 2) }}">{{ $acc->name }} ({{ number_format($acc->balance, 2) }})</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="space-y-1.5">
+                        <label class="text-[11px] font-bold text-gray-700 uppercase tracking-wider">Expense Category</label>
+                        <select name="category_id" required class="w-full pl-4 pr-10 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-[13px] font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none transition-all appearance-none cursor-pointer">
+                            @foreach($accountCategories as $cat)
+                                <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="space-y-1.5">
+                        <label class="text-[11px] font-bold text-gray-700 uppercase tracking-wider">Amount</label>
+                        <input type="number" step="0.01" name="amount" required placeholder="0.00" class="w-full pl-4 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-[13px] font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none transition-all">
+                    </div>
+                    <div class="space-y-1.5">
+                        <label class="text-[11px] font-bold text-gray-700 uppercase tracking-wider">Date</label>
+                        <input type="date" name="date" required value="{{ date('Y-m-d') }}" class="w-full pl-4 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-[13px] font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none transition-all">
+                    </div>
+                </div>
+                <div class="space-y-1.5">
+                    <label class="text-[11px] font-bold text-gray-700 uppercase tracking-wider">Paid To</label>
+                    <input type="text" name="paid_to" placeholder="Vendor / Recipient name..." class="w-full pl-4 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-[13px] font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none transition-all">
+                </div>
+                <div class="space-y-1.5">
+                    <label class="text-[11px] font-bold text-gray-700 uppercase tracking-wider">Notes</label>
+                    <input type="text" name="notes" placeholder="Reason for withdrawal..." class="w-full pl-4 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-[13px] font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none transition-all">
+                </div>
+            </div>
+            <div class="flex items-center gap-3 pt-8">
+                <button type="button" onclick="closeWithdrawModal()" class="flex-1 px-5 py-2.5 bg-white border border-gray-200 text-gray-600 font-semibold rounded-lg hover:bg-gray-50 transition-all text-[13px] shadow-sm">Cancel</button>
+                <button type="submit" class="flex-[2] px-6 py-2.5 bg-primary text-white font-bold rounded-lg hover:bg-primary/90 transition-all text-[13px] shadow-sm flex items-center justify-center gap-2">
+                    <i class="bi bi-box-arrow-up text-sm"></i> Confirm Withdrawal
+                </button>
+            </div>
+        </form>
+    </div>
 </div>
 
 <script>
