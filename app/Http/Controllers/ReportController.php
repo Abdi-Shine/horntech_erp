@@ -1628,7 +1628,59 @@ class ReportController extends Controller
         /** @var Company|null $company */
         $id = auth()->user()->company_id;
         $company = $id ? Company::find($id) : Company::first();
-        return view('frontend.report.sales_purchase_by_party_reports', compact('company'));
+
+        // Customers — sum sales_orders per customer for this company
+        $customerRows = \Illuminate\Support\Facades\DB::table('customers as c')
+            ->leftJoin('sales_orders as so', function ($j) use ($id) {
+                $j->on('so.customer_id', '=', 'c.id')->where('so.company_id', $id);
+            })
+            ->where('c.company_id', $id)
+            ->selectRaw('c.id, c.name, COALESCE(SUM(so.total_amount),0) as total_sales')
+            ->groupBy('c.id', 'c.name')
+            ->get();
+
+        $customers = $customerRows->map(fn($c) => [
+            'id'        => 'c-' . $c->id,
+            'name'      => $c->name ?? 'Walk-in Customer',
+            'type'      => 'customer',
+            'sales'     => (float) $c->total_sales,
+            'purchases' => 0,
+        ]);
+
+        // Suppliers — sum purchase_bills per supplier for this company
+        $supplierRows = \Illuminate\Support\Facades\DB::table('suppliers as s')
+            ->leftJoin('purchase_bills as pb', function ($j) use ($id) {
+                $j->on('pb.supplier_id', '=', 's.id')->where('pb.company_id', $id);
+            })
+            ->where('s.company_id', $id)
+            ->selectRaw('s.id, s.name, COALESCE(SUM(pb.total_amount),0) as total_purchases')
+            ->groupBy('s.id', 's.name')
+            ->get();
+
+        $suppliers = $supplierRows->map(fn($s) => [
+            'id'        => 's-' . $s->id,
+            'name'      => $s->name,
+            'type'      => 'supplier',
+            'sales'     => 0,
+            'purchases' => (float) $s->total_purchases,
+        ]);
+
+        // Merge: if same name appears as both customer and supplier, combine
+        $parties = $customers->concat($suppliers)
+            ->groupBy('name')
+            ->map(function ($group) {
+                return [
+                    'id'        => $group->first()['id'],
+                    'name'      => $group->first()['name'],
+                    'type'      => $group->count() > 1 ? 'hybrid' : $group->first()['type'],
+                    'sales'     => $group->sum('sales'),
+                    'purchases' => $group->sum('purchases'),
+                ];
+            })
+            ->values()
+            ->filter(fn($p) => $p['sales'] > 0 || $p['purchases'] > 0);
+
+        return view('frontend.report.sales_purchase_by_party_reports', compact('company', 'parties'));
     }
 
     public function exportSalesPurchaseByPartyPdf(Request $request)

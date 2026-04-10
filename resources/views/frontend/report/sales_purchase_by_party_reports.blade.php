@@ -8,15 +8,7 @@
      x-data="{
         searchTerm: '',
         partyType: 'All Parties',
-        parties: [
-            { id: 1, name: 'Mohammed Ali Trading', sales: 12450.00, purchases: 0 },
-            { id: 2, name: 'Modern Tech Suppliers', sales: 0, purchases: 15450.00 },
-            { id: 3, name: 'Fatima Ahmad Store', sales: 8670.00, purchases: 0 },
-            { id: 4, name: 'Cash Sale', sales: 400.00, purchases: 0 },
-            { id: 5, name: 'shiino', sales: 0, purchases: 2100.00 },
-            { id: 6, name: 'Abdullah Electronics', sales: 5340.00, purchases: 1200.00 },
-            { id: 7, name: 'Global Import LLC', sales: 0, purchases: 8900.00 }
-        ],
+        parties: @json($parties->values()),
         get filteredParties() {
             return this.parties.filter(p => {
                 const matchesSearch = p.name.toLowerCase().includes(this.searchTerm.toLowerCase());
