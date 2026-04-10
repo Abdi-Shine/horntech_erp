@@ -92,11 +92,6 @@
                     <a href="{{ route('branches-view') }}"
                         class="flex items-center gap-3 pl-12 pr-4 py-2 text-white/50 hover:text-white text-[13px] font-medium transition-all duration-200 {{ Route::is('branches-view') ? 'text-white bg-white/10' : '' }}"><i
                             class="bi bi-plus text-lg"></i> Branches</a>
-                    @if(app(\App\Services\FeatureService::class)->isEnabled('transfers'))
-                    <a href="{{ route('branch-transfer') }}"
-                        class="flex items-center gap-3 pl-12 pr-4 py-2 text-white/50 hover:text-white text-[13px] font-medium transition-all duration-200 {{ Route::is('branch-transfer') ? 'text-white bg-white/10' : '' }}"><i
-                            class="bi bi-plus text-lg"></i> Branch Transfer</a>
-                    @endif
                 </div>
             </div>
         @endif
