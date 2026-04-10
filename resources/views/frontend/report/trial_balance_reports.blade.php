@@ -159,10 +159,10 @@
                         <td class="px-6 py-4 text-right text-text-secondary font-mono text-sm">
                             {{ number_format($totals->credit, 2) }}
                         </td>
-                        <td class="px-6 py-4 text-right bg-primary text-white font-mono text-sm">
+                        <td class="px-6 py-4 text-right text-primary font-mono text-sm font-black">
                             {{ number_format($totals->closing_debit, 2) }}
                         </td>
-                        <td class="px-6 py-4 text-right bg-primary/95 text-white border-l border-white/10 font-mono text-sm">
+                        <td class="px-6 py-4 text-right text-primary font-mono text-sm font-black">
                             {{ number_format($totals->closing_credit, 2) }}
                         </td>
                     </tr>
