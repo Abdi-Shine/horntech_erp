@@ -38,7 +38,7 @@
                          { label: 'Loans',                  icon: 'bi-bank2',               url: '{{ route('loan.view') }}' },
                          { label: 'Chart of Accounts',      icon: 'bi-diagram-3',           url: '{{ route('account.index') }}' },
                          { label: 'Journal Entry',          icon: 'bi-journal-text',        url: '{{ route('journal.index') }}' },
-                         { label: 'General Ledger',         icon: 'bi-book',                url: '{{ route('account.ledger') }}' },
+
                          { label: 'Trial Balance',          icon: 'bi-bar-chart-steps',     url: '{{ route('account.trial-balance') }}' },
                          { label: 'Cash Management',        icon: 'bi-safe',                url: '{{ route('cash_management.index') }}' },
                          { label: 'Reports',                icon: 'bi-graph-up-arrow',      url: '{{ route('all_reports') }}' },

@@ -253,9 +253,7 @@
                     <a href="{{ route('journal.index') }}"
                         class="flex items-center gap-3 pl-12 pr-4 py-2 text-white/50 hover:text-white text-[13px] font-medium transition-all duration-200"><i
                             class="bi bi-plus text-lg"></i> Journal Entry</a>
-                    <a href="{{ route('account.ledger') }}"
-                        class="flex items-center gap-3 pl-12 pr-4 py-2 text-white/50 hover:text-white text-[13px] font-medium transition-all duration-200"><i
-                            class="bi bi-plus text-lg"></i> General Ledger</a>
+
                     <a href="{{ route('account.trial-balance') }}"
                         class="flex items-center gap-3 pl-12 pr-4 py-2 text-white/50 hover:text-white text-[13px] font-medium transition-all duration-200"><i
                             class="bi bi-plus text-lg"></i> Trial Balance</a>
