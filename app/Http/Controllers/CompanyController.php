@@ -891,22 +891,33 @@ class CompanyController extends Controller
     public function triggerScheduledBackup(Request $request)
     {
         try {
-            $company = Company::find(auth()->user()->company_id);
-            if (!$company || !$company->auto_backup_enabled) {
+            $cid     = auth()->user()->company_id;
+            $company = Company::withoutGlobalScopes()->find($cid);
+
+            if (!$company) {
+                return response()->json(['success' => false, 'message' => 'Company not found.']);
+            }
+
+            // Respect the toggle: if disabled in DB, skip (JS also guards this, but double-check)
+            // Use request-sent state as authoritative so a fresh DB default never silently blocks
+            $automatedEnabled = $request->input('automated', $company->auto_backup_enabled);
+            if (!$automatedEnabled) {
                 return response()->json(['success' => false, 'message' => 'Automated protocol is disabled.']);
             }
 
-            $currentTime = now()->format('H:i');
+            $currentTime   = now()->format('H:i');
             $scheduledTime = $company->backup_time ?? '02:00';
 
-            // Verify it's time
+            // Not yet time
             if ($currentTime < $scheduledTime) {
                 return response()->json(['success' => false, 'message' => 'Not yet time for scheduled archival.']);
             }
 
-            // Verify it hasn't run for this specific scheduled time today
+            // Already ran today at or after the scheduled time
             $scheduledDateTime = now()->toDateString() . ' ' . $scheduledTime . ':00';
-            $alreadyRun = Backup::where('type', 'auto')
+            $alreadyRun = Backup::withoutGlobalScopes()
+                ->where('company_id', $cid)
+                ->where('type', 'auto')
                 ->where('created_at', '>=', $scheduledDateTime)
                 ->where('status', 'success')
                 ->exists();
@@ -915,8 +926,8 @@ class CompanyController extends Controller
                 return response()->json(['success' => false, 'message' => 'Automated snapshot already completed today.']);
             }
 
-            // Execute protocol
-            Artisan::call('app:system-backup', ['--type' => 'auto']);
+            // Execute — pass company_id so the command backs up the right tenant
+            Artisan::call('app:system-backup', ['--type' => 'auto', '--company' => $cid]);
             $output = Artisan::output();
 
             return response()->json(['success' => true, 'message' => 'Scheduled archival protocol executed.', 'output' => $output]);

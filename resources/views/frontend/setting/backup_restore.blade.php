@@ -568,8 +568,10 @@ document.addEventListener('alpine:init', () => {
                 method: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]')?.getAttribute('content'),
+                    'Content-Type': 'application/json',
                     'Accept': 'application/json'
-                }
+                },
+                body: JSON.stringify({ automated: true, backup_time: this.switches.backup_time })
             })
             .then(r => r.json())
             .then(data => {

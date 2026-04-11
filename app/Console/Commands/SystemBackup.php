@@ -11,7 +11,7 @@ class SystemBackup extends Command
      *
      * @var string
      */
-    protected $signature = 'app:system-backup {--type=auto}';
+    protected $signature = 'app:system-backup {--type=auto} {--company=}';
 
     /**
      * The console command description.
@@ -28,7 +28,11 @@ class SystemBackup extends Command
         $this->info('Starting System Archival Protocol...');
         
         try {
-            $company = \App\Models\Company::first();
+            $companyId = $this->option('company');
+            $company = $companyId
+                ? \App\Models\Company::withoutGlobalScopes()->find($companyId)
+                : \App\Models\Company::withoutGlobalScopes()->first();
+
             if (!$company) {
                 $this->error('Company configuration not discovered. Aborting.');
                 return 1;
