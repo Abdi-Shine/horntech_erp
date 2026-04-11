@@ -342,6 +342,10 @@ document.addEventListener('alpine:init', () => {
                 this.serverDate.setSeconds(this.serverDate.getSeconds() + 1);
                 this.updateClock();
             }, 1000);
+
+            // Check every 60 seconds if a scheduled backup should run
+            this.checkScheduledBackup();
+            setInterval(() => this.checkScheduledBackup(), 60000);
         },
 
         updateClock() {
@@ -556,6 +560,22 @@ document.addEventListener('alpine:init', () => {
                     });
                 }
             });
+        },
+
+        checkScheduledBackup() {
+            if (!this.switches.automated) return;
+            fetch('{{ route('backup.scheduled.trigger') }}', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]')?.getAttribute('content'),
+                    'Accept': 'application/json'
+                }
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.success) location.reload();
+            })
+            .catch(() => {});
         },
 
         backupToGmail() {
