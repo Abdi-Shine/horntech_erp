@@ -7,7 +7,6 @@
     if (auth()->check()) {
         $lowStockAlerts = \App\Models\Product::withoutGlobalScopes()
             ->where('company_id', auth()->user()->company_id)
-            ->where('status', 'active')
             ->whereNotNull('low_stock_threshold')
             ->where('low_stock_threshold', '>', 0)
             ->get()
