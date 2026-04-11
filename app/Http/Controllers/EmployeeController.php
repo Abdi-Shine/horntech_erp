@@ -46,21 +46,14 @@ class EmployeeController extends Controller
     {
         $request->validate([
             'fullName' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
             'phone' => 'nullable|string',
-            'dob' => 'nullable|date',
             'gender' => 'nullable|string',
-            'nationalId' => 'nullable|string',
             'department' => 'nullable|string',
             'designation' => 'nullable|string',
             'salary' => 'nullable|numeric',
-            'title' => 'nullable|string',
-            'marital_status' => 'nullable|string',
-            'country' => 'required|string',
             'companyName' => 'required|string',
             'branch' => 'required_without:store|nullable|string',
             'store' => 'required_without:branch|nullable|string',
-            'district' => 'nullable|string',
         ]);
 
         DB::beginTransaction();
@@ -123,21 +116,14 @@ class EmployeeController extends Controller
 
         $request->validate([
             'fullName' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $user->id,
             'phone' => 'nullable|string',
-            'dob' => 'nullable|date',
             'gender' => 'nullable|string',
-            'nationalId' => 'nullable|string',
             'department' => 'nullable|string',
             'designation' => 'nullable|string',
             'salary' => 'nullable|numeric',
-            'title' => 'nullable|string',
-            'marital_status' => 'nullable|string',
-            'country' => 'required|string',
             'companyName' => 'required|string',
             'branch' => 'required_without:store|nullable|string',
             'store' => 'required_without:branch|nullable|string',
-            'district' => 'nullable|string',
         ]);
 
         DB::beginTransaction();
