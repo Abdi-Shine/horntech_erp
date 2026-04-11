@@ -326,8 +326,8 @@ class AccountController extends Controller
         if ($accountId) {
             $selectedAccount = Account::query()->where('company_id', $cid)->findOrFail($accountId);
             $items = JournalItem::query()->with('entry')
-                ->where('account_id', $accountId)
-                ->where('company_id', $cid)
+                ->where('journal_items.account_id', $accountId)
+                ->where('journal_items.company_id', $cid)
                 ->join('journal_entries', 'journal_items.journal_entry_id', '=', 'journal_entries.id')
                 ->orderBy('journal_entries.date', 'asc')
                 ->select('journal_items.*')
