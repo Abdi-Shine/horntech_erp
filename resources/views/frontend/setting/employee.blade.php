@@ -324,22 +324,20 @@
                             <h3 class="text-[12px] font-black text-primary uppercase tracking-widest">Personal Identification</h3>
                         </div>
 
-                        <div class="mb-8 flex flex-col items-center">
-                            <div class="relative">
-                                <div class="w-20 h-20 bg-slate-50 rounded-2xl border-2 border-white shadow-xl overflow-hidden flex items-center justify-center">
-                                    <template x-if="!photoUrl">
-                                        <i class="bi bi-person text-4xl text-slate-300"></i>
-                                    </template>
-                                    <template x-if="photoUrl">
-                                        <img :src="photoUrl" class="w-full h-full object-cover">
-                                    </template>
-                                </div>
-                                <label for="photoUpload" class="absolute -top-1 -right-1 w-6 h-6 bg-accent text-white rounded-lg flex items-center justify-center shadow-lg cursor-pointer hover:scale-110 transition-all border-2 border-white">
-                                    <i class="bi bi-camera-fill text-[10px]"></i>
-                                </label>
-                                <input type="file" id="photoUpload" name="photo" class="hidden" accept="image/*" @change="let file = $event.target.files[0]; if(file) { let reader = new FileReader(); reader.onload = (e) => photoUrl = e.target.result; reader.readAsDataURL(file); }">
-                            </div>
-                            <span class="text-[10px] font-black text-slate-400 mt-3 tracking-[0.2em]">PROFILE PHOTO</span>
+                        <div class="mb-8">
+                            <label class="text-[11px] font-bold text-gray-700 uppercase tracking-wider block mb-1.5">Profile Photo</label>
+                            <label for="photoUpload" class="flex flex-col items-center justify-center w-full py-5 border-2 border-dashed border-gray-200 rounded-xl bg-gray-50 hover:bg-gray-100 hover:border-primary/40 cursor-pointer transition-all">
+                                <template x-if="!photoUrl">
+                                    <div class="flex flex-col items-center gap-2">
+                                        <i class="bi bi-cloud-arrow-up text-2xl text-gray-400"></i>
+                                        <span class="text-[11px] font-black text-gray-400 uppercase tracking-widest">Upload Image</span>
+                                    </div>
+                                </template>
+                                <template x-if="photoUrl">
+                                    <img :src="photoUrl" class="h-20 w-20 object-cover rounded-xl">
+                                </template>
+                            </label>
+                            <input type="file" id="photoUpload" name="photo" class="hidden" accept="image/*" @change="let file = $event.target.files[0]; if(file) { let reader = new FileReader(); reader.onload = (e) => photoUrl = e.target.result; reader.readAsDataURL(file); }">
                         </div>
                         
                         <div class="grid md:grid-cols-3 gap-y-7 gap-x-6">
