@@ -157,12 +157,8 @@ class RegisteredUserController extends Controller
         // Seed full chart of accounts using the same service as the seeder
         app(\App\Services\ChartOfAccountsService::class)->seedForCompany($company->id, $hqBranch->id);
 
-        // Note: We do NOT fire Registered event because the admin email is
-        // pre-verified above — firing it would send a verification email
-        // and redirect to the verify-email page, blocking dashboard access.
-
-        Auth::login($user);
-
-        return redirect(route('dashboard', absolute: false));
+        // Do NOT auto-login — user must open their email and click the login button.
+        return redirect()->route('login')
+            ->with('status', 'Account created! Please check your email for your login credentials.');
     }
 }
