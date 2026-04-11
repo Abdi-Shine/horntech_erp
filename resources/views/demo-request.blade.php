@@ -115,74 +115,26 @@
                         <form id="demoForm" method="POST" action="{{ route('demo.request.store') }}">
                             @csrf
 
-                            <!-- Contact Information -->
-                            <div class="mb-4">
-                                <h6 class="text-primary fw-bold mb-3">Contact Information</h6>
-                                <div class="row g-3">
-                                    <div class="col-12">
-                                        <label class="form-label">Full Name <span class="required">*</span></label>
-                                        <input type="text" name="full_name" class="form-control @error('full_name') is-invalid @enderror"
-                                               placeholder="John Smith" value="{{ old('full_name') }}" required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label">Email <span class="required">*</span></label>
-                                        <input type="email" name="email" class="form-control @error('email') is-invalid @enderror"
-                                               placeholder="john@company.com" value="{{ old('email') }}" required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label">Phone <span class="required">*</span></label>
-                                        <input type="tel" name="phone" class="form-control @error('phone') is-invalid @enderror"
-                                               placeholder="+966 50 123 4567" value="{{ old('phone') }}" required>
-                                    </div>
+                            <div class="row g-3 mb-4">
+                                <div class="col-12">
+                                    <label class="form-label">Company Name <span class="required">*</span></label>
+                                    <input type="text" name="company_name" class="form-control @error('company_name') is-invalid @enderror"
+                                           placeholder="Enter your company name" value="{{ old('company_name') }}" required>
                                 </div>
-                            </div>
-
-                            <!-- Company Information -->
-                            <div class="mb-4">
-                                <h6 class="text-primary fw-bold mb-3">Company Information</h6>
-                                <div class="row g-3">
-                                    <div class="col-md-6">
-                                        <label class="form-label">Company Name <span class="required">*</span></label>
-                                        <input type="text" name="company_name" class="form-control @error('company_name') is-invalid @enderror"
-                                               placeholder="Your Company" value="{{ old('company_name') }}" required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label">Job Title <span class="required">*</span></label>
-                                        <input type="text" name="job_title" class="form-control @error('job_title') is-invalid @enderror"
-                                               placeholder="CEO, Manager, etc." value="{{ old('job_title') }}" required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label">Industry <span class="required">*</span></label>
-                                        <select name="industry" class="form-select @error('industry') is-invalid @enderror" required>
-                                            <option value="">Select industry</option>
-                                            @foreach(['Retail & Trading','Manufacturing','Wholesale Distribution','Food & Beverage','Electronics & Technology','Healthcare','Construction','Professional Services','Other'] as $industry)
-                                                <option value="{{ $industry }}" {{ old('industry') === $industry ? 'selected' : '' }}>{{ $industry }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label">Company Size <span class="required">*</span></label>
-                                        <select name="company_size" class="form-select @error('company_size') is-invalid @enderror" required>
-                                            <option value="">Select size</option>
-                                            @foreach(['1-10 employees','11-50 employees','51-200 employees','201-500 employees','500+ employees'] as $size)
-                                                <option value="{{ $size }}" {{ old('company_size') === $size ? 'selected' : '' }}>{{ $size }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label">Country <span class="required">*</span></label>
-                                        <select name="country" class="form-select @error('country') is-invalid @enderror" required>
-                                            <option value="">Select country</option>
-                                            @foreach(['Somalia','Ethiopia','Kenya','Uganda','Tanzania','Rwanda','Burundi','Djibouti','Eritrea','South Sudan','Sudan','Saudi Arabia','United Arab Emirates','Kuwait','Bahrain','Qatar','Oman','Other'] as $country)
-                                                <option value="{{ $country }}" {{ old('country', 'Somalia') === $country ? 'selected' : '' }}>{{ $country }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label">Preferred Date <span class="required">*</span></label>
-                                        <input type="date" name="preferred_date" class="form-control @error('preferred_date') is-invalid @enderror"
-                                               value="{{ old('preferred_date') }}" required>
-                                    </div>
+                                <div class="col-12">
+                                    <label class="form-label">Your Name <span class="required">*</span></label>
+                                    <input type="text" name="full_name" class="form-control @error('full_name') is-invalid @enderror"
+                                           placeholder="Enter your name" value="{{ old('full_name') }}" required>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">Email <span class="required">*</span></label>
+                                    <input type="email" name="email" class="form-control @error('email') is-invalid @enderror"
+                                           placeholder="you@gmail.com" value="{{ old('email') }}" required>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">Phone <span class="required">*</span></label>
+                                    <input type="tel" name="phone" class="form-control @error('phone') is-invalid @enderror"
+                                           placeholder="+966 50 123 4567" value="{{ old('phone') }}" required>
                                 </div>
                             </div>
 
@@ -199,21 +151,5 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-    function selectTime(element) {
-        document.querySelectorAll('.time-slot-btn').forEach(btn => btn.classList.remove('selected'));
-        element.classList.add('selected');
-        document.getElementById('selectedTime').value = element.textContent.trim();
-    }
-
-    document.querySelector('input[name="preferred_date"]').min = new Date().toISOString().split('T')[0];
-
-    document.getElementById('demoForm').addEventListener('submit', function(e) {
-        if (!document.getElementById('selectedTime').value) {
-            e.preventDefault();
-            alert('Please select a preferred time slot');
-        }
-    });
-</script>
 </body>
 </html>

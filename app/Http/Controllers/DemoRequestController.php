@@ -15,15 +15,10 @@ class DemoRequestController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'full_name'       => 'required|string|max:200',
-            'email'           => 'required|email|max:255',
-            'phone'           => 'required|string|max:30',
-            'company_name'    => 'required|string|max:255',
-            'job_title'       => 'required|string|max:100',
-            'industry'        => 'required|string|max:100',
-            'company_size'    => 'required|string|max:50',
-            'country'         => 'required|string|max:100',
-            'preferred_date'  => 'required|date|after_or_equal:today',
+            'company_name' => 'required|string|max:255',
+            'full_name'    => 'required|string|max:200',
+            'email'        => 'required|email|max:255',
+            'phone'        => 'required|string|max:30',
         ]);
 
         DemoRequest::create($validated);
