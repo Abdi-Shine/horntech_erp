@@ -352,15 +352,12 @@
                                 <input type="tel" name="phone" class="w-full pl-4 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-[13px] font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none transition-all" placeholder="+252 XXX XXX XXX">
                             </div>
                             <div>
-                                <label class="form-label">Gender</label>
-                                <div class="relative">
-                                    <select name="gender" class="form-input appearance-none bg-slate-50 border-slate-100">
-                                        <option value="">Select Gender</option>
-                                        <option value="Male">Male</option>
-                                        <option value="Female">Female</option>
-                                    </select>
-                                    <i class="bi bi-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-xs"></i>
-                                </div>
+                                <label class="text-[11px] font-bold text-gray-700 uppercase tracking-wider">Gender</label>
+                                <select name="gender" class="w-full pl-4 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-[13px] font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none transition-all">
+                                    <option value="">Select Gender</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                </select>
                             </div>
                         </div>
 
@@ -413,19 +410,6 @@
                         </div>
                     </div>
                     
-                    <!-- Confirmation -->
-                    <div class="mb-5 pt-8 border-t border-slate-100">
-                        <div class="mt-2 bg-gray-50 rounded-2xl p-6 border border-gray-100">
-                            <div class="flex items-start gap-4">
-                                <div class="flex items-center h-6">
-                                    <input type="checkbox" name="terms" required class="w-5 h-5 accent-primary border-gray-300 rounded cursor-pointer">
-                                </div>
-                                <label class="text-[13px] text-gray-600 cursor-pointer font-medium leading-relaxed">
-                                    I confirm that all provided information is accurate. This will create a system user account for the employee and grant them the specified role permissions.
-                                </label>
-                            </div>
-                        </div>
-                    </div>
                 </form>
             </div>
             
