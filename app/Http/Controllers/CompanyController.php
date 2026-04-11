@@ -261,7 +261,7 @@ class CompanyController extends Controller
         $booleanFields = [
             'allow_negative_inventory', 'track_expiry', 'enable_barcode', 
             'force_2fa', 'log_overrides', 'maintenance_mode', 'enable_api',
-            'round_invoice', 'auto_exchange_rate', 'multiple_payment_methods', 'enable_discount'
+            'round_invoice'
         ];
 
         foreach ($booleanFields as $field) {
