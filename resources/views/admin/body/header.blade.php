@@ -88,16 +88,17 @@
             </div>
 
             <!-- Notification Bell & Dropdown -->
+            @php $totalNotifs = $lowStockAlerts->count() + $globalBackups->count(); @endphp
             <div x-data="{ open: false }" class="relative">
                 <button @click="open = !open" @click.away="open = false" class="relative p-2 text-gray-400 hover:text-primary transition-all focus:outline-none">
                     <i class="bi bi-bell text-2xl"></i>
-                    @if($globalBackups->count() > 0)
-                        <span class="absolute top-2 right-2 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white"></span>
+                    @if($totalNotifs > 0)
+                        <span class="absolute top-1 right-1 min-w-[18px] h-[18px] bg-red-500 text-white text-[9px] font-black rounded-full border-2 border-white flex items-center justify-center px-0.5">{{ $totalNotifs }}</span>
                     @endif
                 </button>
 
                 <!-- Notification Dropdown -->
-                <div x-show="open" 
+                <div x-show="open"
                      x-cloak
                      x-transition:enter="transition ease-out duration-200"
                      x-transition:enter-start="opacity-0 scale-95 translate-y-2"
@@ -105,43 +106,74 @@
                      x-transition:leave="transition ease-in duration-75"
                      x-transition:leave-start="opacity-100 scale-100 translate-y-0"
                      x-transition:leave-end="opacity-0 scale-95 translate-y-2"
-                     class="absolute right-0 mt-3 w-[320px] bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden z-50">
-                    
-                    <div class="px-5 py-4 border-b border-gray-50 flex items-center justify-between bg-gray-50/50">
-                        <h3 class="text-xs font-black text-primary-dark uppercase tracking-widest">Security Intelligence</h3>
-                        <span class="px-2 py-0.5 bg-primary/10 text-primary text-[9px] font-bold rounded-full">{{ $globalBackups->count() }} Alert(s)</span>
+                     class="absolute right-0 mt-3 w-[340px] bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden z-50">
+
+                    <div class="px-5 py-3 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
+                        <h3 class="text-xs font-black text-primary-dark uppercase tracking-widest">Notifications</h3>
+                        <span class="px-2 py-0.5 bg-red-50 text-red-600 text-[9px] font-bold rounded-full border border-red-100">{{ $totalNotifs }} Alert(s)</span>
                     </div>
 
-                    <div class="max-h-[350px] overflow-y-auto custom-scrollbar">
-                        @forelse($globalBackups as $notif)
-                        <div class="px-5 py-4 hover:bg-slate-50 border-b border-gray-50 transition-colors cursor-pointer group">
-                            <div class="flex gap-4">
-                                <div class="w-10 h-10 rounded-xl bg-primary/5 flex items-center justify-center text-primary shrink-0 group-hover:bg-primary group-hover:text-white transition-all duration-300">
-                                    <i class="bi bi-shield-check text-lg"></i>
+                    <div class="max-h-[380px] overflow-y-auto custom-scrollbar">
+
+                        {{-- Low Stock Alerts --}}
+                        @if($lowStockAlerts->count() > 0)
+                            <div class="px-5 py-2 bg-red-50/60 border-b border-red-100">
+                                <span class="text-[9px] font-black text-red-500 uppercase tracking-widest">⚠ Low Stock — Critical</span>
+                            </div>
+                            @foreach($lowStockAlerts as $item)
+                            <a href="{{ route('low-stock.view') }}" class="flex gap-3 px-5 py-3.5 hover:bg-red-50/40 border-b border-gray-50 transition-colors group">
+                                <div class="w-9 h-9 rounded-xl bg-red-100 flex items-center justify-center text-red-500 shrink-0 group-hover:bg-red-500 group-hover:text-white transition-all duration-200">
+                                    <i class="bi bi-exclamation-triangle-fill text-sm"></i>
                                 </div>
-                                <div class="flex flex-col gap-0.5">
-                                    <p class="text-[12px] font-bold text-primary-dark leading-tight">System Snapshot Successful</p>
-                                    <p class="text-[10px] text-slate-500 font-medium">Archived: {{ $notif->filename }}</p>
-                                    <div class="flex items-center gap-2 mt-1">
-                                        <span class="text-[9px] font-black text-accent uppercase tracking-tighter">{{ $notif->type }}</span>
+                                <div class="flex flex-col gap-0.5 min-w-0">
+                                    <p class="text-[12px] font-bold text-primary-dark leading-tight truncate">{{ $item->name }}</p>
+                                    <p class="text-[10px] text-red-500 font-bold">Stock: {{ $item->current_stock }} / Min: {{ $item->low_stock_threshold }}</p>
+                                    <span class="text-[9px] font-black text-white bg-red-500 rounded px-1.5 py-0.5 w-fit uppercase tracking-tighter">CRITICAL</span>
+                                </div>
+                            </a>
+                            @endforeach
+                        @endif
+
+                        {{-- Backup Alerts --}}
+                        @if($globalBackups->count() > 0)
+                            <div class="px-5 py-2 bg-primary/5 border-b border-primary/10">
+                                <span class="text-[9px] font-black text-primary uppercase tracking-widest">✓ Recent Backups</span>
+                            </div>
+                            @foreach($globalBackups as $notif)
+                            <div class="px-5 py-3.5 hover:bg-slate-50 border-b border-gray-50 transition-colors group">
+                                <div class="flex gap-3">
+                                    <div class="w-9 h-9 rounded-xl bg-primary/5 flex items-center justify-center text-primary shrink-0 group-hover:bg-primary group-hover:text-white transition-all duration-200">
+                                        <i class="bi bi-shield-check text-sm"></i>
+                                    </div>
+                                    <div class="flex flex-col gap-0.5">
+                                        <p class="text-[12px] font-bold text-primary-dark leading-tight">Backup Verified</p>
+                                        <p class="text-[10px] text-slate-500">{{ $notif->filename }}</p>
                                         <span class="text-[9px] text-slate-400 italic">{{ \Carbon\Carbon::parse($notif->created_at)->diffForHumans() }}</span>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        @empty
+                            @endforeach
+                        @endif
+
+                        @if($totalNotifs === 0)
                         <div class="px-5 py-10 text-center">
-                            <div class="flex flex-col items-center gap-2 opacity-30 grayscale">
+                            <div class="flex flex-col items-center gap-2 opacity-30">
                                 <i class="bi bi-bell-slash text-3xl text-gray-400"></i>
-                                <p class="text-[11px] font-black uppercase tracking-widest text-gray-400">All Systems Verified</p>
+                                <p class="text-[11px] font-black uppercase tracking-widest text-gray-400">No Alerts</p>
                             </div>
                         </div>
-                        @endforelse
+                        @endif
                     </div>
 
-                    <a href="{{ route('backup-restore') }}" class="block px-5 py-4 bg-gray-50 text-center text-[10px] font-bold text-primary hover:text-primary-dark transition-colors uppercase tracking-widest border-t border-gray-100">
-                        View Archival Ledger
+                    @if($lowStockAlerts->count() > 0)
+                    <a href="{{ route('low-stock.view') }}" class="block px-5 py-3 bg-red-50 text-center text-[10px] font-bold text-red-600 hover:text-red-700 transition-colors uppercase tracking-widest border-t border-red-100">
+                        View All Stock Alerts →
                     </a>
+                    @else
+                    <a href="{{ route('backup-restore') }}" class="block px-5 py-3 bg-gray-50 text-center text-[10px] font-bold text-primary hover:text-primary-dark transition-colors uppercase tracking-widest border-t border-gray-100">
+                        View Archival Ledger →
+                    </a>
+                    @endif
                 </div>
             </div>
             

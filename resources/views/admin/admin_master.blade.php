@@ -1,8 +1,29 @@
 @php
     $company = auth()->check() ? \App\Models\Company::find(auth()->user()->company_id) : \App\Models\Company::first();
     $globalBackups = \App\Models\Backup::latest()->take(5)->get();
+
+    // Low stock alerts: products whose total stock is below their min_stock_level
+    $lowStockAlerts = collect();
+    if (auth()->check()) {
+        $lowStockAlerts = \App\Models\Product::withoutGlobalScopes()
+            ->where('company_id', auth()->user()->company_id)
+            ->where('status', 'active')
+            ->whereNotNull('low_stock_threshold')
+            ->where('low_stock_threshold', '>', 0)
+            ->get()
+            ->filter(function ($product) {
+                $stock = \App\Models\ProductStock::withoutGlobalScopes()
+                    ->where('product_id', $product->id)
+                    ->sum('quantity');
+                $product->current_stock = $stock;
+                return $stock < $product->low_stock_threshold;
+            })
+            ->take(10);
+    }
+
     \Illuminate\Support\Facades\View::share('company', $company);
     \Illuminate\Support\Facades\View::share('globalBackups', $globalBackups);
+    \Illuminate\Support\Facades\View::share('lowStockAlerts', $lowStockAlerts);
 @endphp
 <!DOCTYPE html>
 <html lang="en">
