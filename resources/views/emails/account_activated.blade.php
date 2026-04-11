@@ -24,17 +24,24 @@
             <h2 style="color: #004161; margin: 0;">HornTech</h2>
         </div>
 
-        <p>Dear {{ $companyName }},</p>
+        <!-- Verified Badge -->
+        <div style="text-align:center; margin-bottom: 24px;">
+            <span style="display:inline-flex; align-items:center; gap:6px; background-color:#f0fdf4; border:1px solid #86efac; color:#16a34a; padding:6px 16px; border-radius:999px; font-size:13px; font-weight:bold;">
+                &#10003; Email Address Verified
+            </span>
+        </div>
+
+        <p>Dear {{ $userName }},</p>
 
         <p>Greetings from HornTech.</p>
 
-        <p>We are pleased to inform you that your HornTech ERP System has been successfully activated. Your organization can now access and utilize the system to manage your business operations efficiently.</p>
+        <p>We are pleased to inform you that your HornTech ERP System has been successfully activated and your email address has been verified. Your organization can now access and utilize the system to manage your business operations efficiently.</p>
 
         <p>Please find your access details below:</p>
 
         <div class="details">
             <p><label>System URL:</label> <a href="{{ config('app.url') }}" style="color: #004161;">{{ config('app.url') }}</a></p>
-            <p><label>Username:</label> {{ $username }}</p>
+            <p><label>Username:</label> <a href="mailto:{{ $username }}" style="color:#004161;">{{ $username }}</a></p>
             <p><label>Password:</label> {{ $password }}</p>
         </div>
 

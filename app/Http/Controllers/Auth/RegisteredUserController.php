@@ -82,7 +82,8 @@ class RegisteredUserController extends Controller
         Mail::to($user->email)->send(new AccountActivatedMail(
             $company->name,
             $user->email,
-            $request->password
+            $request->password,
+            $user->name
         ));
 
         // Seed default roles for this company so the admin can assign them to staff

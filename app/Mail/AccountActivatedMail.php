@@ -3,7 +3,7 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
+
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -16,15 +16,14 @@ class AccountActivatedMail extends Mailable
     public $companyName;
     public $username;
     public $password;
+    public $userName;
 
-    /**
-     * Create a new message instance.
-     */
-    public function __construct($companyName, $username, $password)
+    public function __construct($companyName, $username, $password, $userName = null)
     {
         $this->companyName = $companyName;
-        $this->username = $username;
-        $this->password = $password;
+        $this->username    = $username;
+        $this->password    = $password;
+        $this->userName    = $userName ?? $companyName;
     }
 
     /**
