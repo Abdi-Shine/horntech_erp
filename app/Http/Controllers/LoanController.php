@@ -138,7 +138,7 @@ class LoanController extends Controller
 
             // Activating: create disbursement journal entry
             if ($status === 'active' && $loan->status === 'pending') {
-                $loansReceivableAccount = Account::query()
+                $loansReceivableAccount = Account::withoutGlobalScopes()
                     ->where('company_id', $cid)
                     ->where(function ($q) {
                         $q->where('code', '1300')
@@ -147,14 +147,17 @@ class LoanController extends Controller
                     })
                     ->first();
 
-                $bankAccount = Account::query()
+                $cashAccount = Account::withoutGlobalScopes()
                     ->where('company_id', $cid)
-                    ->whereIn('type', ['bank', 'cash'])
-                    ->where('is_active', 1)
-                    ->orderBy('type')
+                    ->where(function ($q) {
+                        $q->where('code', '1110')
+                          ->orWhere('type', 'cash')
+                          ->orWhere('name', 'like', '%Cash on Hand%');
+                    })
+                    ->orderByRaw("CASE WHEN code = '1110' THEN 0 WHEN type = 'cash' THEN 1 ELSE 2 END")
                     ->first();
 
-                if ($loansReceivableAccount && $bankAccount) {
+                if ($cashAccount) {
                     $entry = JournalEntry::query()->create([
                         'entry_number' => 'JE-LN-' . date('Ymd') . '-' . str_pad($loan->id, 5, '0', STR_PAD_LEFT),
                         'date'         => now()->toDateString(),
@@ -166,20 +169,22 @@ class LoanController extends Controller
                         'created_by'   => Auth::id(),
                     ]);
 
-                    // Dr Employee Loans Receivable
-                    JournalItem::query()->create([
-                        'journal_entry_id' => $entry->id,
-                        'account_id'       => $loansReceivableAccount->id,
-                        'company_id'       => $cid,
-                        'description'      => 'Loan to ' . ($loan->employee->name ?? 'Employee'),
-                        'debit'            => $loan->amount,
-                        'credit'           => 0,
-                    ]);
+                    // Dr Employee Loans Receivable (if account exists)
+                    if ($loansReceivableAccount) {
+                        JournalItem::query()->create([
+                            'journal_entry_id' => $entry->id,
+                            'account_id'       => $loansReceivableAccount->id,
+                            'company_id'       => $cid,
+                            'description'      => 'Loan to ' . ($loan->employee->name ?? 'Employee'),
+                            'debit'            => $loan->amount,
+                            'credit'           => 0,
+                        ]);
+                    }
 
-                    // Cr Bank/Cash
+                    // Cr Cash on Hand — always reduce cash
                     JournalItem::query()->create([
                         'journal_entry_id' => $entry->id,
-                        'account_id'       => $bankAccount->id,
+                        'account_id'       => $cashAccount->id,
                         'company_id'       => $cid,
                         'description'      => 'Loan disbursement ' . $loan->loan_id,
                         'debit'            => 0,
