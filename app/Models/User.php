@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -48,7 +47,7 @@ use App\Traits\BelongsToTenant;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereUsername($value)
  * @mixin \Eloquent
  */
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, BelongsToTenant;
@@ -69,6 +68,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'photo',
         'role',
         'company_id',
+        'email_verified_at',
     ];
 
     /**
