@@ -755,11 +755,24 @@ class PurchaseController extends Controller
             if ($request->items && $purchase_type !== 'Return') {
                 foreach ($request->items as $item) {
                     if (isset($item['product_id']) && is_numeric($item['product_id'])) {
-                        // 1. Update latest purchase price on Product table
+                        // 1. Update purchase price on Product table (AVCO or latest)
                         /** @var Product|null $product */
                         $product = Product::query()->find($item['product_id']);
                         if ($product) {
-                            $product->purchase_price = $item['unit_price'];
+                            $costingMethod = Company::find(auth()->user()->company_id)?->costing_method ?? 'FIFO';
+                            if ($costingMethod === 'AVCO') {
+                                $currentQty   = ProductStock::query()->where('product_id', $product->id)->sum('quantity');
+                                $currentCost  = (float) ($product->purchase_price ?? 0);
+                                $newQty       = (float) ($item['quantity'] ?? 0);
+                                $newPrice     = (float) ($item['unit_price'] ?? 0);
+                                $totalQty     = $currentQty + $newQty;
+                                $product->purchase_price = $totalQty > 0
+                                    ? round((($currentQty * $currentCost) + ($newQty * $newPrice)) / $totalQty, 4)
+                                    : $newPrice;
+                            } else {
+                                // FIFO / LIFO: use latest purchase price
+                                $product->purchase_price = $item['unit_price'];
+                            }
                             $product->save();
                         }
 
