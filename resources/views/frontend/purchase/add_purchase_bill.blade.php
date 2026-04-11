@@ -684,6 +684,15 @@
                     recalcAll();
                 });
 
+                // Auto-set branch_id from the pre-filled locationItem hidden value (e.g. "branch_3")
+                (function () {
+                    const locVal = document.getElementById('locationItem')?.value || '';
+                    const match  = locVal.match(/^branch_(\d+)$/);
+                    if (match) {
+                        document.getElementById('branch_id').value = match[1];
+                    }
+                })();
+
                 // Add first row
                 addItemRow();
 
