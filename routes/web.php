@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
-Route::get('/', [\App\Http\Controllers\LandingController::class, 'index'])->name('landing');
+Route::get('/', function () { return redirect()->route('login'); })->name('landing');
 Route::get('/demo', [\App\Http\Controllers\DemoRequestController::class, 'index'])->name('demo.request');
 Route::post('/demo', [\App\Http\Controllers\DemoRequestController::class, 'store'])->name('demo.request.store');
 Route::get('/terms', function() { return view('terms'); })->name('terms');
