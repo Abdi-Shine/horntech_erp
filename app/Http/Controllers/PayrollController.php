@@ -225,20 +225,8 @@ class PayrollController extends Controller
 
             $payroll->items()->update(['status' => 'Paid', 'payment_date' => now()]);
 
-            // Journal Entry: Dr Salaries Payable / Cr Bank/Cash
-            $salariesPayableAccount = Account::query()
-                ->where('company_id', $cid)
-                ->where(function ($q) {
-                    $q->where('code', '2140')
-                      ->orWhere('code', '2200')
-                      ->orWhere('name', 'like', '%Accrued Salaries%')
-                      ->orWhere('name', 'like', '%Salaries Payable%')
-                      ->orWhere('name', 'like', '%Wages Payable%');
-                })
-                ->first();
-
             // Prefer Cash on Hand (1110), then any cash type, then bank
-            $bankAccount = Account::query()
+            $cashAccount = Account::query()
                 ->where('company_id', $cid)
                 ->where('category', 'assets')
                 ->where(function ($q) {
@@ -251,7 +239,32 @@ class PayrollController extends Controller
                 ->orderByRaw("CASE WHEN code = '1110' THEN 0 WHEN type = 'cash' THEN 1 WHEN type = 'bank' THEN 2 ELSE 3 END")
                 ->first();
 
-            if ($salariesPayableAccount && $bankAccount) {
+            // Debit side: Salaries Payable if exists, else Salary Expense
+            $debitAccount = Account::query()
+                ->where('company_id', $cid)
+                ->where(function ($q) {
+                    $q->where('code', '2140')
+                      ->orWhere('code', '2200')
+                      ->orWhere('name', 'like', '%Accrued Salaries%')
+                      ->orWhere('name', 'like', '%Salaries Payable%')
+                      ->orWhere('name', 'like', '%Wages Payable%');
+                })
+                ->first();
+
+            // Fallback: use salary expense account directly
+            if (!$debitAccount) {
+                $debitAccount = Account::query()
+                    ->where('company_id', $cid)
+                    ->where('category', 'expenses')
+                    ->where(function ($q) {
+                        $q->where('code', '5210')
+                          ->orWhere('name', 'like', '%Salaries%')
+                          ->orWhere('name', 'like', '%Wages%');
+                    })
+                    ->first();
+            }
+
+            if ($debitAccount && $cashAccount) {
                 $entry = JournalEntry::query()->create([
                     'entry_number' => 'JE-PP-' . date('Ymd') . '-' . str_pad($payroll->id, 5, '0', STR_PAD_LEFT),
                     'date'         => now()->toDateString(),
@@ -263,20 +276,20 @@ class PayrollController extends Controller
                     'created_by'   => Auth::id(),
                 ]);
 
-                // Dr Salaries Payable = total_net (clears the liability)
+                // Dr Salaries Payable (or Salary Expense) = total_net
                 JournalItem::query()->create([
                     'journal_entry_id' => $entry->id,
-                    'account_id'       => $salariesPayableAccount->id,
+                    'account_id'       => $debitAccount->id,
                     'company_id'       => $cid,
                     'description'      => 'Payroll payment ' . $payroll->month_year,
                     'debit'            => $payroll->total_net,
                     'credit'           => 0,
                 ]);
 
-                // Cr Bank/Cash = total_net
+                // Cr Cash on Hand = total_net
                 JournalItem::query()->create([
                     'journal_entry_id' => $entry->id,
-                    'account_id'       => $bankAccount->id,
+                    'account_id'       => $cashAccount->id,
                     'company_id'       => $cid,
                     'description'      => 'Payroll payment ' . $payroll->month_year,
                     'debit'            => 0,
