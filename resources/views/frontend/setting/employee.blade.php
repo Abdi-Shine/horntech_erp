@@ -33,15 +33,9 @@
                 }
                 methodInput.value = 'PUT';
 
-                form.title.value = employee.title || '';
                 form.fullName.value = employee.full_name || '';
-                form.email.value = employee.user?.email || '';
                 form.phone.value = employee.phone || '';
-                form.dob.value = employee.dob || '';
                 form.gender.value = employee.gender || '';
-                form.marital_status.value = employee.marital_status || '';
-                form.nationalId.value = employee.national_id || '';
-                form.country.value = employee.country || '';
                 form.employeeId.value = employee.employee_id || '';
                 form.companyName.value = employee.company || '';
                 form.department.value = employee.department || '';
@@ -52,8 +46,6 @@
                 });
 
                 form.salary.value = employee.salary || '';
-                form.address.value = employee.address || '';
-                form.district.value = employee.district || '';
             }
         },
         showAddModal() {
@@ -351,50 +343,13 @@
                         </div>
                         
                         <div class="grid md:grid-cols-3 gap-y-7 gap-x-6">
-                             <div>
-                                <label class="text-[11px] font-bold text-gray-700 uppercase tracking-wider">Title</label>
-                                <div class="relative">
-                                    <select name="title" class="w-full pl-4 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-[13px] font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none transition-all appearance-none bg-gray-50 border-gray-100">
-                                        <option value="">Select Title</option>
-                                        <option value="Mr">Mr.</option>
-                                        <option value="Ms">Ms.</option>
-                                        <option value="Mrs">Mrs.</option>
-                                    </select>
-                                    <i class="bi bi-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-xs"></i>
-                                </div>
-                            </div>
                             <div>
                                 <label class="text-[11px] font-bold text-gray-700 uppercase tracking-wider">Full Name <span class="text-primary">*</span></label>
                                 <input type="text" name="fullName" required class="w-full pl-4 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-[13px] font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none transition-all" placeholder="Enter full name">
                             </div>
-                             <div>
-                                <label class="text-[11px] font-bold text-gray-700 uppercase tracking-wider">National ID</label>
-                                <input type="text" name="nationalId" class="w-full pl-4 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-[13px] font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none transition-all" placeholder="Enter ID number">
-                            </div>
-                             <div>
-                                <label class="text-[11px] font-bold text-gray-700 uppercase tracking-wider">Email Address <span class="text-primary">*</span></label>
-                                <input type="email" name="email" required class="w-full pl-4 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-[13px] font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none transition-all" placeholder="Enter email address">
-                            </div>
-                             <div>
+                            <div>
                                 <label class="text-[11px] font-bold text-gray-700 uppercase tracking-wider">Phone Number</label>
                                 <input type="tel" name="phone" class="w-full pl-4 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-[13px] font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none transition-all" placeholder="+252 XXX XXX XXX">
-                            </div>
-                             <div>
-                                <label class="text-[11px] font-bold text-gray-700 uppercase tracking-wider">Date of Birth</label>
-                                <div class="relative">
-                                    <input type="date" name="dob" class="w-full pl-4 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-[13px] font-medium text-slate-400 focus:bg-white focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none transition-all">
-                                </div>
-                            </div>
-                            <div>
-                                <label class="form-label">Marital Status</label>
-                                <div class="relative">
-                                    <select name="marital_status" class="form-input appearance-none bg-slate-50 border-slate-100">
-                                        <option value="">Select Status</option>
-                                        <option value="Single">Single</option>
-                                        <option value="Married">Married</option>
-                                    </select>
-                                    <i class="bi bi-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-xs"></i>
-                                </div>
                             </div>
                             <div>
                                 <label class="form-label">Gender</label>
@@ -407,19 +362,7 @@
                                     <i class="bi bi-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-xs"></i>
                                 </div>
                             </div>
-                            <div>
-                                <label class="form-label">Country <span class="text-primary">*</span></label>
-                                <div class="relative">
-                                    <select name="country" required class="form-input appearance-none bg-slate-50 border-slate-100">
-                                        <option value="">Select Country</option>
-                                        <option value="Somalia">Somalia</option>
-                                        <option value="Kenya">Kenya</option>
-                                        <option value="Ethiopia">Ethiopia</option>
-                                    </select>
-                                    <i class="bi bi-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-xs"></i>
-                                </div>
-                            </div>
-                    </div>
+                        </div>
 
                     <!-- Professional Information -->
                     <div class="mb-10 pt-8 border-t border-slate-100">
@@ -470,27 +413,9 @@
                         </div>
                     </div>
                     
-                    <!-- Address & Confirmation -->
+                    <!-- Confirmation -->
                     <div class="mb-5 pt-8 border-t border-slate-100">
-                        <div class="flex items-center gap-3 mb-6">
-                            <div class="w-8 h-8 bg-accent/10 rounded-lg flex items-center justify-center text-accent">
-                                <i class="bi bi-geo-alt"></i>
-                            </div>
-                            <h3 class="text-sm font-black text-primary uppercase tracking-widest">Address & Verification</h3>
-                        </div>
-                        
-                        <div class="grid md:grid-cols-3 gap-6 mb-6">
-                            <div class="md:col-span-2">
-                                <label class="text-[11px] font-bold text-gray-700 uppercase tracking-wider">Home Address</label>
-                                <input type="text" name="address" class="w-full pl-4 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-[13px] font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none transition-all" placeholder="Enter full address">
-                            </div>
-                            <div>
-                                <label class="text-[11px] font-bold text-gray-700 uppercase tracking-wider">District / Region</label>
-                                <input type="text" name="district" class="w-full pl-4 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-[13px] font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none transition-all" placeholder="Enter district">
-                            </div>
-                        </div>
-                        
-                        <div class="mt-6 bg-gray-50 rounded-2xl p-6 border border-gray-100">
+                        <div class="mt-2 bg-gray-50 rounded-2xl p-6 border border-gray-100">
                             <div class="flex items-start gap-4">
                                 <div class="flex items-center h-6">
                                     <input type="checkbox" name="terms" required class="w-5 h-5 accent-primary border-gray-300 rounded cursor-pointer">
