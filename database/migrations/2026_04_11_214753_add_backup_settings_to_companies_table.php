@@ -12,9 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('companies', function (Blueprint $table) {
-            $table->boolean('auto_backup_enabled')->default(false);
-            $table->string('backup_time', 5)->default('02:00');
-            $table->unsignedSmallInteger('backup_retention')->default(30);
+            if (!Schema::hasColumn('companies', 'auto_backup_enabled')) {
+                $table->boolean('auto_backup_enabled')->default(false);
+            }
+            if (!Schema::hasColumn('companies', 'backup_time')) {
+                $table->string('backup_time', 5)->default('02:00');
+            }
+            if (!Schema::hasColumn('companies', 'backup_retention')) {
+                $table->unsignedSmallInteger('backup_retention')->default(30);
+            }
         });
     }
 
