@@ -590,11 +590,14 @@ document.addEventListener('alpine:init', () => {
         async syncData() {
             this.isSyncing = true;
             try {
-                const response = await fetch('{{ route('account.index') }}?sync=1');
-                const data = await response.json();
-                if (data.success) {
-                    window.location.reload();
-                }
+                const response = await fetch('{{ route('account.recalculate-balances') }}', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Accept': 'application/json',
+                    },
+                });
+                window.location.reload();
             } catch (error) {
                 console.error('Sync failed:', error);
                 this.isSyncing = false;

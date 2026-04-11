@@ -598,4 +598,41 @@ class AccountController extends Controller
             ]);
         }
     }
+
+    public function recalculateBalances()
+    {
+        $cid = auth()->user()->company_id;
+
+        $accounts = Account::withoutGlobalScopes()
+            ->where('company_id', $cid)
+            ->where('type', '!=', 'parent')
+            ->get();
+
+        DB::transaction(function () use ($accounts, $cid) {
+            foreach ($accounts as $account) {
+                $items = JournalItem::withoutGlobalScopes()
+                    ->where('journal_items.account_id', $account->id)
+                    ->join('journal_entries', 'journal_items.journal_entry_id', '=', 'journal_entries.id')
+                    ->where('journal_entries.status', 'posted')
+                    ->where('journal_entries.company_id', $cid)
+                    ->select('journal_items.debit', 'journal_items.credit')
+                    ->get();
+
+                $totalDebit  = $items->sum('debit');
+                $totalCredit = $items->sum('credit');
+
+                $normalDebit = in_array($account->category, ['assets', 'expenses']);
+                $balance     = $normalDebit ? ($totalDebit - $totalCredit) : ($totalCredit - $totalDebit);
+
+                Account::withoutGlobalScopes()
+                    ->where('id', $account->id)
+                    ->update(['balance' => $balance]);
+            }
+        });
+
+        if (request()->expectsJson()) {
+            return response()->json(['success' => true]);
+        }
+        return redirect()->back()->with('success', 'Account balances recalculated from journal entries.');
+    }
 }
