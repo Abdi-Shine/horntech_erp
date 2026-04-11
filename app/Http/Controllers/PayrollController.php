@@ -97,18 +97,22 @@ class PayrollController extends Controller
             //   Cr Deductions Payable  = total_deductions (if > 0)
             $salaryExpenseAccount = Account::query()
                 ->where('company_id', $cid)
-                ->where(function ($q) {
-                    $q->where('code', '5100')
-                      ->orWhere('name', 'like', '%Salaries%')
-                      ->orWhere('name', 'like', '%Salary%');
-                })
                 ->where('category', 'expenses')
+                ->where(function ($q) {
+                    $q->where('code', '5210')
+                      ->orWhere('code', '5100')
+                      ->orWhere('name', 'like', '%Salaries%')
+                      ->orWhere('name', 'like', '%Salary%')
+                      ->orWhere('name', 'like', '%Wages%');
+                })
                 ->first();
 
             $salariesPayableAccount = Account::query()
                 ->where('company_id', $cid)
                 ->where(function ($q) {
-                    $q->where('code', '2200')
+                    $q->where('code', '2140')
+                      ->orWhere('code', '2200')
+                      ->orWhere('name', 'like', '%Accrued Salaries%')
                       ->orWhere('name', 'like', '%Salaries Payable%')
                       ->orWhere('name', 'like', '%Wages Payable%');
                 })
@@ -225,7 +229,9 @@ class PayrollController extends Controller
             $salariesPayableAccount = Account::query()
                 ->where('company_id', $cid)
                 ->where(function ($q) {
-                    $q->where('code', '2200')
+                    $q->where('code', '2140')
+                      ->orWhere('code', '2200')
+                      ->orWhere('name', 'like', '%Accrued Salaries%')
                       ->orWhere('name', 'like', '%Salaries Payable%')
                       ->orWhere('name', 'like', '%Wages Payable%');
                 })
@@ -233,9 +239,14 @@ class PayrollController extends Controller
 
             $bankAccount = Account::query()
                 ->where('company_id', $cid)
-                ->whereIn('type', ['bank', 'cash'])
+                ->where('category', 'assets')
+                ->where(function ($q) {
+                    $q->whereIn('type', ['bank', 'cash'])
+                      ->orWhere('name', 'like', '%Cash on Hand%')
+                      ->orWhere('name', 'like', '%Bank%');
+                })
                 ->where('is_active', 1)
-                ->orderBy('type') // prefer bank over cash
+                ->orderByRaw("FIELD(type, 'cash', 'bank') DESC")
                 ->first();
 
             if ($salariesPayableAccount && $bankAccount) {
