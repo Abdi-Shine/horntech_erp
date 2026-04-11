@@ -180,9 +180,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/account-management/transfer', [App\Http\Controllers\BankTransactionController::class, 'storeTransfer'])->name('bank.transaction.transfer');
         Route::post('/account-management/adjustment', [App\Http\Controllers\BankTransactionController::class, 'storeAdjustment'])->name('bank.transaction.adjustment');
         Route::post('/accounts', [App\Http\Controllers\AccountController::class, 'store'])->name('account.store');
-        Route::put('/accounts/{id}', [App\Http\Controllers\AccountController::class, 'update'])->name('account.update')->middleware('tenant.owns:accounts');
-        Route::delete('/accounts/{id}', [App\Http\Controllers\AccountController::class, 'destroy'])->name('account.destroy')->middleware('tenant.owns:accounts');
-        Route::patch('/accounts/{id}/toggle-status', [App\Http\Controllers\AccountController::class, 'toggleStatus'])->name('account.toggle-status')->middleware('tenant.owns:accounts');
+        Route::put('/accounts/{id}', [App\Http\Controllers\AccountController::class, 'update'])->name('account.update')->middleware('tenant.owns:chart_of_accounts');
+        Route::delete('/accounts/{id}', [App\Http\Controllers\AccountController::class, 'destroy'])->name('account.destroy')->middleware('tenant.owns:chart_of_accounts');
+        Route::patch('/accounts/{id}/toggle-status', [App\Http\Controllers\AccountController::class, 'toggleStatus'])->name('account.toggle-status')->middleware('tenant.owns:chart_of_accounts');
 
         // Journal Entry Routes
         Route::get('/journal-entries', [App\Http\Controllers\JournalEntryController::class, 'index'])->name('journal.index');
