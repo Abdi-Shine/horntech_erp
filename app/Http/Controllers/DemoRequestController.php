@@ -31,7 +31,6 @@ class DemoRequestController extends Controller
             'phone'        => 'required|string|max:30',
         ]);
 
-        // Explicitly pass null for all legacy NOT NULL columns so the insert never fails
         DemoRequest::create(array_merge([
             'job_title'      => null,
             'industry'       => null,
@@ -39,8 +38,6 @@ class DemoRequestController extends Controller
             'country'        => null,
             'preferred_date' => null,
             'preferred_time' => null,
-            'message'        => null,
-            'notes'          => null,
             'status'         => 'pending',
         ], $validated));
 
