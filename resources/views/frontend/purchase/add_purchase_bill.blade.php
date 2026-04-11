@@ -688,33 +688,15 @@
                 addItemRow();
 
                 // Summary listeners
-                document.getElementById('discountInput').addEventListener('input', function () {
+                document.getElementById('discountAmountInput').addEventListener('input', function () {
                     discountFocus = 'amt';
-                    syncDiscountBoxes();
-                    recalcAll();
-                });
-
-                document.getElementById('discountPercent').addEventListener('input', function () {
-                    discountFocus = 'pct';
-                    syncDiscountBoxes();
                     recalcAll();
                 });
 
                 function syncDiscountBoxes() {
                     const subtotal = calculateCurrentSubtotal();
-                    const pctInput = document.getElementById('discountPercent');
-                    const amtInput = document.getElementById('discountInput');
-
-                    if (subtotal <= 0) return;
-
-                    if (discountFocus === 'pct') {
-                        const pct = parseFloat(pctInput.value) || 0;
-                        amtInput.value = Math.round(subtotal * pct / 100);
-                    } else {
-                        const amt = parseFloat(amtInput.value) || 0;
-                        const pct = (amt / subtotal) * 100;
-                        pctInput.value = Math.round(pct);
-                    }
+                    const amtInput = document.getElementById('discountAmountInput');
+                    if (subtotal <= 0 || !amtInput) return;
                 }
 
 
@@ -981,21 +963,9 @@
                     totalQty += parseFloat(row.querySelector('.qty-input').value) || 0;
                 });
 
-                // Global discount - recalculate based on last focus
-                const pctInput = document.getElementById('discountPercent');
-                const amtInput = document.getElementById('discountInput');
-
-                if (discountFocus === 'pct' && subtotal > 0) {
-                    const p = parseFloat(pctInput.value) || 0;
-                    const a = Math.round(subtotal * p / 100);
-                    amtInput.value = a;
-                } else if (discountFocus === 'amt' && subtotal > 0) {
-                    const a = parseFloat(amtInput.value) || 0;
-                    const p = Math.round((a / subtotal) * 100);
-                    pctInput.value = p;
-                }
-
-                const discAmt = parseFloat(amtInput.value) || 0;
+                // Global discount
+                const amtInput = document.getElementById('discountAmountInput');
+                const discAmt = parseFloat(amtInput?.value) || 0;
                 const afterDisc = Math.max(0, subtotal - discAmt);
 
                 // Tax
@@ -1095,7 +1065,7 @@
                     expected_delivery: dueDateEl ? dueDateEl.value : '',
                     payment_terms: purType === 'cash' ? 'Cash' : 'Credit',
                     subtotal: parseFloat(document.getElementById('inputSubtotal')?.value) || 0,
-                    discount: parseFloat(document.getElementById('discountInput')?.value) || 0,
+                    discount: parseFloat(document.getElementById('discountAmountInput')?.value) || 0,
                     vat: parseFloat(document.getElementById('taxVal')?.value) || 0,
                     total_amount: parseFloat(document.getElementById('grandTotalVal')?.value) || 0,
                     paid_amount: parseFloat(document.getElementById('paidAmountInput')?.value) || 0,
