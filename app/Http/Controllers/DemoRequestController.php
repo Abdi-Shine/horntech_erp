@@ -31,7 +31,18 @@ class DemoRequestController extends Controller
             'phone'        => 'required|string|max:30',
         ]);
 
-        DemoRequest::create($validated);
+        // Explicitly pass null for all legacy NOT NULL columns so the insert never fails
+        DemoRequest::create(array_merge([
+            'job_title'      => null,
+            'industry'       => null,
+            'company_size'   => null,
+            'country'        => null,
+            'preferred_date' => null,
+            'preferred_time' => null,
+            'message'        => null,
+            'notes'          => null,
+            'status'         => 'pending',
+        ], $validated));
 
         return redirect()->route('demo.request')->with('success', 'Thank you! We\'ll confirm your demo within 24 hours.');
     }
