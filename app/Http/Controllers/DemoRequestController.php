@@ -31,15 +31,7 @@ class DemoRequestController extends Controller
             'phone'        => 'required|string|max:30',
         ]);
 
-        DemoRequest::create(array_merge([
-            'job_title'      => null,
-            'industry'       => null,
-            'company_size'   => null,
-            'country'        => null,
-            'preferred_date' => null,
-            'preferred_time' => null,
-            'status'         => 'pending',
-        ], $validated));
+        DemoRequest::create(array_merge(['status' => 'pending'], $validated));
 
         return redirect()->route('demo.request')->with('success', 'Thank you! We\'ll confirm your demo within 24 hours.');
     }
