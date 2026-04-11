@@ -312,102 +312,85 @@
             </div>
             
             <!-- Modal Body -->
-            <div class="p-8 overflow-y-auto modal-scroll employee-modal-scroll">
+            <div class="p-6 overflow-y-auto modal-scroll employee-modal-scroll">
                 <form id="addEmployeeForm" action="{{ route('employee.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
-                    <!-- Personal Information -->
-                    <div class="mb-10">
-                        <div class="flex items-center gap-3 mb-6">
-                            <div class="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center text-primary">
-                                <i class="bi bi-person-badge"></i>
-                            </div>
-                            <h3 class="text-[12px] font-black text-primary uppercase tracking-widest">Personal Identification</h3>
-                        </div>
 
-                        <div class="mb-8">
-                            <label class="text-[11px] font-bold text-gray-700 uppercase tracking-wider block mb-1.5">Profile Photo</label>
-                            <label for="photoUpload" class="flex flex-col items-center justify-center w-full py-5 border-2 border-dashed border-gray-200 rounded-xl bg-gray-50 hover:bg-gray-100 hover:border-primary/40 cursor-pointer transition-all">
-                                <template x-if="!photoUrl">
-                                    <div class="flex flex-col items-center gap-2">
-                                        <i class="bi bi-cloud-arrow-up text-2xl text-gray-400"></i>
-                                        <span class="text-[11px] font-black text-gray-400 uppercase tracking-widest">Upload Image</span>
-                                    </div>
-                                </template>
-                                <template x-if="photoUrl">
-                                    <img :src="photoUrl" class="h-20 w-20 object-cover rounded-xl">
-                                </template>
-                            </label>
-                            <input type="file" id="photoUpload" name="photo" class="hidden" accept="image/*" @change="let file = $event.target.files[0]; if(file) { let reader = new FileReader(); reader.onload = (e) => photoUrl = e.target.result; reader.readAsDataURL(file); }">
-                        </div>
-                        
-                        <div class="grid md:grid-cols-3 gap-y-7 gap-x-6">
-                            <div>
-                                <label class="text-[11px] font-bold text-gray-700 uppercase tracking-wider">Full Name <span class="text-primary">*</span></label>
-                                <input type="text" name="fullName" required class="w-full pl-4 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-[13px] font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none transition-all" placeholder="Enter full name">
-                            </div>
-                            <div>
-                                <label class="text-[11px] font-bold text-gray-700 uppercase tracking-wider">Phone Number</label>
-                                <input type="tel" name="phone" class="w-full pl-4 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-[13px] font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none transition-all" placeholder="+252 XXX XXX XXX">
-                            </div>
-                            <div>
-                                <label class="text-[11px] font-bold text-gray-700 uppercase tracking-wider">Gender</label>
-                                <select name="gender" class="w-full pl-4 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-[13px] font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none transition-all">
-                                    <option value="">Select Gender</option>
-                                    <option value="Male">Male</option>
-                                    <option value="Female">Female</option>
-                                </select>
-                            </div>
-                        </div>
+                    {{-- Photo upload --}}
+                    <div class="mb-5">
+                        <label class="text-[11px] font-bold text-gray-700 uppercase tracking-wider block mb-1.5">Profile Photo</label>
+                        <label for="photoUpload" class="flex flex-col items-center justify-center w-full py-4 border-2 border-dashed border-gray-200 rounded-xl bg-gray-50 hover:bg-gray-100 hover:border-primary/40 cursor-pointer transition-all">
+                            <template x-if="!photoUrl">
+                                <div class="flex flex-col items-center gap-1.5">
+                                    <i class="bi bi-cloud-arrow-up text-2xl text-gray-400"></i>
+                                    <span class="text-[11px] font-black text-gray-400 uppercase tracking-widest">Upload Image</span>
+                                </div>
+                            </template>
+                            <template x-if="photoUrl">
+                                <img :src="photoUrl" class="h-16 w-16 object-cover rounded-xl">
+                            </template>
+                        </label>
+                        <input type="file" id="photoUpload" name="photo" class="hidden" accept="image/*" @change="let file = $event.target.files[0]; if(file) { let reader = new FileReader(); reader.onload = (e) => photoUrl = e.target.result; reader.readAsDataURL(file); }">
+                    </div>
 
-                    <!-- Professional Information -->
-                    <div class="mb-10 pt-8 border-t border-slate-100">
-                        <div class="flex items-center gap-3 mb-6">
-                            <div class="w-8 h-8 bg-accent/10 rounded-lg flex items-center justify-center text-accent">
-                                <i class="bi bi-briefcase"></i>
-                            </div>
-                            <h3 class="text-sm font-black text-primary uppercase tracking-widest">Employment Details</h3>
+                    {{-- Row 1: Full Name, Phone, Gender --}}
+                    <div class="grid grid-cols-3 gap-4 mb-4">
+                        <div>
+                            <label class="text-[11px] font-bold text-gray-700 uppercase tracking-wider">Full Name <span class="text-primary">*</span></label>
+                            <input type="text" name="fullName" required class="w-full pl-3 pr-3 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-[13px] font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none transition-all" placeholder="Enter full name">
                         </div>
-                        
-                        <div class="grid md:grid-cols-3 gap-y-7 gap-x-6">
-                            <div>
-                                <label class="text-[11px] font-bold text-gray-700 uppercase tracking-wider">Company Name <span class="text-primary">*</span></label>
-                                <div class="relative">
-                                    <select name="companyName" required class="w-full pl-4 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-[13px] font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none transition-all appearance-none bg-gray-50 border-gray-100">
-                                        <option value="">Select Company</option>
-                                        @foreach($companies as $company)
-                                            <option value="{{ $company->name }}" selected>{{ $company->name }}</option>
-                                        @endforeach
-                                    </select>
-                                    <i class="bi bi-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-xs"></i>
-                                </div>
-                            </div>
-                            <div>
-                                <label class="text-[11px] font-bold text-gray-700 uppercase tracking-wider">Department</label>
-                                <input type="text" name="department" class="w-full pl-4 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-[13px] font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none transition-all" placeholder="e.g., Sales">
-                            </div>
-                            <div>
-                                <label class="text-[11px] font-bold text-gray-700 uppercase tracking-wider">Position</label>
-                                <input type="text" name="designation" class="w-full pl-4 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-[13px] font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none transition-all" placeholder="e.g., Manager">
-                            </div>
-                            <div class="md:col-span-2">
-                                <label class="text-[11px] font-bold text-gray-700 uppercase tracking-wider">Branch <span class="text-primary">*</span></label>
-                                <div class="relative ring-1 ring-slate-100 rounded-xl overflow-hidden focus-within:ring-accent transition-all">
-                                    <select name="branch" required class="w-full px-4 py-3 bg-white border-none outline-none text-primary text-sm appearance-none cursor-pointer">
-                                        <option value="">Select Branch</option>
-                                        @foreach($branches as $branch)
-                                            <option value="{{ $branch->name }}">{{ $branch->name }}</option>
-                                        @endforeach
-                                    </select>
-                                    <i class="bi bi-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-xs"></i>
-                                </div>
-                            </div>
-                            <div>
-                                <label class="text-[11px] font-bold text-gray-700 uppercase tracking-wider">Basic Salary</label>
-                                <input type="number" name="salary" class="w-full pl-4 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-[13px] font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none transition-all" placeholder="0.00">
-                            </div>
+                        <div>
+                            <label class="text-[11px] font-bold text-gray-700 uppercase tracking-wider">Phone Number</label>
+                            <input type="tel" name="phone" class="w-full pl-3 pr-3 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-[13px] font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none transition-all" placeholder="+252 XXX XXX XXX">
+                        </div>
+                        <div>
+                            <label class="text-[11px] font-bold text-gray-700 uppercase tracking-wider">Gender</label>
+                            <select name="gender" class="w-full pl-3 pr-3 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-[13px] font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none transition-all">
+                                <option value="">Select Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
                         </div>
                     </div>
-                    
+
+                    {{-- Row 2: Company, Department, Position --}}
+                    <div class="grid grid-cols-3 gap-4 mb-4">
+                        <div>
+                            <label class="text-[11px] font-bold text-gray-700 uppercase tracking-wider">Company Name <span class="text-primary">*</span></label>
+                            <select name="companyName" required class="w-full pl-3 pr-3 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-[13px] font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none transition-all">
+                                <option value="">Select Company</option>
+                                @foreach($companies as $company)
+                                    <option value="{{ $company->name }}">{{ $company->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-[11px] font-bold text-gray-700 uppercase tracking-wider">Department</label>
+                            <input type="text" name="department" class="w-full pl-3 pr-3 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-[13px] font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none transition-all" placeholder="e.g., Sales">
+                        </div>
+                        <div>
+                            <label class="text-[11px] font-bold text-gray-700 uppercase tracking-wider">Position</label>
+                            <input type="text" name="designation" class="w-full pl-3 pr-3 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-[13px] font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none transition-all" placeholder="e.g., Manager">
+                        </div>
+                    </div>
+
+                    {{-- Row 3: Branch, Salary --}}
+                    <div class="grid grid-cols-3 gap-4 mb-4">
+                        <div class="col-span-2">
+                            <label class="text-[11px] font-bold text-gray-700 uppercase tracking-wider">Branch <span class="text-primary">*</span></label>
+                            <select name="branch" required class="w-full pl-3 pr-3 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-[13px] font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none transition-all">
+                                <option value="">Select Branch</option>
+                                @foreach($branches as $branch)
+                                    <option value="{{ $branch->name }}">{{ $branch->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-[11px] font-bold text-gray-700 uppercase tracking-wider">Basic Salary</label>
+                            <input type="number" name="salary" class="w-full pl-3 pr-3 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-[13px] font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none transition-all" placeholder="0.00">
+                        </div>
+                    </div>
+
                 </form>
             </div>
             
