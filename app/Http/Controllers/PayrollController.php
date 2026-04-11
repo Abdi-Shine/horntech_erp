@@ -237,16 +237,18 @@ class PayrollController extends Controller
                 })
                 ->first();
 
+            // Prefer Cash on Hand (1110), then any cash type, then bank
             $bankAccount = Account::query()
                 ->where('company_id', $cid)
                 ->where('category', 'assets')
                 ->where(function ($q) {
-                    $q->whereIn('type', ['bank', 'cash'])
+                    $q->where('code', '1110')
+                      ->orWhere('type', 'cash')
+                      ->orWhere('type', 'bank')
                       ->orWhere('name', 'like', '%Cash on Hand%')
-                      ->orWhere('name', 'like', '%Bank%');
+                      ->orWhere('name', 'like', '%Cash%');
                 })
-                ->where('is_active', 1)
-                ->orderByRaw("FIELD(type, 'cash', 'bank') DESC")
+                ->orderByRaw("CASE WHEN code = '1110' THEN 0 WHEN type = 'cash' THEN 1 WHEN type = 'bank' THEN 2 ELSE 3 END")
                 ->first();
 
             if ($salariesPayableAccount && $bankAccount) {
