@@ -57,10 +57,16 @@
                 <div class="bg-primary p-10 text-white relative">
                     <div class="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -mr-16 -mt-16"></div>
                     <div class="flex items-center justify-between relative z-10">
-                        <div>
-                            <h2 class="text-3xl font-black mb-1 uppercase tracking-tighter italic">{{ $company->name ?? 'HORNTECH LTD' }}</h2>
-                            <p class="text-sm text-primary font-medium">{{ $company->tagline ?? 'Horntech LTD' }}</p>
-                            <p class="text-[11px] text-primary mt-1 uppercase tracking-widest font-bold">{{ $company->city ?? 'Riyadh' }} • {{ $company->country ?? 'Saudi Arabia' }}</p>
+                        <div class="flex items-center gap-4">
+                            @if(!empty($company->logo))
+                                <div class="w-16 h-16 bg-white rounded-xl flex items-center justify-center overflow-hidden p-1 shadow-md">
+                                    <img src="{{ asset($company->logo) }}" class="w-full h-full object-contain" alt="{{ $company->name }}">
+                                </div>
+                            @endif
+                            <div>
+                                <h2 class="text-3xl font-black mb-1 uppercase tracking-tighter italic">{{ $company->name ?? 'HORNTECH LTD' }}</h2>
+                                <p class="text-[11px] text-white/60 mt-1 uppercase tracking-widest font-bold">{{ $company->city ?? 'Riyadh' }} • {{ $company->country ?? 'Saudi Arabia' }}</p>
+                            </div>
                         </div>
                         <div class="text-right">
                             <p class="text-[10px] text-primary uppercase font-black tracking-widest">Document Type</p>
