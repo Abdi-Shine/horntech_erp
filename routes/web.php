@@ -334,6 +334,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::put('/payroll/approve/{id}', [App\Http\Controllers\PayrollController::class, 'approve'])->name('payroll.approve')->middleware('tenant.owns:payrolls');
         Route::put('/payroll/pay/{id}', [App\Http\Controllers\PayrollController::class, 'markAsPaid'])->name('payroll.pay')->middleware('tenant.owns:payrolls');
         Route::delete('/payroll/delete/{id}', [App\Http\Controllers\PayrollController::class, 'destroy'])->name('payroll.delete')->middleware('tenant.owns:payrolls');
+        Route::post('/payroll/repost/{id}', [App\Http\Controllers\PayrollController::class, 'repostJournal'])->name('payroll.repost')->middleware('tenant.owns:payrolls');
         Route::post('/expenses/store', [App\Http\Controllers\ExpenseController::class, 'store'])->name('expenses.store');
         Route::get('/expenses/edit/{id}', [App\Http\Controllers\ExpenseController::class, 'edit'])->name('expenses.edit')->middleware('tenant.owns:expenses');
         Route::post('/expenses/update/{id}', [App\Http\Controllers\ExpenseController::class, 'update'])->name('expenses.update')->middleware('tenant.owns:expenses');

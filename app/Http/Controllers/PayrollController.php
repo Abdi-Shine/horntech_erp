@@ -304,6 +304,93 @@ class PayrollController extends Controller
         }
     }
 
+    public function repostJournal($id)
+    {
+        try {
+            DB::beginTransaction();
+            $payroll = Payroll::findOrFail($id);
+            $cid     = Auth::user()->company_id;
+
+            // Delete existing payment journal entry if it exists
+            $existing = JournalEntry::withoutGlobalScopes()
+                ->where('reference', 'PAY-PAID-' . $payroll->id)
+                ->where('company_id', $cid)
+                ->first();
+            if ($existing) {
+                foreach ($existing->items as $item) { $item->delete(); }
+                $existing->delete();
+            }
+
+            // Find Cash on Hand
+            $cashAccount = Account::withoutGlobalScopes()
+                ->where('company_id', $cid)
+                ->where(function ($q) {
+                    $q->where('code', '1110')
+                      ->orWhere('type', 'cash')
+                      ->orWhere('name', 'like', '%Cash on Hand%');
+                })
+                ->orderByRaw("CASE WHEN code = '1110' THEN 0 WHEN type = 'cash' THEN 1 ELSE 2 END")
+                ->first();
+
+            if (!$cashAccount) {
+                DB::rollBack();
+                return back()->with('error', 'Cash on Hand account (1110) not found.');
+            }
+
+            // Find debit account
+            $debitAccount = Account::withoutGlobalScopes()
+                ->where('company_id', $cid)
+                ->where(function ($q) {
+                    $q->where('code', '2140')->orWhere('name', 'like', '%Accrued Salaries%');
+                })
+                ->first()
+                ?? Account::withoutGlobalScopes()
+                    ->where('company_id', $cid)
+                    ->where('category', 'expenses')
+                    ->where(function ($q) {
+                        $q->where('code', '5210')->orWhere('name', 'like', '%Salaries%')->orWhere('name', 'like', '%Wages%');
+                    })
+                    ->first();
+
+            $entry = JournalEntry::query()->create([
+                'entry_number' => 'JE-PP-' . date('Ymd') . '-' . str_pad($payroll->id, 5, '0', STR_PAD_LEFT),
+                'date'         => now()->toDateString(),
+                'reference'    => 'PAY-PAID-' . $payroll->id,
+                'description'  => 'Payroll payment (reposted): ' . $payroll->month_year,
+                'status'       => 'posted',
+                'total_amount' => $payroll->total_net,
+                'company_id'   => $cid,
+                'created_by'   => Auth::id(),
+            ]);
+
+            if ($debitAccount) {
+                JournalItem::query()->create([
+                    'journal_entry_id' => $entry->id,
+                    'account_id'       => $debitAccount->id,
+                    'company_id'       => $cid,
+                    'description'      => 'Payroll payment ' . $payroll->month_year,
+                    'debit'            => $payroll->total_net,
+                    'credit'           => 0,
+                ]);
+            }
+
+            JournalItem::query()->create([
+                'journal_entry_id' => $entry->id,
+                'account_id'       => $cashAccount->id,
+                'company_id'       => $cid,
+                'description'      => 'Payroll payment ' . $payroll->month_year,
+                'debit'            => 0,
+                'credit'           => $payroll->total_net,
+            ]);
+
+            DB::commit();
+            return back()->with('success', 'Journal entry reposted. Cash on Hand reduced by $' . number_format($payroll->total_net, 2) . '.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Error: ' . $e->getMessage());
+        }
+    }
+
     public function destroy($id)
     {
         try {

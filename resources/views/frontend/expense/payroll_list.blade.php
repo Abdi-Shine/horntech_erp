@@ -192,6 +192,14 @@
                                                 </button>
                                             </form>
                                         @endif
+                                        @if($payroll->status == 'Paid')
+                                            <form action="{{ route('payroll.repost', $payroll->id) }}" method="POST" class="inline" onsubmit="return confirm('Re-post cash journal entry for this payroll?')">
+                                                @csrf
+                                                <button type="submit" class="w-7 h-7 rounded-md bg-gray-50 border border-gray-200 text-gray-400 hover:text-accent hover:border-accent/20 hover:bg-white transition-all flex items-center justify-center text-xs shadow-sm" title="Re-post Cash Journal">
+                                                    <i class="bi bi-arrow-repeat"></i>
+                                                </button>
+                                            </form>
+                                        @endif
                                         <button @click="confirmDelete({{ $payroll->id }})" class="w-7 h-7 rounded-md bg-gray-50 border border-gray-200 text-gray-400 hover:text-primary hover:border-primary/20 hover:bg-white transition-all flex items-center justify-center text-xs shadow-sm" title="Delete">
                                             <i class="bi bi-trash"></i>
                                         </button>
