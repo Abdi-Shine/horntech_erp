@@ -618,7 +618,7 @@ $(document).ready(function() {
         placeholder: 'Search supplier…',
         allowClear: true,
         width: '100%',
-    }).on('select2:select', function(e) {
+    }).on('select2:select change', function(e) {
         const el   = $(this).find(':selected');
         const ph   = el.data('phone')   || '';
         const name = el.data('name')    || '';
