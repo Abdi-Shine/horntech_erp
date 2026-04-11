@@ -9,7 +9,17 @@ class DemoRequestController extends Controller
 {
     public function index()
     {
-        return view('demo-request');
+        $user    = auth()->user();
+        $company = $user ? \App\Models\Company::find($user->company_id) : null;
+
+        $prefill = [
+            'company_name' => old('company_name', $company->name ?? ''),
+            'full_name'    => old('full_name',    $user->name ?? ''),
+            'email'        => old('email',        $user->email ?? ''),
+            'phone'        => old('phone',        $user->phone ?? $company->phone ?? ''),
+        ];
+
+        return view('demo-request', compact('prefill'));
     }
 
     public function store(Request $request)

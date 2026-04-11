@@ -119,22 +119,22 @@
                                 <div class="col-12">
                                     <label class="form-label">Company Name <span class="required">*</span></label>
                                     <input type="text" name="company_name" class="form-control @error('company_name') is-invalid @enderror"
-                                           placeholder="Enter your company name" value="{{ old('company_name') }}" required>
+                                           placeholder="Enter your company name" value="{{ $prefill['company_name'] }}" required>
                                 </div>
                                 <div class="col-12">
                                     <label class="form-label">Your Name <span class="required">*</span></label>
                                     <input type="text" name="full_name" class="form-control @error('full_name') is-invalid @enderror"
-                                           placeholder="Enter your name" value="{{ old('full_name') }}" required>
+                                           placeholder="Enter your name" value="{{ $prefill['full_name'] }}" required>
                                 </div>
                                 <div class="col-12">
                                     <label class="form-label">Email <span class="required">*</span></label>
                                     <input type="email" name="email" class="form-control @error('email') is-invalid @enderror"
-                                           placeholder="you@gmail.com" value="{{ old('email') }}" required>
+                                           placeholder="you@gmail.com" value="{{ $prefill['email'] }}" required>
                                 </div>
                                 <div class="col-12">
                                     <label class="form-label">Phone <span class="required">*</span></label>
                                     <input type="tel" name="phone" class="form-control @error('phone') is-invalid @enderror"
-                                           placeholder="+966 50 123 4567" value="{{ old('phone') }}" required>
+                                           placeholder="+966 50 123 4567" value="{{ $prefill['phone'] }}" required>
                                 </div>
                             </div>
 
