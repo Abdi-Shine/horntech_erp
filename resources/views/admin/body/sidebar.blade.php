@@ -376,10 +376,7 @@
                     x-transition:leave="transition ease-in duration-150"
                     x-transition:leave-start="opacity-100 max-h-[500px]" x-transition:leave-end="opacity-0 max-h-0"
                     class="space-y-1 overflow-hidden transition-all duration-300">
-                    <a href="{{ route('subscribers_pricing') }}"
-                        class="flex items-center gap-3 pl-12 pr-4 py-2 text-white/50 hover:text-white text-[13px] font-medium transition-all duration-200 {{ Route::is('subscribers_pricing') ? 'text-white bg-white/10' : '' }}"><i
-                            class="bi bi-plus text-lg"></i> Plans & Pricing</a>
-                    <a href="{{ route('subscribers.subscriptions.index') }}"
+<a href="{{ route('subscribers.subscriptions.index') }}"
                         class="flex items-center gap-3 pl-12 pr-4 py-2 text-white/50 hover:text-white text-[13px] font-medium transition-all duration-200 {{ Route::is('subscribers.subscriptions.index') ? 'text-white bg-white/10' : '' }}"><i
                             class="bi bi-plus text-lg"></i> Active Subs</a>
                 </div>
