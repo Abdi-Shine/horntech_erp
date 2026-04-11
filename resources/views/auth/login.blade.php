@@ -137,7 +137,7 @@
                             <i class="bi bi-building input-icon"></i>
                             <input type="text" name="company_name"
                                    class="form-control @error('company_name') border-red-400 @enderror"
-                                   placeholder="Acme Inc."
+                                   placeholder="Enter your company name"
                                    value="{{ old('company_name') }}" required>
                         </div>
                         @error('company_name')
@@ -151,7 +151,7 @@
                             <i class="bi bi-person input-icon"></i>
                             <input type="text" name="name"
                                    class="form-control @error('name') border-red-400 @enderror"
-                                   placeholder="Jane Smith"
+                                   placeholder="Enter your name"
                                    value="{{ old('name') }}" required autocomplete="name">
                         </div>
                         @error('name')
@@ -165,7 +165,7 @@
                             <i class="bi bi-envelope input-icon"></i>
                             <input type="email" name="email"
                                    class="form-control @error('email') border-red-400 @enderror"
-                                   placeholder="you@example.com"
+                                   placeholder="you@gmail.com"
                                    value="{{ old('email') }}" required autocomplete="username">
                         </div>
                         @error('email')

@@ -12,6 +12,8 @@ use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\AccountActivatedMail;
+use App\Models\Subscription;
+use App\Models\SubscriptionPlan;
 
 class RegisteredUserController extends Controller
 {
@@ -36,6 +38,18 @@ class RegisteredUserController extends Controller
             'password'     => ['required', 'confirmed', Rules\Password::defaults()],
             'company_name' => ['required', 'string', 'max:255', 'unique:companies,name'],
         ]);
+
+        // Ensure a free trial plan exists
+        $trialPlan = SubscriptionPlan::firstOrCreate(
+            ['name' => 'Free Trial'],
+            [
+                'description'   => '7-day free trial',
+                'price'         => 0,
+                'billing_cycle' => 'monthly',
+                'max_users'     => 5,
+                'status'        => 'active',
+            ]
+        );
 
         // Create a new company (tenant) for this registrant
         $company = \App\Models\Company::create([
@@ -119,6 +133,16 @@ class RegisteredUserController extends Controller
                 'company_id' => $company->id,
             ]));
         }
+
+        // Create a 7-day trial subscription for the new company
+        Subscription::create([
+            'company_id'           => $company->id,
+            'subscription_plan_id' => $trialPlan->id,
+            'start_date'           => now()->toDateString(),
+            'expiry_date'          => now()->addDays(7)->toDateString(),
+            'status'               => 'trial',
+            'auto_renew'           => false,
+        ]);
 
         // Seed a default HQ branch so the company can operate immediately
         $hqBranch = \App\Models\Branch::withoutGlobalScopes()->create([
