@@ -147,7 +147,7 @@ function askAi() {
             this.showTyping(true);
 
             try {
-                const res = await fetch('{{ route('ask-ai.ask') }}', {
+                const res = await fetch('/ask-ai', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

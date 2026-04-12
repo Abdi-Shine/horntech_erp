@@ -50,7 +50,7 @@
         @endif
 
         <!-- Ask AI -->
-        <a href="{{ route('ask-ai') }}"
+        <a href="/ask-ai"
             class="flex items-center gap-3 px-4 py-3 text-white/70 hover:bg-white/5 hover:text-white rounded-xl font-semibold text-[14px] transition-all duration-200 w-full {{ Route::currentRouteName() == 'ask-ai' ? 'bg-white/5 text-white' : '' }}">
             <i class="bi bi-stars text-lg text-accent"></i>
             <span>Ask AI</span>
