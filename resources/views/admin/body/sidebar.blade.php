@@ -31,7 +31,7 @@
             <div>
                 <h4 class="text-white text-lg font-bold tracking-tight">{{ $company->name ?? 'Horntech LTD' }}</h4>
                 <p class="text-accent text-[10px] font-bold uppercase tracking-widest">
-                    {{ $company->business_type ?? 'Enterprise POS' }}
+                    {{ $company->industry ?? 'Enterprise POS' }}
                 </p>
             </div>
         </div>
@@ -48,6 +48,14 @@
                 <span>Dashboard</span>
             </a>
         @endif
+
+        <!-- Ask AI -->
+        <a href="{{ route('ask-ai') }}"
+            class="flex items-center gap-3 px-4 py-3 text-white/70 hover:bg-white/5 hover:text-white rounded-xl font-semibold text-[14px] transition-all duration-200 w-full {{ Route::currentRouteName() == 'ask-ai' ? 'bg-white/5 text-white' : '' }}">
+            <i class="bi bi-stars text-lg text-accent"></i>
+            <span>Ask AI</span>
+            <span class="ml-auto text-[9px] font-bold bg-accent/20 text-accent px-2 py-0.5 rounded-full uppercase tracking-wider">NEW</span>
+        </a>
 
         @if(Auth::user()->hasPermission('Parties'))
             <div class="space-y-1">
@@ -241,7 +249,7 @@
                             class="bi bi-plus text-lg"></i> Chart of Accounts</a>
                     <a href="{{ route('account_management.index') }}"
                         class="flex items-center gap-3 pl-12 pr-4 py-2 text-white/50 hover:text-white text-[13px] font-medium transition-all duration-200"><i
-                            class="bi bi-plus text-lg"></i> Accounts Management</a>
+                            class="bi bi-plus text-lg"></i> Accounts</a>
                     <a href="{{ route('cash_management.index') }}"
                         class="flex items-center gap-3 pl-12 pr-4 py-2 text-white/50 hover:text-white text-[13px] font-medium transition-all duration-200"><i
                             class="bi bi-plus text-lg"></i> Cash Management</a>
@@ -376,7 +384,7 @@
                     x-transition:leave="transition ease-in duration-150"
                     x-transition:leave-start="opacity-100 max-h-[500px]" x-transition:leave-end="opacity-0 max-h-0"
                     class="space-y-1 overflow-hidden transition-all duration-300">
-<a href="{{ route('subscribers.subscriptions.index') }}"
+                    <a href="{{ route('subscribers.subscriptions.index') }}"
                         class="flex items-center gap-3 pl-12 pr-4 py-2 text-white/50 hover:text-white text-[13px] font-medium transition-all duration-200 {{ Route::is('subscribers.subscriptions.index') ? 'text-white bg-white/10' : '' }}"><i
                             class="bi bi-plus text-lg"></i> Active Subs</a>
                 </div>
