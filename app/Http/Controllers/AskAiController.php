@@ -9,7 +9,6 @@ use App\Models\PurchaseBill;
 use App\Models\SalesOrder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Http;
 
 class AskAiController extends Controller
 {
@@ -44,27 +43,39 @@ class AskAiController extends Controller
             . "- If data is not available for a query, say so clearly\n"
             . "- For Somali replies, use clear and natural Somali language";
 
-        $response = Http::timeout(30)->post(
-            'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=' . $apiKey,
-            [
-                'system_instruction' => [
-                    'parts' => [['text' => $systemPrompt]],
-                ],
-                'contents' => [
-                    ['role' => 'user', 'parts' => [['text' => $request->message]]],
-                ],
-                'generationConfig' => [
-                    'maxOutputTokens' => 1024,
-                    'temperature'     => 0.7,
-                ],
-            ]
-        );
+        $url     = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=' . $apiKey;
+        $payload = json_encode([
+            'system_instruction' => ['parts' => [['text' => $systemPrompt]]],
+            'contents'           => [['role' => 'user', 'parts' => [['text' => $request->input('message')]]]],
+            'generationConfig'   => ['maxOutputTokens' => 1024, 'temperature' => 0.7],
+        ]);
 
-        if ($response->failed()) {
-            return response()->json(['error' => 'AI service error: ' . $response->body()], 500);
+        $ch = curl_init($url);
+        curl_setopt_array($ch, [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_POST           => true,
+            CURLOPT_POSTFIELDS     => $payload,
+            CURLOPT_HTTPHEADER     => ['Content-Type: application/json'],
+            CURLOPT_TIMEOUT        => 30,
+            CURLOPT_SSL_VERIFYPEER => false,
+        ]);
+
+        $body  = curl_exec($ch);
+        $errno = curl_errno($ch);
+        $error = curl_error($ch);
+        curl_close($ch);
+
+        if ($errno) {
+            return response()->json(['error' => 'Connection failed: ' . $error . ' (errno ' . $errno . ')'], 500);
         }
 
-        $text = $response->json('candidates.0.content.parts.0.text') ?? 'No response received.';
+        $data = json_decode($body, true);
+
+        if (isset($data['error'])) {
+            return response()->json(['error' => 'Gemini error: ' . ($data['error']['message'] ?? $body)], 500);
+        }
+
+        $text = $data['candidates'][0]['content']['parts'][0]['text'] ?? 'No response received.';
 
         return response()->json(['reply' => $text]);
     }
