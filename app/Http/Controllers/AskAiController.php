@@ -22,50 +22,47 @@ class AskAiController extends Controller
     {
         $request->validate(['message' => 'required|string|max:1000']);
 
-        $apiKey = config('services.anthropic.key');
+        $apiKey = config('services.gemini.key');
         if (!$apiKey) {
-            return response()->json(['error' => 'AI service is not configured. Please add your ANTHROPIC_API_KEY.'], 503);
+            return response()->json(['error' => 'AI service is not configured. Please add your GEMINI_API_KEY.'], 503);
         }
 
         $cid     = auth()->user()->company_id;
         $company = \App\Models\Company::withoutGlobalScopes()->find($cid);
         $context = $this->buildContext($cid, $company);
 
-        $systemPrompt = <<<PROMPT
-You are a helpful business assistant for {$company->name}. You answer questions about the company's sales, purchases, expenses, inventory, and financial data.
+        $systemPrompt = "You are a helpful business assistant for {$company->name}. You answer questions about the company's sales, purchases, expenses, inventory, and financial data.\n\n"
+            . "Always reply in the SAME LANGUAGE the user writes in. If they write in Somali, reply fully in Somali. If they write in English, reply in English.\n\n"
+            . "Here is the current business data snapshot (today: {$this->today()}):\n\n"
+            . $context . "\n\n"
+            . "Guidelines:\n"
+            . "- Be concise and direct\n"
+            . "- Format numbers with commas and 2 decimal places\n"
+            . "- Use the company's currency symbol: {$this->currency($company)}\n"
+            . "- If data is not available for a query, say so clearly\n"
+            . "- For Somali replies, use clear and natural Somali language";
 
-Always reply in the SAME LANGUAGE the user writes in. If they write in Somali, reply fully in Somali. If they write in English, reply in English.
-
-Here is the current business data snapshot (today: {$this->today()}):
-
-{$context}
-
-Guidelines:
-- Be concise and direct
-- Format numbers with commas and 2 decimal places
-- Use the company's currency symbol: {$this->currency($company)}
-- If data is not available for a query, say so clearly
-- For Somali replies, use clear and natural Somali language
-PROMPT;
-
-        $response = Http::withHeaders([
-            'x-api-key'         => $apiKey,
-            'anthropic-version' => '2023-06-01',
-            'content-type'      => 'application/json',
-        ])->timeout(30)->post('https://api.anthropic.com/v1/messages', [
-            'model'      => 'claude-haiku-4-5-20251001',
-            'max_tokens' => 1024,
-            'system'     => $systemPrompt,
-            'messages'   => [
-                ['role' => 'user', 'content' => $request->message],
-            ],
-        ]);
+        $response = Http::timeout(30)->post(
+            'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=' . $apiKey,
+            [
+                'system_instruction' => [
+                    'parts' => [['text' => $systemPrompt]],
+                ],
+                'contents' => [
+                    ['role' => 'user', 'parts' => [['text' => $request->message]]],
+                ],
+                'generationConfig' => [
+                    'maxOutputTokens' => 1024,
+                    'temperature'     => 0.7,
+                ],
+            ]
+        );
 
         if ($response->failed()) {
-            return response()->json(['error' => 'AI service error. Please try again.'], 500);
+            return response()->json(['error' => 'AI service error: ' . $response->body()], 500);
         }
 
-        $text = $response->json('content.0.text') ?? 'No response received.';
+        $text = $response->json('candidates.0.content.parts.0.text') ?? 'No response received.';
 
         return response()->json(['reply' => $text]);
     }
