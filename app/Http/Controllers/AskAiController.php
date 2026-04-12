@@ -22,7 +22,7 @@ class AskAiController extends Controller
     {
         $request->validate(['message' => 'required|string|max:1000']);
 
-        $apiKey = config('services.gemini.key');
+        $apiKey = config('services.gemini.key') ?: env('GEMINI_API_KEY');
         if (!$apiKey) {
             return response()->json(['error' => 'AI service is not configured. Please add your GEMINI_API_KEY.'], 503);
         }
