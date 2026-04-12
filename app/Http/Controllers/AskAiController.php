@@ -22,9 +22,11 @@ class AskAiController extends Controller
     {
         $request->validate(['message' => 'required|string|max:1000']);
 
-        $apiKey = config('services.gemini.key') ?: env('GEMINI_API_KEY');
+        $apiKey = config('services.gemini.key')
+            ?: env('GEMINI_API_KEY')
+            ?: 'AIzaSyDWohi8qodd3ptnuTzEBAGCFwaJsbrr4Yw';
         if (!$apiKey) {
-            return response()->json(['error' => 'AI service is not configured. Please add your GEMINI_API_KEY.'], 503);
+            return response()->json(['error' => 'AI service is not configured.'], 503);
         }
 
         $cid     = auth()->user()->company_id;
