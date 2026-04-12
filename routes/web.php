@@ -95,6 +95,11 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified', 'permission:Dashboard'])->name('dashboard');
 
 Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/ask-ai', [App\Http\Controllers\AskAiController::class, 'index'])->name('ask-ai');
+    Route::post('/ask-ai', [App\Http\Controllers\AskAiController::class, 'ask'])->name('ask-ai.ask');
+});
+
+Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
