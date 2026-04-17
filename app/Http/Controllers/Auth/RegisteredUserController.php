@@ -55,8 +55,6 @@ class RegisteredUserController extends Controller
         $company = \App\Models\Company::create([
             'name'                => $request->company_name,
             'industry'            => $request->industry,
-            'employee_count'      => $request->company_size,
-            'vat_number'          => $request->vat_number,
             'registration_number' => $request->cr_number,
             'address'             => $request->address,
             'city'                => $request->city,
